@@ -33,49 +33,20 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
 });
 
 
-$factory->define(App\Models\Teacher::class, function (Faker $faker) {
-
+$factory->define(App\Models\Product::class, function (Faker $faker) {
     return [
-        'full_name' => "hossam teacher",
-        'email'=> "hossam_student@gmail.com",
-         'user_name' => "hossam_student",
-         'password' => bcrypt('admin'),
-         'phone' => "01010079798",
-         'user_id' => 1
+        'name' => $faker->name,
+        'description'=> $faker->text,
+        'price' => rand(10 , 600),
+        'quantity'=>rand(10 , 600),
+        // 'image'=>null,
+        'vendor_id'=>1,
+        'category_id'=>rand(1,9),
     ];
 });
 
-
-$factory->define(App\Models\Student::class, function (Faker $faker) {
-
+$factory->define(App\Models\Category::class, function (Faker $faker) {
     return [
-        'full_name' => "hossam student",
-        'email'=> "hossam_student@gmail.com",
-         'user_name' => "hossam_student",
-         'password' => bcrypt('admin'),
-         'phone' => "01010079798",
-         'level'=>"secondary",
-         'user_id' => 1
+        'name' => $faker->name,
     ];
 });
-
-$factory->define(App\Models\Room::class, function (Faker $faker) {
-
-    return [
-        'name' => "room".rand(1,15),
-        'subject'=> "math",
-        'teacher_id'=>rand(1,15),
-         'user_id' => 1
-    ];
-});
-
-$factory->define(App\Models\PrivateRoom::class, function (Faker $faker) {
-
-    return [
-        'name' => "room".rand(1,15),
-        'subject'=> "math",
-        'teacher_id'=>rand(1,15),
-         'user_id' => 1
-    ];
-});
-

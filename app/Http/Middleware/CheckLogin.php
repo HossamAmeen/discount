@@ -20,8 +20,6 @@ class CheckLogin
             return $next($request);
         } else {
             return $this->APIResponse(null, "token is expired", 401);
-            // $message = ["message" => "Permission Denied"];
-            // return response($message, 401);
         }
     }
 }

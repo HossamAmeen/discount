@@ -47,9 +47,9 @@ return [
             'hash' => false,
         ],
 
-        'teacher-api' => [
+        'vendor-api' => [
             'driver' => 'passport',
-            'provider' => 'teachers',
+            'provider' => 'vendors',
             'hash' => false,
         ],
         'student-api' => [
@@ -82,9 +82,9 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        'teachers' => [
+        'vendors' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Teacher::class,
+            'model' => App\Models\Vendor::class,
         ],
 
         'students' => [

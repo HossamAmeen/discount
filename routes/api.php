@@ -25,3 +25,22 @@ Route::prefix('admin')->namespace('DashBoard')->group(function(){
    
 });
 
+        //////////////// vender ///////////////////
+Route::prefix('vendor')->namespace('Vendor')->group(function(){
+    Route::post('/register', 'VendorController@register');
+    Route::post('/login', 'VendorController@login');
+    Route::middleware('checkLogin:vendor-api')->group(function () {
+        Route::get('/show-profile', 'VendorController@showProfile');
+        Route::put('/update-profile', 'VendorController@updateProfile');
+        Route::post('/update-store', 'VendorController@updateProfile');
+            /////////// products ////////////
+        Route::post('/add-product', 'ProductController@addProduct');
+        Route::put('/update-product/{id}', 'ProductController@updateProduct');
+        Route::get('/show-products', 'ProductController@showProducts');
+        Route::get('/show-categories', 'ProductController@showCategories');
+        
+    });
+});
+
+Route::get('cities', 'HomeController@showCities');
+Route::get('categories', 'HomeController@showCategories');

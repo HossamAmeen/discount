@@ -8,7 +8,7 @@ class City extends Model
 {
      use SoftDeletes;
      protected $hidden = [
-         "created_at" , 'updated_at' 
+        'user_id' , "created_at" , 'updated_at' ,'deleted_at'
     ];
     public function user(){
         return $this->belongsTo(User::class);

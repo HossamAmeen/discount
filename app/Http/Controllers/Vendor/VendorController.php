@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Vendor;
 use App\Http\Controllers\APIResponseTrait;
 use Illuminate\Support\Facades\Hash;
-use App\Models\{Vendor,Category};
+use Illuminate\Support\Facades\Validator;
+use App\Models\{Vendor,Category,Order};
 use App\Helpers\FileUpload;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -18,11 +19,9 @@ class VendorController extends Controller
         {
             return $this->APIResponse(null , $request->validator->messages() ,  400);
         }
-        $requestArray = $request->all();
+        $requestArray = $request->validated();;
         $requestArray['password'] = bcrypt( $request->password);
-        if($request->category_name){
-            Category::create(['name' => $request->category_name]);
-        }
+        
         $this->uploadImages($request , $requestArray);
        
         $vendor = Vendor::create($requestArray);
@@ -31,6 +30,16 @@ class VendorController extends Controller
     }
     public function login()
     {
+       
+        $validator = Validator::make(request()->all(), [
+            'user_name' => 'required|string',
+            'password' => 'required|string',
+        ]);
+            ; 
+        if ($validator->fails()) {
+            return $this->APIResponse(null , $validator->messages() ,  422);
+        }
+        
         $vendor = Vendor::where($this->checkField(), request('user_name'))->first();
 
         if ($vendor) {
@@ -65,10 +74,27 @@ class VendorController extends Controller
     public function showProfile()
     {
         $vendor = Vendor::find(Auth::guard('vendor-api')->user()->id);
+        $monthEaarning = 0 ; 
+        $orders = Order::select('orders.*')
+        ->join('products', 'products.id', '=', 'orders.product_id')
+        ->join('vendors', 'vendors.id', '=', 'products.vendor_id')
+        ->where('vendors.id', Auth::guard('vendor-api')->user()->id);
+        $ordersTotal = $orders->get();
+        $monthOrders =  $orders->whereYear('date' , date('Y'))->whereMonth('date' , date('m'))->get();
+       
+        $vendor['total'] =  count($ordersTotal);
+        $vendor['total_earning'] = $ordersTotal->sum('price');
+    
+        $vendor['monthOrders'] =  count($monthOrders);
+        $vendor['month_earning'] = $monthOrders->sum('price');
         return $this->APIResponse($vendor, null, 200);
     }
-    public function updateProfile()
+    public function updateProfile(VendorRequest $request)
     {
+        if (isset($request->validator) && $request->validator->fails())
+        {
+            return $this->APIResponse(null , $request->validator->messages() ,  422);
+        }
         $vendor = Vendor::find(Auth::guard('vendor-api')->user()->id);
         $requestArray = request()->all() ; 
         $this->uploadImages(request() , $requestArray);
@@ -85,5 +111,14 @@ class VendorController extends Controller
         $requestArray['national_id_front_image'] =  $request->national_id_front_photo != null ? uploadFile($request->national_id_front_photo , 'vendors') : null;
         $requestArray['national_id_back_image'] =  $request->national_id_back_image != null ? uploadFile($request->national_id_back_image , 'vendors') : null;
        
+    }
+    public function logout (Request $request) {
+
+        $token = $request->user()->token();
+        $token->revoke();
+    
+        $response = 'You have been succesfully logged out!';
+        return response($response, 200);
+    
     }
 }

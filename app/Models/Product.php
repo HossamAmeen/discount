@@ -10,9 +10,17 @@ class Product extends Model
      protected $fillable = ['name', 'description', 'price', 
      'quantity','image', 'vendor_id', 'category_id'];
      protected $hidden = [
-         "created_at" , 'updated_at' 
+        'user_id' , "created_at" , 'updated_at' ,'deleted_at'
     ];
     public function user(){
         return $this->belongsTo(User::class);
+    }
+    public function choices()
+    {
+        return $this->hasMany(ProductChoice::class , 'product_id');
+    }
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

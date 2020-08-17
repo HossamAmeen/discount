@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateVendorsTable extends Migration
 {
+    
     /**
      * Run the migrations.
      *
@@ -18,7 +19,7 @@ class CreateVendorsTable extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('gender');
+          // $table->string('gender');
             $table->string('email');
             $table->string('password');
             $table->string('phone');
@@ -30,11 +31,12 @@ class CreateVendorsTable extends Migration
             $table->string('national_id_front_image')->nullable();
             $table->string('national_id_back_image')->nullable();
             $table->date('expiration_date')->nullable();
+            $table->double('delivery')->nullable();
             $table->enum('status' , ['pending','accept' , 'blocked'])->default('pending')->nullable();
             $table->string('block_reason')->nullable();
             $table->string('google_id')->nullable();
             $table->string('facebook_id')->nullable();
-            $table->double('rating')->nullable();
+            $table->double('rating')->default(0)->nullable();
             
             $table->bigInteger('category_id')->unsigned()->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');

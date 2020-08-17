@@ -33,7 +33,7 @@ class ProductRequest extends FormRequest
             'description' => ['required','string'],
             'price' => ['required' , 'numeric'],
             'quantity' => ['required', 'numeric'],
-            'vendor_id' => ['required','numeric'],
+            
             'category_id' => ['required' , 'numeric'],
         ];
     }

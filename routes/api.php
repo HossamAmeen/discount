@@ -29,16 +29,23 @@ Route::prefix('admin')->namespace('DashBoard')->group(function(){
 Route::prefix('vendor')->namespace('Vendor')->group(function(){
     Route::post('/register', 'VendorController@register');
     Route::post('/login', 'VendorController@login');
+    Route::post('/logout', 'VendorController@logout');
     Route::middleware('checkLogin:vendor-api')->group(function () {
         Route::get('/show-profile', 'VendorController@showProfile');
         Route::put('/update-profile', 'VendorController@updateProfile');
-        Route::post('/update-store', 'VendorController@updateProfile');
+        Route::put('/update-store', 'VendorController@updateProfile');
             /////////// products ////////////
         Route::post('/add-product', 'ProductController@addProduct');
         Route::put('/update-product/{id}', 'ProductController@updateProduct');
         Route::get('/show-products', 'ProductController@showProducts');
+        Route::get('/show-product/{id}', 'ProductController@showProductDetails');
         Route::get('/show-categories', 'ProductController@showCategories');
-        
+            ////////// orders ////////////////
+        Route::get('/show-orders', 'OrderController@showOrders');    
+        Route::get('/show-done-orders', 'OrderController@showDoneOrders');
+        Route::get('/change-status-order/{id}', 'OrderController@changeStatus');
+        Route::put('/edit-order/{id}', 'OrderController@editOrder');
+        Route::get('/scan-qrcode/{order_id}', 'OrderController@scanQRCode');
     });
 });
 

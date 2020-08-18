@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Vendor;
 use App\Http\Controllers\APIResponseTrait;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Models\{Vendor,Category,Order};
+use App\Models\{Vendor,Category,Order,ProductCategory};
 use App\Helpers\FileUpload;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -83,12 +83,15 @@ class VendorController extends Controller
         $monthOrders =  $orders->whereYear('date' , date('Y'))->whereMonth('date' , date('m'))->get();
        
         $vendor['total'] =  count($ordersTotal);
-        $vendor['total_earning'] = $ordersTotal->sum('price');
+        $vendor['totalEarning'] = $ordersTotal->sum('price');
     
         $vendor['monthOrders'] =  count($monthOrders);
-        $vendor['month_earning'] = $monthOrders->sum('price');
+        $vendor['monthEarning'] = $monthOrders->sum('price');
+        $vendor['appFree'] =  0;
+        $vendor['appFreeRatio'] =  0;
         return $this->APIResponse($vendor, null, 200);
     }
+    
     public function updateProfile(VendorRequest $request)
     {
         if (isset($request->validator) && $request->validator->fails())

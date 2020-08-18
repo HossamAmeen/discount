@@ -55,8 +55,10 @@ class DatabaseSeeder extends Seeder
       
         factory('App\Models\Category',9)->create();
         factory('App\Models\ProductCategory',9)->create();
+        factory('App\Models\VendorCategory',9)->create();
         factory('App\Models\Product',25)->create();
         factory('App\Models\Order',10)->create();
+
         $this->productChoices();
         $this->OrderChoices();
     }

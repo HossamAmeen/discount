@@ -17,8 +17,8 @@ class CreateProductCategoriesTable extends Migration
             $table->id();
             $table->string('name');
             
-            $table->bigInteger('vendor_id')->unsigned()->nullable();
-            $table->foreign('vendor_id')->references('id')->on('vendors')->onDelete('set null');
+            // $table->bigInteger('vendor_id')->unsigned()->nullable();
+            // $table->foreign('vendor_id')->references('id')->on('vendors')->onDelete('set null');
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->timestamps();

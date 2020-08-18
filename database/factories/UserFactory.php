@@ -54,7 +54,13 @@ $factory->define(App\Models\Category::class, function (Faker $faker) {
 $factory->define(App\Models\ProductCategory::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
-        'vendor_id'=>1
+        
+    ];
+});
+$factory->define(App\Models\VendorCategory::class, function (Faker $faker) {
+    return [
+        'vendor_id'=>1,
+        'category_id' =>rand(1,9)
     ];
 });
 

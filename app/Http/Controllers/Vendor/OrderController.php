@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Vendor;
 use App\Http\Controllers\APIResponseTrait;
-use App\Models\{Order,Vendor};
+use App\Models\{Order,Vendor , OrderChoice};
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
@@ -18,6 +18,7 @@ class OrderController extends Controller
                         // ->join('buildings', 'buildings.id', '=', 'blocks.building_id')
                         ->where('vendors.id', Auth::guard('vendor-api')->user()->id)
                         ->get();
+        // $orders['choices'] = OrderChoice::where('order_id' , );
         return $this->APIResponse($orders, null, 200); 
     }
     public function showDoneOrders()

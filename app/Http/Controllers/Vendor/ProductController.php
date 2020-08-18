@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Vendor;
 use App\Http\Controllers\APIResponseTrait;
-use App\Models\{Product,ProductCategory , ProductChoice};
+use App\Models\{Product,ProductCategory , ProductChoice , VendorCategory};
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Vendor\ProductRequest;
@@ -66,15 +66,16 @@ class ProductController extends Controller
             return $this->APIResponse(null , $request->validator->messages() ,  400);
         }
         $requestArray = $request->all() ; 
-
         if($request->category_name){
             $category = ProductCategory::create(['name' => $request->category_name]);
-            $requestArray['category_id'] = $category->id ; 
+            $requestArray['category_id'] = $category->id;
+            VendorCategory::create(['vendor_id'=>Auth::guard('vendor-api')->user()->id , 'category_id' =>$category->id ]);
         }
+       
         $requestArray['image'] =  $request->image != null ? uploadFile($request->image , 'products') : null;
         $requestArray['vendor_id'] = Auth::guard('vendor-api')->user()->id; 
         $product = Product::create($requestArray);
-
+       
         $this->addChoiceForProduct($request->json , $product->id);
        
        
@@ -173,7 +174,20 @@ class ProductController extends Controller
     }
     public function showCategories()
     {
-        $categories = ProductCategory::with('products')->get(['id','name']);
+        // $categories = ProductCategory::with('products')->get(['id','name']);
+        $categories = ProductCategory::with('products')
+        ->select('product_categories.*')
+        ->join('vendor_categories', 'vendor_categories.category_id', '=', 'product_categories.id')
+        // ->join('vendors', 'vendors.id', '=', 'products.vendor_id')
+        // ->join('buildings', 'buildings.id', '=', 'blocks.building_id')
+        ->where('vendor_categories.vendor_id', Auth::guard('vendor-api')->user()->id)
+        ->get();
+
         return $this->APIResponse($categories, null, 200);
+    }
+    public function showProductCategories()/// not work
+    {
+        
+        return $this->APIResponse(ProductCategory::where('vendor_id' , Auth::guard('vendor-api')->user()->id)->get('name'), null, 200);
     }
 }

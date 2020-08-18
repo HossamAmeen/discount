@@ -34,7 +34,7 @@ class ProductRequest extends FormRequest
             'price' => ['required' , 'numeric'],
             'quantity' => ['required', 'numeric'],
             
-            'category_id' => ['required' , 'numeric'],
+            'category_id' => ['numeric'],
         ];
     }
     public $validator = null;

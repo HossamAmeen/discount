@@ -11,7 +11,8 @@ class OrderController extends Controller
     use APIResponseTrait;
     public function showOrders()
     {
-        $orders = Order::select('orders.*')
+        $orders = Order::with('choices')
+                        ->select('orders.*')
                         ->join('products', 'products.id', '=', 'orders.product_id')
                         ->join('vendors', 'vendors.id', '=', 'products.vendor_id')
                         // ->join('buildings', 'buildings.id', '=', 'blocks.building_id')

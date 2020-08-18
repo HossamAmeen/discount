@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class OrderChoice extends Model
 {
      use SoftDeletes;
+     protected $fillable =['type' ,'name', 'price', 'order_id'];
      protected $hidden = [
          "created_at" , 'updated_at' 
     ];

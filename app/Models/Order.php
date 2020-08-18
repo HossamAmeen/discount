@@ -14,6 +14,10 @@ class Order extends Model
     public function product(){
         return $this->belongsTo(Product::class)->select(['id','name','price','image']);
     }
+    public function choices()
+    {
+        return $this->hasMany(OrderChoice::class , 'order_id');
+    }
     public function client(){
         return $this->belongsTo(Client::class)->select(['id','first_name','last_name', ]);
     }

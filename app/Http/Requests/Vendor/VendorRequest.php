@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Vendor;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
-
+use Auth;
 class VendorRequest extends FormRequest
 {
     /**
@@ -24,14 +24,15 @@ class VendorRequest extends FormRequest
      */
     public function rules()
     {
-        $id = $this->request->get("id");
+        $id = Auth::guard('vendor-api')->user()->id ;
+        //  $this->request->get("id");
         $rules =  [
-            'first_name' => ['required','string', 'max:100'],
-            'last_name' => ['required','string', 'max:100'], 
+            'first_name' => ['string', 'max:100'],
+            'last_name' => ['string', 'max:100'], 
             //'gender' => ['required','string', 'max:100'],   
-            'email' => ['required', 'email' , Rule::unique('vendors')->ignore($id)->whereNull('deleted_at') ] ,
+            'email' => ['email' , Rule::unique('vendors')->ignore($id)->whereNull('deleted_at') ] ,
             'password' => ['string'],
-            'phone' => ['required', 'numeric', 'digits_between:11,11' ,Rule::unique('vendors')->ignore($id)->whereNull('deleted_at')],
+            'phone' => ['numeric', 'digits_between:11,11' ,Rule::unique('vendors')->ignore($id)->whereNull('deleted_at')],
             'store_name' => ['string', 'max:100'],   
             'store_description' => ['string'],   
             'category_id' => [ 'numeric'], 
@@ -46,10 +47,20 @@ class VendorRequest extends FormRequest
         ];
         if ($this->isMethod('POST') )
         {
+            $rules['first_name'][] = 'required';
+            $rules['last_name'][] = 'required';
+            $rules['email'][] = 'required';
+            $rules['phone'][] = 'required';
             $rules['password'][] = 'required';
             $rules['store_name'][] = 'required';
             $rules['store_description'][] = 'required';
             $rules['category_id'][] = 'required';
+        }
+        if(strpos($this->fullUrl(), "profile") !== false) { 
+            $rules['first_name'][] = 'required';
+            $rules['last_name'][] = 'required';
+            $rules['email'][] = 'required';
+            $rules['phone'][] = 'required';
         }
         return $rules;
     }

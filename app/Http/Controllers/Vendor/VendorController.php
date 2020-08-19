@@ -104,8 +104,17 @@ class VendorController extends Controller
         $this->uploadImages(request() , $requestArray);
         $requestArray['password'] = bcrypt(request()->password);
         $vendor->update($requestArray);
-        return $this->APIResponse(null, null, 200);
+        return $this->APIResponse($vendor, null, 200);
     }
+    // public function updateImage(Request $request)
+    // {
+
+    //     $vendor = Vendor::find(Auth::guard('vendor-api')->user()->id);
+    //     $this->uploadImages(request() , $requestArray);
+    //     $vendor->update($requestArray);
+    //     return  $vendor->getChanges();
+    //     return $this->APIResponse(null, null, 200);
+    // }
     public function uploadImages($request ,& $requestArray)
     {
         set_time_limit(8000000);

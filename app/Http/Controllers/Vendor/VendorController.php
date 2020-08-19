@@ -102,6 +102,7 @@ class VendorController extends Controller
         $vendor = Vendor::find(Auth::guard('vendor-api')->user()->id);
         $requestArray = request()->all() ; 
         $this->uploadImages(request() , $requestArray);
+        if(isset(request()->password))
         $requestArray['password'] = bcrypt(request()->password);
         $vendor->update($requestArray);
         return $this->APIResponse($vendor, null, 200);

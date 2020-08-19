@@ -24,7 +24,7 @@ class VendorRequest extends FormRequest
      */
     public function rules()
     {
-        $id = Auth::guard('vendor-api')->user()->id ;
+        $id = Auth::guard('vendor-api')->user()->id ?? "0" ;
         //  $this->request->get("id");
         $rules =  [
             'first_name' => ['string', 'max:100'],
@@ -45,17 +45,17 @@ class VendorRequest extends FormRequest
             'expiration_date' => [ 'date_format:Y-m-d'],
             
         ];
-        // if ($this->isMethod('POST') )
-        // {
-        //     $rules['first_name'][] = 'required';
-        //     $rules['last_name'][] = 'required';
-        //     $rules['email'][] = 'required';
-        //     $rules['phone'][] = 'required';
-        //     $rules['password'][] = 'required';
-        //     $rules['store_name'][] = 'required';
-        //     $rules['store_description'][] = 'required';
-        //     $rules['category_id'][] = 'required';
-        // }
+        if ($this->isMethod('POST') )
+        {
+            $rules['first_name'][] = 'required';
+            $rules['last_name'][] = 'required';
+            $rules['email'][] = 'required';
+            $rules['phone'][] = 'required';
+            $rules['password'][] = 'required';
+            $rules['store_name'][] = 'required';
+            $rules['store_description'][] = 'required';
+            $rules['category_id'][] = 'required';
+        }
         if(strpos($this->fullUrl(), "profile") !== false) { 
             $rules['first_name'][] = 'required';
             $rules['last_name'][] = 'required';

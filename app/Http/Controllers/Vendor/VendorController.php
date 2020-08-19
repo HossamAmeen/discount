@@ -92,7 +92,7 @@ class VendorController extends Controller
         return $this->APIResponse($vendor, null, 200);
     }
     
-    public function updateProfile(VendorRequest $request)
+    public function updateProfile(Request $request)
     {
         if (isset($request->validator) && $request->validator->fails())
         {

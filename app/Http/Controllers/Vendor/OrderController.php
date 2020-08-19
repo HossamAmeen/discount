@@ -16,7 +16,7 @@ class OrderController extends Controller
                         ->join('products', 'products.id', '=', 'orders.product_id')
                         ->join('vendors', 'vendors.id', '=', 'products.vendor_id')
                         // ->join('buildings', 'buildings.id', '=', 'blocks.building_id')
-                        ->where('vendors.id', Auth::guard('vendor-api')->user()->id)
+                        // ->where('vendors.id', Auth::guard('vendor-api')->user()->id)
                         ->get();
         // $orders['choices'] = OrderChoice::where('order_id' , );
         return $this->APIResponse($orders, null, 200); 

@@ -34,7 +34,7 @@ Route::prefix('vendor')->namespace('Vendor')->group(function(){
         Route::get('/show-profile', 'VendorController@showProfile');
         Route::put('/update-profile', 'VendorController@updateProfile');
         Route::put('/update-store', 'VendorController@updateProfile');
-        Route::put('update-store-image', 'VendorController@updateProfile');
+        Route::post('update-store-image', 'VendorController@updateProfile');
         Route::get('product-categories', 'VendorController@showProductCategories');
             /////////// products ////////////
         Route::post('/add-product', 'ProductController@addProduct');

@@ -45,7 +45,8 @@ class VendorRequest extends FormRequest
             'expiration_date' => [ 'date_format:Y-m-d'],
             
         ];
-        if ($this->isMethod('POST') )
+        // if ($this->isMethod('POST') )
+        if(strpos($this->fullUrl(), "register") !== false)
         {
             $rules['first_name'][] = 'required';
             $rules['last_name'][] = 'required';

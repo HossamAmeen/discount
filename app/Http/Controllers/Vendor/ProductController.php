@@ -71,7 +71,8 @@ class ProductController extends Controller
             $requestArray['category_id'] = $category->id;
             VendorCategory::create(['vendor_id'=>Auth::guard('vendor-api')->user()->id , 'category_id' =>$category->id ]);
         }
-       
+        else
+        VendorCategory::create(['vendor_id'=>Auth::guard('vendor-api')->user()->id , 'category_id' => $request->category_id ]);
         $requestArray['image'] =  $request->image != null ? uploadFile($request->image , 'products') : null;
         $requestArray['vendor_id'] = Auth::guard('vendor-api')->user()->id; 
         $product = Product::create($requestArray);

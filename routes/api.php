@@ -51,5 +51,15 @@ Route::prefix('vendor')->namespace('Vendor')->group(function(){
     });
 });
 
+Route::prefix('client')->namespace('Client')->group(function(){
+        Route::post('/register', 'ClientController@register');
+        Route::post('/login', 'ClientController@login');
+        Route::post('/logout', 'ClientController@logout');
+    Route::middleware('checkLogin:client-api')->group(function () {
+        Route::get('/show-profile', 'ClientController@showProfile');
+        Route::put('/update-profile', 'ClientController@updateProfile');
+        Route::get('show-vendors' , 'VenodrController@showVendors');
+    });
+});
 Route::get('cities', 'HomeController@showCities');
 Route::get('categories', 'HomeController@showCategories');

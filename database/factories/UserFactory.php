@@ -33,17 +33,7 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
 });
 
 
-$factory->define(App\Models\Product::class, function (Faker $faker) {
-    return [
-        'name' => $faker->name,
-        'description'=> $faker->text,
-        'price' => rand(10 , 600),
-        'quantity'=>rand(10 , 600),
-        'image'=>public_path('sandwitch.jpeg'),
-        'vendor_id'=>1,
-        'category_id'=>rand(1,9),
-    ];
-});
+
 
 $factory->define(App\Models\Category::class, function (Faker $faker) {
     return [
@@ -57,6 +47,46 @@ $factory->define(App\Models\ProductCategory::class, function (Faker $faker) {
         
     ];
 });
+
+$factory->define(App\Models\Product::class, function (Faker $faker) {
+    return [
+        'name' => $faker->name,
+        'description'=> $faker->text,
+        'price' => rand(10 , 600),
+        'quantity'=>rand(10 , 600),
+        'image'=>public_path('sandwitch.jpeg'),
+        'vendor_id'=>1,
+        'category_id'=>rand(1,9),
+    ];
+});
+
+$factory->define(App\Models\Vendor::class, function (Faker $faker) {
+    $statusArray = ['pending','accept' , 'blocked'];
+    return [
+        'first_name'=> $faker->name,
+        'last_name'=> $faker->name,
+        'email'=> $faker->email ,
+        'password'=>bcrypt('admins'), 
+        'phone' => $faker->e164PhoneNumber,
+        'store_name'=> $faker->name,
+        'discount'=>rand(1,15),
+        'client_ratio'=>rand(1,6),
+        'client_vip_ratio'=>rand(1,9),
+        'store_description'=> $faker->name,
+        'status' => $faker->randomElement($statusArray), 
+        'category_id'=>rand(1,6),
+        'city_id'=>rand(1,2),
+    ];
+});
+
+
+$factory->define(App\Models\WishList::class, function (Faker $faker) {
+    return [
+        'client_id'=>1,
+        'product_id' =>rand(1,15)
+    ];
+});
+
 $factory->define(App\Models\VendorCategory::class, function (Faker $faker) {
     return [
         'vendor_id'=>1,
@@ -80,3 +110,4 @@ $factory->define(App\Models\Order::class, function (Faker $faker) {
         'client_id'=>1
     ];
 });
+

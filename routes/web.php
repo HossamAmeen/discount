@@ -16,3 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::prefix('admin')->namespace('DashBoard')->group(function(){
+    Route::resource('users' , "UserController");
+    Route::get('/' , 'UserController@index');
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

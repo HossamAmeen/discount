@@ -1,21 +1,28 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Controllers\APIResponseTrait;
-use App\Models\{City,Category};
+
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    use APIResponseTrait;
-    public function showCities()
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
     {
-        
-        return $this->APIResponse(City::get(['id','name']), null, 200);
+        $this->middleware('auth');
     }
-    public function showCategories()
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function index()
     {
-       
-        return $this->APIResponse(Category::get(['id','name']), null, 200);
+        return view('home');
     }
 }

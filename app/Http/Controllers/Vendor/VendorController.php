@@ -9,7 +9,7 @@ use App\Helpers\FileUpload;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Vendor\VendorRequest;
-use Auth;
+use Auth , File;
 class VendorController extends Controller
 {
     use APIResponseTrait;
@@ -19,7 +19,7 @@ class VendorController extends Controller
         {
             return $this->APIResponse(null , $request->validator->messages() ,  400);
         }
-        $requestArray = $request->validated();;
+        $requestArray = $request->validated();
         $requestArray['password'] = bcrypt( $request->password);
         
         $this->uploadImages($request , $requestArray);
@@ -100,7 +100,7 @@ class VendorController extends Controller
             return $this->APIResponse(null , $request->validator->messages() ,  422);
         }
         $vendor = Vendor::find(Auth::guard('vendor-api')->user()->id);
-        $requestArray = request()->all() ; 
+        $requestArray = $request->validated();
         $this->uploadImages(request() , $requestArray);
         if(isset(request()->password))
         $requestArray['password'] = bcrypt(request()->password);
@@ -119,7 +119,18 @@ class VendorController extends Controller
     public function uploadImages($request ,& $requestArray)
     {
         set_time_limit(8000000);
-        $requestArray['store_logo'] =  $request->logo_image != null ? uploadFile($request->logo_image , 'vendors') : null;
+        //$name = rand().time()
+        /**
+         * $path = public_path()."/uploads/vendors/".date("Y-m-d");
+        if(!File::isDirectory($path))
+        {
+            // return "test1";
+            File::makeDirectory($path, 0777, true, true);
+        }   
+        copy (  public_path().'/avatar.png',  $path.'/avatar2.png' );
+        
+         */
+        $requestArray['store_logo'] =  $request->logo_image != null ? uploadFile($request->logo_image , 'vendors') : null;   ///// upload File helper function
         $requestArray['store_background_image'] =  $request->background_image != null ? uploadFile($request->background_image , 'vendors') : null;
         $requestArray['company_registration_image'] =  $request->company_registration_photo != null ? uploadFile($request->company_registration_photo , 'vendors') : null;
         $requestArray['national_id_front_image'] =  $request->national_id_front_photo != null ? uploadFile($request->national_id_front_photo , 'vendors') : null;

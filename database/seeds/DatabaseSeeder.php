@@ -24,6 +24,10 @@ class DatabaseSeeder extends Seeder
             'name'=> 'assuit',
            
         ]);
+        \App\Models\City::create([
+            'name'=> 'Cairo',
+           
+        ]);
         \App\Models\Vendor::create([
             'first_name' => "hossam",
             'last_name'  => "ameen",
@@ -31,7 +35,9 @@ class DatabaseSeeder extends Seeder
             'email'      => "hosamameen948@gmail.com",
             'password'   => bcrypt('admin'),
             'phone'      => "01010079798",
-            'store_name' => "mac"
+            'store_name' => "mac",
+            'store_description' =>"good fast food",
+            'store_logo' => 'avatar.png'
         ]);
         \App\Models\Vendor::create([
             'first_name' => "hossam",
@@ -40,13 +46,16 @@ class DatabaseSeeder extends Seeder
             'email'      => "hosamameen948s@gmail.com",
             'password'   => bcrypt('admins'),
             'phone'      => "01010079798",
-            'store_name' => "mac"
+            'store_name' => "KFC",
+            'store_description' =>"fast food for every one",
+            'status'     => 'accept',
+            'store_logo' => 'avatar.png'
         ]);
         \App\Models\Client::create([
             'first_name' => "hossam client",
             'last_name'  => "ameen",
             'gender'     => "male",
-            'email'      => "hosamameen948@gmail.com",
+            'email'      => "client@gmail.com",
             'password'   => bcrypt('admin'),
             'phone'      => "01010079798",
         ]);
@@ -57,6 +66,8 @@ class DatabaseSeeder extends Seeder
         factory('App\Models\ProductCategory',9)->create();
         factory('App\Models\VendorCategory',9)->create();
         factory('App\Models\Product',25)->create();
+        factory('App\Models\Vendor',25)->create();
+        factory('App\Models\WishList',25)->create();
         factory('App\Models\Order',10)->create();
 
         $this->productChoices();

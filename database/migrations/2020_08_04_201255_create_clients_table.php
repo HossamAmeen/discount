@@ -13,6 +13,7 @@ class CreateClientsTable extends Migration
      */
     public function up()
     {
+        
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
@@ -25,7 +26,7 @@ class CreateClientsTable extends Migration
             $table->string('block_reason')->nullable();
             $table->string('google_id')->nullable();
             $table->string('facebook_id')->nullable();
-            $table->double('rating')->nullable();
+            $table->double('rating')->default(0);
 
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');

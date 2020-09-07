@@ -19,7 +19,7 @@
                 @include('back-end.layout.nav')
                 <div class="container-fluid">
                     <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                        <h3 class="text-dark mb-0">Dashboard</h3>
+                        <h3 class="text-dark mb-0">admins</h3>
                         {{-- <a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i
                                 class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a> --}}
                     </div>
@@ -28,7 +28,7 @@
                         <div class="col">
                             <div class="card shadow mb-3">
                                 <div class="card-header py-3">
-                                    <p class="text-primary m-0 font-weight-bold">Website Settings</p>
+                                    <p class="text-primary m-0 font-weight-bold">update admin ({{$row->user_name}})</p>
                                 </div>
                                 <div class="card-body">
                                     @if ($errors->any())
@@ -90,6 +90,7 @@
                                                 <div class="form-group"><label ><strong>{{$inputName}}</strong></label>
                                                     <input class="form-control" type="file"
                                                          name="{{$inputName}}"  ></div>
+                                                <img src="{{$row->$inputName}}">
                                             </div>
                                             
                                         </div>

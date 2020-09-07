@@ -28,10 +28,7 @@ class User extends Authenticatable
     ];
     public function getImageAttribute()
     {
-        // if(  $this->attributes['image'] == "avatar.png")
-        // return asset($this->attributes['store_logo']);
-        // else
-        // return $this->attributes['store_logo'];
+        
         if($this->attributes['image'] != null && file_exists(($this->attributes['image'])) ){
             return asset($this->attributes['image']);
         }

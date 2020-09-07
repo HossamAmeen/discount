@@ -12,6 +12,7 @@
                             <th>Store Name</th>
                             <th>Email</th>
                             <th>Phone</th>
+                            <th>rating</th>
                             <th>client ratio</th>
                             <th>client vip ratio</th>
                             <th>user</th>
@@ -27,12 +28,24 @@
                                 <td>{{$value->store_name }}</td>
                                 <td>{{$value->email}}</td>
                                 <td>{{$value->phone}}</td>
+                                <td>{{$value->rating}}</td>
                                 <td>{{$value->client_ratio}}</td>
                                 <td>{{$value->client_vip_ratio}}</td>
                                 <td>{{$value->user->name??" not found"}}</td>
                                 <td>
-                                    @include('back-end.shared.buttons.delete')
-                                
+                                    <form action="{{ route($routeName.'.destroy' ,$value ) }}" method="post">
+                                        {{ csrf_field() }}
+                                        {{ method_field('delete') }}
+                                        <a href="{{ route($routeName.'.edit' , $value) }}" class="btn-sm btn-info" style="display:inline-block;">
+                                          <i class="far fa-edit f044"></i>
+                                            
+                                            </a>
+                                           
+                                        <button type="submit" rel="tooltip" title="" class="btn-sm btn-danger"  onclick="check()" style="display:inline-block;">
+                                              <i class="fas fa-trash-alt"></i>  
+                                       </button>
+                                    </form>
+                                   
                                 </td>
                                 
                             </tr>
@@ -44,6 +57,7 @@
                             <th>Store Name</th>
                             <th>Email</th>
                             <th>Phone</th>
+                            <th>rating</th>
                             <th>client ratio</th>
                             <th>client vip ratio</th>
                             <th>user</th>

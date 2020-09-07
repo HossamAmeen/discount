@@ -1,99 +1,126 @@
-@extends('back-end.layout.app')
-@php $pageTitle = "إضافه مسؤول " @endphp  
-@section('title')
-    {{ $pageTitle }}
-@endsection
+<!DOCTYPE html>
+<html>
 
-@section('content')
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Dashboard - {{$configration->website_name ??" ekhsemly"}}</title>
+    <link rel="stylesheet" href="{{asset('assets/bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="{{asset('assets/fonts/fontawesome-all.min.css')}}">
+</head>
 
-    @component('back-end.layout.header')
-        @slot('nav_title')
-            {{ $pageTitle }}
-        @endslot
-    @endcomponent
+<body id="page-top">
+    <div id="wrapper">
+        @include('back-end.layout.side-bar')
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                @include('back-end.layout.nav')
+                <div class="container-fluid">
+                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                        <h3 class="text-dark mb-0">admins</h3>
+                        {{-- <a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i
+                                class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a> --}}
+                    </div>
+                  
+                    <div class="row">
+                        <div class="col">
+                            <div class="card shadow mb-3">
+                                <div class="card-header py-3">
+                                    <p class="text-primary m-0 font-weight-bold">add admin</p>
+                                </div>
+                                <div class="card-body">
+                                    @if ($errors->any())
+                                        @foreach ($errors->all() as $error)
+                                            <div class="alert alert-danger">{{$error}}</div>
+                                        @endforeach
+                                    @endif
+                                    @if (session()->get('action') )
+                                    <div class="alert alert-success">
+                                        <strong>{{session()->get('action')}}</strong>
+                                    </div>
+                                    @endif
+                                    <form method="POST"
+                                    action="{{ route($routeName.'.store') }}"  enctype="multipart/form-data">
+                                        @csrf
+                                       
+                                        {{-- '', '', 'password' ,'', '', 'role', 'image' ,'user_id' --}}
+                                       
+                                        <div class="form-row">
+                                            <div class="col">
+                                                @php $inputName = 'user_name' ; @endphp
+                                                <div class="form-group"><label ><strong>{{$inputName}}</strong></label><input class="form-control" type="text"
+                                                         name="{{$inputName}}" ></div>
+                                            </div>
+                                            <div class="col">
+                                                @php $inputName = 'name' ; @endphp
+                                                <div class="form-group"><label ><strong>{{$inputName}}</strong></label><input class="form-control" type="text"
+                                                         name="{{$inputName}}"  ></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col">
+                                                @php $inputName = 'phone' ; @endphp
+                                                <div class="form-group"><label ><strong>{{$inputName}}</strong></label><input class="form-control" type="text"
+                                                         name="{{$inputName}}"  ></div>
+                                            </div>
+                                            <div class="col">
+                                                @php $inputName = 'email' ; @endphp
+                                                <div class="form-group"><label ><strong>{{$inputName}}</strong></label>
+                                                    <input class="form-control" type="email" name="{{$inputName}}"  ></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col">
+                                                @php $inputName = 'password' ; @endphp
+                                                <div class="form-group"><label ><strong>{{$inputName}}</strong></label>
+                                                    <input class="form-control" type="password"
+                                                         name="{{$inputName}}"></div>
+                                            </div>
+                                            <div class="col">
+                                                @php $inputName = 'password_confirmation' ; @endphp
+                                                <div class="form-group"><label ><strong>{{$inputName}}</strong></label>
+                                                    <input class="form-control" type="password" name="{{$inputName}}"  ></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col">
+                                                @php $inputName = 'image' ; @endphp
+                                                <div class="form-group"><label ><strong>{{$inputName}}</strong></label>
+                                                    <input class="form-control" type="file"
+                                                         name="{{$inputName}}"  ></div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                        <div class="form-group"><button class="btn btn-primary btn-sm"
+                                                type="submit">update </button></div>
+                                    </form>
+                                </div>
+                            </div>
 
-        @component('back-end.shared.create')
-            <form id="defaultForm" method="post" class="form-horizontal ls_form"
-             action="{{ route($routeName.'.store') }}"
-                    data-bv-message="This value is not valid"
-                    data-bv-feedbackicons-valid="fa fa-check"
-                    data-bv-feedbackicons-invalid="fa fa-bug"
-                    data-bv-feedbackicons-validating="fa fa-refresh"
-                    enctype="multipart/form-data"
-                    > 
-                @csrf
-                @include('back-end.'.$folderName.'.form')    
-              
-                @if(Auth::user()->role == 1 )
-                @php $input = "role"; @endphp
-                <div class="form-group">
-                    <label class="col-md-2 col-sm-2 col-xs-12 control-label">الصلاحيه</label>
-                
-                    <div class="col-md-5 col-sm-5 col-xs-12 ls-group-input">
-                        <div class="radio">
-                            <label class="radio">
-                                <input type="radio" name="{{ $input }}" id="optionsRadios1" value="1" @if ( isset($row)) @if($row->role
-                                == 1 ) checked @endif
-                                @else
-                                checked
-                                @endif >
-                                مسؤول
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label class="radio">
-                                <input type="radio" name="{{ $input }}" id="optionsRadios2" value="0" @if ( isset($row)) @if($row->role
-                                == 0 ) checked @endif
-                                @endif
-                                >
-                                موظف
-                            </label>
                         </div>
                     </div>
-                    @error($input)
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
+                    
+
                 </div>
-               
-                @endif
-                <div class="form-group">
-                    <div class="col-lg-offset-2 col-lg-10">
-                        <button class="btn btn-info" type="submit">  إضافه  </button>
-                    </div>
-                </div>
-             </form>
-        @endcomponent                    
-@endsection
-@push('css')
-      <!-- Responsive Style For-->
-  <link href="{{asset('panel/assets/css/rtl-css/responsive-rtl.css')}}" rel="stylesheet">
-  <!-- Responsive Style For-->
-  <link rel="stylesheet" href="{{asset('panel/assets/css/rtl-css/plugins/summernote-rtl.css')}}">
-  <!-- Custom styles for this template -->
+            </div>
+            @include('back-end.layout.footer')
+        </div>
 
+        <script src="{{asset('assets/js/jquery.min.js')}}"></script>
+        <script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
+        <script src="{{asset('assets/js/chart.min.js')}}"></script>
+        <script src="{{asset('assets/js/bs-init.js')}}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+        <script src="{{asset('assets/js/theme.js')}}"></script>
+        <script type="text/javascript">
+            
+            $(document).ready(function(){
+                $('#{{$routeName}}').addClass('active');
+                });
+        </script>
+</body>
 
-    <!-- Plugin Css Put Here -->
-  
-    <link rel="stylesheet" href="{{asset('panel/assets/css/rtl-css/plugins/fileinput-rtl.css')}}">
-@endpush
-@push('js')
-     <!--Upload button Script Start-->
-   <script src="{{asset('panel/assets/js/fileinput.min.js')}}"></script>
-   <!--Upload button Script End-->
-
-<!--Auto resize  text area Script Start-->
-<script src="{{asset('panel/assets/js/jquery.autosize.js')}}"></script>
- <!--Auto resize  text area Script Start-->
-<script src="{{asset('panel/assets/js/pages/sampleForm.js')}}"></script>
-
-
-<!-- summernote Editor Script For Layout start-->
-<script src="{{asset('panel/assets/js/summernote.min.js')}}"></script>
-<!-- summernote Editor Script For Layout End-->
-
-<!-- Demo Ck Editor Script For Layout Start-->
-<script src="{{asset('panel/assets/js/pages/editor.js')}}"></script>
-<!-- Demo Ck Editor Script For Layout ENd-->
-@endpush
+</html>

@@ -22,7 +22,7 @@ class CreateClientsTable extends Migration
             $table->string('email');
             $table->string('password');
             $table->string('phone');
-            $table->enum('status' , ['pending','accept' , 'blocked'])->default('pending')->nullable();
+            $table->enum('status' , ['pending','accept' , 'blocked'])->default('accept')->nullable();
             $table->string('block_reason')->nullable();
             $table->string('google_id')->nullable();
             $table->string('facebook_id')->nullable();

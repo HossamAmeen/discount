@@ -13,8 +13,16 @@ class ConfigrationController extends BackEndController
     }
     public function index()
     {
-        return 
-        view('back-end.dashboard');
+        $configrationSite = Configration::find(1);
+        return view('back-end.dashboard' , compact('configrationSite'));
+    }
+    public function update(Request $request , $id)
+    {
+        $configration = Configration::find(1);
+        $configration->update($request->all());
+        session()->flash('action', 'add successfully');
+        return redirect()->back();
+
     }
     
 }

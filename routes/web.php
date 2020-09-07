@@ -21,6 +21,7 @@ Route::get('/', function () {
 Route::prefix('admin')->namespace('DashBoard')->group(function(){
     Route::middleware('auth')->group(function () {
         Route::get('/' , 'ConfigrationController@index');
+        Route::put('update-website-configration/{id}' , 'ConfigrationController@update')->name('configration.update');
         Route::resource('users' , "UserController");
         Route::resource('cities' , "CityController");
         Route::resource('vendors' , "VendorController");

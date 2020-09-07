@@ -15,7 +15,10 @@ class CreateConfigrationsTable extends Migration
     {
         Schema::create('configrations', function (Blueprint $table) {
             $table->id();
-
+            $table->string('website_name')->nullable();
+            $table->string('email')->nullable();
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->timestamps();

@@ -16,6 +16,14 @@ class DatabaseSeeder extends Seeder
             UserSeed::class,
         ]);
         factory('App\Models\User',25)->create();
+        \App\Models\Configration::create([
+            'website_name'=> 'ekhsemly',
+            'email' =>"ekhsemly@gmail.com",
+            'address'=>'El-Gomhoreya',
+            'phone' => "01010079798"
+            
+        ]);
+        factory('App\Models\User',25)->create();
         \App\Models\Category::create([
             'name'=> 'deals',
             

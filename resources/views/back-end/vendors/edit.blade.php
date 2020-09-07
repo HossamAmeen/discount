@@ -50,24 +50,24 @@
                                             <div class="col">
                                                 @php $inputName = 'first_name' ; @endphp
                                                 <div class="form-group"><label ><strong>{{$inputName}}</strong></label><input class="form-control" type="text"
-                                                         name="{{$inputName}}" value="{{$row->$inputName}}" required></div>
+                                                         name="{{$inputName}}" value="{{Request::old($inputName) ?? $row->$inputName}}" required></div>
                                             </div>
                                             <div class="col">
                                                 @php $inputName = 'last_name' ; @endphp
                                                 <div class="form-group"><label ><strong>{{$inputName}}</strong></label><input class="form-control" type="text"
-                                                         name="{{$inputName}}"  value="{{$row->$inputName}}" required></div>
+                                                         name="{{$inputName}}"  value="{{Request::old($inputName) ?? $row->$inputName}}" required></div>
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
                                                 @php $inputName = 'phone' ; @endphp
                                                 <div class="form-group"><label ><strong>{{$inputName}}</strong></label><input class="form-control" type="text"
-                                                         name="{{$inputName}}"  value="{{$row->$inputName}}" required></div>
+                                                         name="{{$inputName}}"  value="{{Request::old($inputName) ?? $row->$inputName}}" required></div>
                                             </div>
                                             <div class="col">
                                                 @php $inputName = 'email' ; @endphp
                                                 <div class="form-group"><label ><strong>{{$inputName}}</strong></label>
-                                                    <input class="form-control" type="email" name="{{$inputName}}"  value="{{$row->$inputName}}" required></div>
+                                                    <input class="form-control" type="email" name="{{$inputName}}"  value="{{Request::old($inputName) ?? $row->$inputName}}" required></div>
                                             </div>
                                         </div>
                                         <div class="form-row">
@@ -81,44 +81,44 @@
                                                 @php $inputName = 'password_confirmation' ; @endphp
                                                 <div class="form-group"><label ><strong>{{$inputName}}</strong></label>
                                                     <input class="form-control" type="password" name="{{$inputName}}" 
-                                                     value="{{$row->$inputName}}" ></div>
+                                                     value="{{Request::old($inputName) ?? $row->$inputName}}" ></div>
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
                                                 @php $inputName = 'store_name' ; @endphp
                                                 <div class="form-group"><label ><strong>store name</strong></label><input class="form-control" type="text"
-                                                         name="{{$inputName}}" value="{{$row->$inputName}}" required></div>
+                                                         name="{{$inputName}}" value="{{Request::old($inputName) ?? $row->$inputName}}" required></div>
                                             </div>
                                             <div class="col">
                                                 @php $inputName = 'store_description' ; @endphp
                                                 <div class="form-group"><label ><strong>store description</strong></label><input class="form-control" type="text"
-                                                         name="{{$inputName}}"  value="{{$row->$inputName}}"></div>
+                                                         name="{{$inputName}}"  value="{{Request::old($inputName) ?? $row->$inputName}}"></div>
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
                                                 @php $inputName = 'discount' ; @endphp
                                                 <div class="form-group"><label ><strong>{{$inputName}}</strong></label><input class="form-control" type="text"
-                                                         name="{{$inputName}}" value="{{$row->$inputName}}"></div>
+                                                         name="{{$inputName}}" value="{{Request::old($inputName) ?? $row->$inputName}}"></div>
                                             </div>
                                             <div class="col">
                                                 @php $inputName = 'expiration_date' ; @endphp
                                                 <div class="form-group"><label ><strong>{{$row->$inputName}}</strong>expiration date of national ID</label>
                                                     <input class="form-control" type="text"
-                                                          value="{{$row->$inputName}}" readonly></div>
+                                                          value="{{Request::old($inputName) ?? $row->$inputName}}" readonly></div>
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
                                                 @php $inputName = 'client_ratio' ; @endphp
                                                 <div class="form-group"><label ><strong>client ratio</strong></label><input class="form-control" type="text"
-                                                         name="{{$inputName}}" value="{{$row->$inputName}}"></div>
+                                                         name="{{$inputName}}" value="{{Request::old('client_ratio') ?? $row->$inputName}}"></div>
                                             </div>
                                             <div class="col">
                                                 @php $inputName = 'client_vip_ratio' ; @endphp
                                                 <div class="form-group"><label ><strong>client vip ratio</strong></label><input class="form-control" type="text"
-                                                         name="{{$inputName}}"  value="{{$row->$inputName}}"></div>
+                                                         name="{{$inputName}}"  value="{{Request::old($inputName) ?? $row->$inputName}}"></div>
                                             </div>
                                         </div>
                                         <div class="form-row">
@@ -126,12 +126,12 @@
                                                 @php $inputName = 'delivery' ; @endphp
                                                 <div class="form-group"><label ><strong>{{$inputName}}</strong></label>
                                                     <input class="form-control" type="text"
-                                                         name="{{$inputName}}" value="{{$row->$inputName}}"></div>
+                                                         name="{{$inputName}}" value="{{Request::old($inputName) ?? $row->$inputName}}"></div>
                                             </div>
                                             <div class="col">
                                                 @php $inputName = 'status' ; @endphp
                                                 <div class="form-group"><label ><strong>status</strong></label>
-                                                    {{-- <input class="form-control" type="text" name="{{$inputName}}" value="{{$row->$inputName}}"> --}}
+                                                    {{-- <input class="form-control" type="text" name="{{$inputName}}" value="{{Request::old($inputName) ?? $row->$inputName}}"> --}}
                                                     <select class="form-control" name="{{$inputName}}" >
                                                         <option @if($row->status == "pending") selected @endif>pending</option>
                                                         <option @if($row->status == "accept") selected @endif>accept</option>
@@ -146,7 +146,7 @@
                                                 @php $inputName = 'block_reason' ; @endphp
                                                 <div class="form-group"><label ><strong>{{$inputName}}</strong></label>
                                                     <input class="form-control" type="text"
-                                                         name="{{$inputName}}" value="{{$row->$inputName}}"></div>
+                                                         name="{{$inputName}}" value="{{Request::old($inputName) ?? $row->$inputName}}"></div>
                                             </div>
                                            
                                         </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\DashBoard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Vendor\UpdateVendorRequest;
 use App\Models\Vendor;
 use Auth;
 class VendorController extends BackEndController
@@ -12,7 +13,7 @@ class VendorController extends BackEndController
     {
         parent::__construct($model);
     }
-    public function update($id , Request $request){
+    public function update($id , UpdateVendorRequest $request){
 
         
        

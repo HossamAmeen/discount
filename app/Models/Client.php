@@ -10,11 +10,25 @@ class Client extends Authenticatable
 {
     use HasApiTokens , Notifiable , SoftDeletes;
      protected $fillable = [
-        'first_name','last_name', 'gender', 'email', 'password', 'phone','google_id' , 'facebook_id', 'rating' ,'user_id'
+        'first_name','last_name', 'gender', 'email', 'password', 'phone','google_id' , 'facebook_id', 'rating' ,'image','user_id'
      ];
      protected $hidden = [
-        'user_id' , "created_at" , 'updated_at' ,'deleted_at'
+       'password', 'user_id' , "created_at" , 'updated_at' ,'deleted_at'
     ];
+    public function getImageaAttribute()
+    {
+        
+        if($this->attributes['image'] != null  ){
+            return ($this->attributes['image']);
+        }
+        else
+        {
+            // return ($this->attributes['image']);
+            
+            return asset('assets/img/avatars/avatar-1.jpg');
+           
+        }
+    }
     public function user(){
         return $this->belongsTo(User::class);
     }

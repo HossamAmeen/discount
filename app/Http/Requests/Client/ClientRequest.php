@@ -28,11 +28,11 @@ class ClientRequest extends FormRequest
         $rules =  [
             'first_name' => ['string', 'max:100'],
             'last_name' => ['string', 'max:100'], 
-            'gender' => ['required','string', 'max:100'],   
+            'gender' => ['string', 'max:100'],   
             'email' => ['email' , Rule::unique('clients')->ignore($id)->whereNull('deleted_at') ] ,
             'password' => ['string'],
             'phone' => ['numeric', 'digits_between:11,11' ,Rule::unique('clients')->ignore($id)->whereNull('deleted_at')],
-            
+            'image' => ['image'],
         ];
         // if ($this->isMethod('POST') )
         if(strpos($this->fullUrl(), "register") !== false)
@@ -42,12 +42,14 @@ class ClientRequest extends FormRequest
             $rules['email'][] = 'required';
             $rules['phone'][] = 'required';
             $rules['password'][] = 'required';
+            $rules['gender'][] = 'required';
         }
         if(strpos($this->fullUrl(), "profile") !== false) { 
             $rules['first_name'][] = 'required';
             $rules['last_name'][] = 'required';
             $rules['email'][] = 'required';
             $rules['phone'][] = 'required';
+            $rules['gender'][] = 'required';
         }
         return $rules;
     }

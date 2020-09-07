@@ -12,7 +12,7 @@ function uploadFile($requestFile , $folderName = "images")
     $name = rand().time().'.'.$file->getClientOriginalExtension();
     $file->move($path, $name);
 
-    return asset( "/$folderName/".date("Y-m-d"). "/$name");
+    return asset( "/uploads/".$folderName."/".date("Y-m-d"). "/$name");
 }
 
 ?>

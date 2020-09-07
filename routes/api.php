@@ -57,9 +57,21 @@ Route::prefix('client')->namespace('Client')->group(function(){
         Route::post('/logout', 'ClientController@logout');
     Route::middleware('checkLogin:client-api')->group(function () {
         Route::get('/show-profile', 'ClientController@showProfile');
+        Route::get('/show-address', 'ClientController@showAddress');
+       
+        Route::post('/add-address', 'ClientController@addAddress');
         Route::put('/update-profile', 'ClientController@updateProfile');
-        Route::get('show-vendors' , 'VenodrController@showVendors');
-        Route::get('search' , 'VenodrController@searchOfVendors');
+        Route::post('/update-image', 'ClientController@updateImage');
+
+        Route::get('/show-orders/{orderId?}', 'ClientProductController@showOrders');
+        Route::get('/update-order/{orderId?}', 'ClientProductController@updateOrder');
+        Route::get('show-cart' , 'ClientProductController@showCart');
+        Route::get('show-wishlist' , 'ClientProductController@showWishList');
+        Route::get('add-wishlist/{productId}' , 'ClientProductController@addWishList');
+
+        Route::get('show-vendors' , 'ClientVenodrController@showVendors');
+        Route::get('search' , 'ClientVenodrController@searchOfVendors');
+        
     });
 });
 Route::get('cities', 'HomeController@showCities');

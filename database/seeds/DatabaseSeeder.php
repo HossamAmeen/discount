@@ -67,7 +67,13 @@ class DatabaseSeeder extends Seeder
             'password'   => bcrypt('admin'),
             'phone'      => "01010079798",
         ]);
-        
+        \App\Models\ClientAddress::create([
+            'address'   => "new address",
+            'first_name' => "hossam client",
+            'last_name'  => "ameen",
+            'phone'      => "01010079798",
+            'client_id'  => 1
+        ]);
         
       
         factory('App\Models\Category',9)->create();

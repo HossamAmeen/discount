@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\{Client,Vendor,Category,Order,ProductCategory};
 use Auth;
-class VenodrController extends Controller
+class ClientVenodrController extends Controller
 {
     use APIResponseTrait;
     public function showVendors()

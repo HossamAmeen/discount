@@ -54,7 +54,7 @@ $factory->define(App\Models\Product::class, function (Faker $faker) {
         'description'=> $faker->text,
         'price' => rand(10 , 600),
         'quantity'=>rand(10 , 600),
-        'image'=>public_path('sandwitch.jpeg'),
+        
         'vendor_id'=>1,
         'category_id'=>rand(1,9),
     ];
@@ -99,6 +99,7 @@ $factory->define(App\Models\Order::class, function (Faker $faker) {
     , 'cancelled from vendor' ,'working' , 'delivering' , 'done'] ;
     return [
         'price'=>rand(20 , 300),
+        'discount'=>rand(20 , 300),
         'status'=>$statues[rand(0,7)],
         'time'=>$faker->time(),
         'date'=>$faker->date(),
@@ -107,6 +108,7 @@ $factory->define(App\Models\Order::class, function (Faker $faker) {
         'phone'=>"01010079798",
         'city'=>$faker->city(),
         'product_id'=>rand(1,20),
+        'client_address_id'=>1,
         'client_id'=>1
     ];
 });

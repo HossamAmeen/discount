@@ -7,20 +7,14 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Client\ClientRequest;
-use App\Models\{Client,Category,Order,ProductCategory};
-use Auth;
+use App\Models\{Client,Category,Order,ProductCategory , ClientAddress};
+use Auth ,File;
 class ClientController extends Controller
 {
     use APIResponseTrait;
     public function register(ClientRequest $request)
     {
-        $path = public_path()."uploads/vendors/".date("Y-m-d");
-        if(!File::isDirectory($path))
-        {
-            File::makeDirectory($path, 0777, true, true);
-        }   
-        copy (  public_path().'/avatar.png',  $path.'/avatar2.png' );
-
+        
         
         if (isset($request->validator) && $request->validator->fails())
         {
@@ -79,7 +73,7 @@ class ClientController extends Controller
 
     public function showProfile()
     {
-        $cLient = Client::where('id' , Auth::guard('client-api')->user()->id)->get(['first_name','last_name', 'gender', 'email', 'rating', 'phone'])->first();
+        $cLient = Client::where('id' , Auth::guard('client-api')->user()->id)->get(['first_name','last_name', 'gender', 'email', 'rating','is_vip','image', 'phone'])->first();
         $monthEaarning = 0 ; 
         // $orders = Order::select('orders.*')
         // ->join('products', 'products.id', '=', 'orders.product_id')
@@ -95,6 +89,11 @@ class ClientController extends Controller
         // $cLient['monthEarning'] = $monthOrders->sum('price');
         // $cLient['appFree'] =  0;
         // $cLient['appFreeRatio'] =  0;
+        $cLient['totalOrders'] = 15 ;
+        $cLient['totalVipOrders'] = 10 ;
+
+        $cLient['totalDiscount'] = 25 ;
+        $cLient['totalVipDiscount'] = 18 ;
         return $this->APIResponse($cLient, null, 200);
     }
 
@@ -105,13 +104,53 @@ class ClientController extends Controller
         {
             return $this->APIResponse(null , $request->validator->messages() ,  422);
         }
+      
         $cLient = Client::find(Auth::guard('client-api')->user()->id);
         $requestArray = $request->validated();
+       
+        if(isset($requestArray['image']) )
+        {
+            // return "Test";
+            $fileName =uploadFile($request->image , 'clients');
+            // return $fileName; 
+            $requestArray['image'] =  $fileName;
+           
+        }
         // $this->uploadImages(request() , $requestArray);
-        if(isset(request()->password))
-        $requestArray['password'] = bcrypt(request()->password);
+        
+        if(isset($request->password))
+        $requestArray['password'] = bcrypt($request->password);
+        // return "Test";
         $cLient->update($requestArray);
+        
         return $this->APIResponse($cLient, null, 200);
     }
+    public function updateImage(Request $request)
+    {
+       
+        if(isset($request->image) )
+        {
+            $client = Client::find(Auth::guard('client-api')->user()->id);
+            $fileName =uploadFile($request->image , 'clients');
+            $client->image =  $fileName ;
+            $client->save();
+
+            return $this->APIResponse($client->image, null, 200);
+        }
+        return $this->APIResponse(null, "you should send file", 400);
+    }
+
+    public function addAddress(Request $request)
+    {
+        $request['client_id'] = Auth::guard('client-api')->user()->id ;
+        ClientAddress::create($request->all());
+        return $this->APIResponse(null, null, 200);
+    }
+    public function showAddress()
+    {
+        $address = ClientAddress::where('client_id' ,  Auth::guard('client-api')->user()->id)->get();
+        return $this->APIResponse($address, null, 200);
+    }
+   
 }
 

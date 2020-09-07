@@ -22,12 +22,13 @@ class CreateClientsTable extends Migration
             $table->string('email');
             $table->string('password');
             $table->string('phone');
+            $table->string('image')->nullable();
             $table->enum('status' , ['pending','accept' , 'blocked'])->default('accept')->nullable();
             $table->string('block_reason')->nullable();
             $table->string('google_id')->nullable();
             $table->string('facebook_id')->nullable();
             $table->double('rating')->default(0);
-
+            $table->boolean('is_vip')->default(0);
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->timestamps();

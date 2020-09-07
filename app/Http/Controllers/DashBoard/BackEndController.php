@@ -72,7 +72,7 @@ class BackEndController extends Controller
     public function destroy($id)
     {
         $this->model->FindOrFail($id)->delete();
-        session()->flash('action', 'تم الحذف بنجاح');
+        session()->flash('action', 'deleted successfully');
         return redirect()->back();
         return redirect()->route($this->getClassNameFromModel() . '.index');
     }
@@ -102,7 +102,7 @@ class BackEndController extends Controller
 
         $photo = $request->file('image');
         $fileName = time().str_random('10').'.'.$photo->getClientOriginalExtension();
-        // $destinationPath = public_path('uploads/'.$this->getClassNameFromModel().'/');
+        $destinationPath = public_path('uploads/'.$this->getClassNameFromModel().'/');
         // return "test";
         // $image = Image::make($photo->getRealPath())->resize($height, $width);
 

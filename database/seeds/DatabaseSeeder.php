@@ -11,11 +11,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UserSeeder::class);
+      
         $this->call([
             UserSeed::class,
         ]);
-        factory('App\Models\User',25)->create();
+        factory('App\Models\User',5)->create();
         \App\Models\Configration::create([
             'website_name'=> 'ekhsemly',
             'email' =>"ekhsemly@gmail.com",
@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             'phone' => "01010079798"
             
         ]);
-        factory('App\Models\User',25)->create();
+      
         \App\Models\Category::create([
             'name'=> 'deals',
             

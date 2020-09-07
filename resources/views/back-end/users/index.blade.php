@@ -2,6 +2,19 @@
 
 
 @section('content')
+@if (session()->get('action') )
+<div class="alert alert-success">
+    <strong>{{session()->get('action')}}</strong>
+</div>
+@endif
+@section('add-button')
+
+<a  href="{{ route($routeName.'.create') }}">
+    <button class="alert-success">
+         <i class="fa fa-plus"></i> 
+        </button>
+</a>
+@endsection
 <table class="table dataTable my-0" id="dataTable">
     <thead>
        
@@ -20,7 +33,9 @@
         @foreach($rows as $key => $value)
             <tr>
                 <td><img class="rounded-circle mr-2" width="30" height="30"
-                        src="{{asset('assets/img/avatars/avatar1.jpeg')}}">{{$value->user_name}}</td>
+                        {{-- src="{{$value->image != null && $value->image !="" ? asset($value->image) : asset('assets/img/avatars/avatar1.jpeg')}}"> --}}
+                        src="{{$value->image}}">
+                        {{$value->user_name}}</td>
              
                 <td>{{$value->name}}</td>
                 <td>{{$value->phone}}</td>
@@ -28,7 +43,18 @@
                 <td>{{$value->role == 1 ? "admin" : "employer"}}</td>
                 <td>{{$value->user->name??" not found"}}</td>
                 <td>
-                    @include('back-end.shared.buttons.delete')
+                    <form action="{{ route($routeName.'.destroy' ,$value ) }}" method="post">
+                        {{ csrf_field() }}
+                        {{ method_field('delete') }}
+                        <a href="{{ route($routeName.'.edit' , $value) }}" class="btn-sm btn-info" style="display:inline-block;">
+                          <i class="far fa-edit f044"></i>
+                            
+                            </a>
+                           
+                        <button type="submit" rel="tooltip" title="" class="btn-sm btn-danger"  onclick="check()" style="display:inline-block;">
+                              <i class="fas fa-trash-alt"></i>  
+                       </button>
+                    </form>
                    
                 </td>
                 

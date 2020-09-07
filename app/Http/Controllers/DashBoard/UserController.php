@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\User\UserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
@@ -15,7 +16,7 @@ class UserController extends BackEndController
         parent::__construct($model);
     }
 
-    public function store(Request $request){
+    public function store(UserRequest $request){
     //    return $request->all();
        
         $requestArray = $request->all();
@@ -29,14 +30,14 @@ class UserController extends BackEndController
        
         $requestArray['user_id'] = Auth::user()->id;
         $this->model->create($requestArray);
-        session()->flash('action', 'تم الاضافه بنجاح');
+        session()->flash('action', 'add successfully');
        
       
  
         return redirect()->route($this->getClassNameFromModel().'.index');
     }
 
-    public function update($id , Request $request){
+    public function update($id , UserRequest $request){
 
         
        
@@ -56,9 +57,7 @@ class UserController extends BackEndController
         $requestArray['user_id'] = Auth::user()->id;
         $row->update($requestArray);
 
-        
-  
-        session()->flash('action', 'تم التحديث بنجاح');
+        session()->flash('action', 'updated successfully');
         return redirect()->route($this->getClassNameFromModel().'.index');
     }
 

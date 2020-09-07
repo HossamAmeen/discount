@@ -14,6 +14,9 @@ class ConfigrationController extends BackEndController
     public function index()
     {
         $configrationSite = Configration::find(1);
+        $configrationSite['vendors'] = \App\Models\Vendor::count();
+        $configrationSite['clients'] = \App\Models\Client::count();
+        $configrationSite['orders'] = \App\Models\Order::count();
         return view('back-end.dashboard' , compact('configrationSite'));
     }
     public function update(Request $request , $id)

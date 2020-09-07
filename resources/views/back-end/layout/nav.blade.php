@@ -8,7 +8,7 @@
                         aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">
                                
                             {{Auth::user()->user_name}}  </span><img class="border rounded-circle img-profile"
-                            src="{{asset('assets/img/avatars/avatar1.jpeg')}}"></a>
+                            src=" {{Auth::user()->image}}"></a>
                     <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu">
                        
                         <a class="dropdown-item" role="presentation"  href="{{ route('logout') }}" onclick="event.preventDefault();

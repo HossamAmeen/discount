@@ -13,7 +13,8 @@
     @endcomponent
 
         @component('back-end.shared.create')
-            <form id="defaultForm" method="post" class="form-horizontal ls_form" action="{{ route($routeName.'.store') }}"
+            <form id="defaultForm" method="post" class="form-horizontal ls_form"
+             action="{{ route($routeName.'.store') }}"
                     data-bv-message="This value is not valid"
                     data-bv-feedbackicons-valid="fa fa-check"
                     data-bv-feedbackicons-invalid="fa fa-bug"

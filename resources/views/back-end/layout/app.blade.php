@@ -23,10 +23,10 @@
                 {{-- nav --}}
                 @include('back-end.layout.nav')
                 <div class="container-fluid">
-                    <h3 class="text-dark mb-4">{{$routeName}}</h3>
+                    <h3 class="text-dark mb-4">{{$routeName}}  </h3> 
                     <div class="card shadow">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 font-weight-bold">{{$routeName}} Info</p>
+                            <p class="text-primary m-0 font-weight-bold">{{$routeName}} Info @yield('add-button')</p>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -59,13 +59,15 @@
                                     <nav
                                         class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
                                         <ul class="pagination">
-                                            <li class="page-item disabled"><a class="page-link" href="#"
+                                           
+                                            {{ $rows->links() }}
+                                            {{-- <li class="page-item disabled"><a class="page-link" href="#"
                                                     aria-label="Previous"><span aria-hidden="true">«</span></a></li>
                                             <li class="page-item active"><a class="page-link" href="#">1</a></li>
                                             <li class="page-item"><a class="page-link" href="#">2</a></li>
                                             <li class="page-item"><a class="page-link" href="#">3</a></li>
                                             <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span
-                                                        aria-hidden="true">»</span></a></li>
+                                                        aria-hidden="true">»</span></a></li> --}}
                                         </ul>
                                     </nav>
                                 </div>

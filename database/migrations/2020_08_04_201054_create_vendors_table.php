@@ -25,11 +25,11 @@ class CreateVendorsTable extends Migration
             $table->string('phone');
             $table->string('store_name');
             $table->text('store_description')->nullable();
-            $table->string('store_logo')->default('avatar.png')->nullable();
-            $table->string('store_background_image')->default('avatar.png')->nullable();
-            $table->string('company_registration_image')->default('avatar.png')->nullable();
-            $table->string('national_id_front_image')->default('avatar.png')->nullable();
-            $table->string('national_id_back_image')->default('avatar.png')->nullable();
+            $table->string('store_logo')->nullable();
+            $table->string('store_background_image')->nullable();
+            $table->string('company_registration_image')->nullable();
+            $table->string('national_id_front_image')->nullable();
+            $table->string('national_id_back_image')->nullable();
             $table->date('expiration_date')->nullable();
             $table->double('delivery')->nullable();
             $table->enum('status' , ['pending','accept' , 'blocked'])->default('pending')->nullable();

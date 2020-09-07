@@ -15,11 +15,9 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $guarded  = [
-    //    user_name name password phone email role image user_id
-    //    'role'
-    ];
+   
 
+    protected $fillable = ['user_name', 'name', 'password' ,'phone', 'email', 'role', 'image' ,'user_id'];
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -28,7 +26,20 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
+    public function getImageAttribute()
+    {
+        // if(  $this->attributes['image'] == "avatar.png")
+        // return asset($this->attributes['store_logo']);
+        // else
+        // return $this->attributes['store_logo'];
+        if($this->attributes['image'] != null && file_exists(($this->attributes['image'])) ){
+            return asset($this->attributes['image']);
+        }
+        else
+        {
+            return asset('assets/img/avatars/avatar-1.jpg');
+        }
+    }
     /**
      * The attributes that should be cast to native types.
      *

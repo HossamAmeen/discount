@@ -17,8 +17,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::prefix('admin')->namespace('DashBoard')->group(function(){
-    Route::resource('users' , "UserController");
-    Route::get('/' , 'UserController@index');
+    Route::middleware('auth')->group(function () {
+        Route::get('/' , 'ConfigrationController@index');
+        Route::resource('users' , "UserController");
+        Route::resource('cities' , "CityController");
+        Route::resource('vendors' , "VendorController");
+        Route::resource('clients' , "ClientController");
+        Route::resource('categories' , "CategoryController");
+        Route::resource('products' , "ProductController");
+    });
 });
 
 Auth::routes();

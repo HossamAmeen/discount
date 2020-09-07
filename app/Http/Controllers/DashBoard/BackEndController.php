@@ -28,7 +28,7 @@ class BackEndController extends Controller
         if(!empty($with)){
             $rows = $rows->with($with);
         }
-        $rows = $rows->orderBy('id', 'DESC')->get();
+        $rows = $rows->orderBy('id', 'DESC')->paginate(15);
         $moduleName = $this->pluralModelName();
         $sModuleName = $this->getModelName();
         $routeName = $this->getClassNameFromModel();

@@ -22,7 +22,16 @@ class VenodrController extends Controller
         }
         // if(request('city_id')){}
        
-        $vendors = $vendors->get(['id','first_name', 'last_name' ,'client_ratio', 'client_vip_ratio' ,  'store_description', 'store_logo' ]);
+        $vendors = $vendors->get(['id','first_name', 'last_name' ,'client_ratio', 'client_vip_ratio' ,'rating', 'store_description', 'store_logo' ]);
         return $this->APIResponse($vendors, null, 200);      
+    }
+
+    public function searchOfVendors()
+    {
+        // return request('name') ;
+        $vendors = Vendor::accepted()->where('first_name' , 'LIKE', '%' . request('name') . '%' )
+                                     ->orWhere('last_name' , 'LIKE', '%' . request('name') . '%')
+                                    ->get();
+        return $this->APIResponse($vendors, null, 200);   
     }
 }

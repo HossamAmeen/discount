@@ -156,11 +156,14 @@
         </a>
         <hr class="sidebar-divider my-0">
         <ul class="nav navbar-nav text-light" id="accordionSidebar">
-            <li class="nav-item" role="presentation"><a class="nav-link" href="index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-            <li class="nav-item" role="presentation"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
-            <li class="nav-item" role="presentation"><a class="nav-link active" href="table.html"><i class="fas fa-table"></i><span>Table</span></a></li>
-            <li class="nav-item" role="presentation"><a class="nav-link" href="login.html"><i class="far fa-user-circle"></i><span>Login</span></a></li>
-            <li class="nav-item" role="presentation"><a class="nav-link" href="register.html"><i class="fas fa-user-circle"></i><span>Register</span></a></li>
+            <li class="nav-item" role="presentation"><a class="nav-link" href="{{url('admin')}}" id="dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+            {{-- <li class="nav-item" role="presentation"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li> --}}
+            <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('users.index')}}" id="users"><i class="fas fa-table"></i><span>admins</span></a></li>
+            <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('vendors.index')}}" id="vendors"><i class="fas fa-table"></i><span>vendors</span></a></li>
+            <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('clients.index')}}" id="clients"><i class="fas fa-table"></i><span>clients</span></a></li>
+            <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('categories.index')}}" id="categories"><i class="fas fa-table"></i><span>categories</span></a></li>
+            <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('products.index')}}" id="products"><i class="fas fa-table"></i><span>products</span></a></li>
+            {{-- <li class="nav-item" role="presentation"><a class="nav-link" href="register.html"><i class="fas fa-user-circle"></i><span>Register</span></a></li> --}}
         </ul>
         <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
     </div>

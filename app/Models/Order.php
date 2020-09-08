@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Order extends Model
 {
      use SoftDeletes;
-     protected $fillable = ['price', 'status', 'time', 'date', 'quantity' ,'address','phone','city','product_id','client_address_id', 'client_id'];
+     protected $fillable = ['price','discount','is_vip', 'status', 'quantity','product_id', 'client_id'];
      protected $hidden = [
         'user_id' , "created_at" , 'updated_at' ,'deleted_at'
     ];
    public function address()
    {
-    return $this->belongsTo(ClientAddress::class)->select(['id','name','price','image']);
+    return $this->belongsTo(ClientAddress::class , 'client_address_id')->select(['id','address','first_name','phone']);
        
    }
     public function product(){

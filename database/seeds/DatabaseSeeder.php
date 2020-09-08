@@ -44,6 +44,8 @@ class DatabaseSeeder extends Seeder
             'password'   => bcrypt('admin'),
             'phone'      => "01010079798",
             'store_name' => "mac",
+            'client_ratio' => 30,
+            'client_vip_ratio'=>40,
             'store_description' =>"good fast food",
             'store_logo' => 'avatar.png'
         ]);
@@ -57,6 +59,8 @@ class DatabaseSeeder extends Seeder
             'store_name' => "KFC",
             'store_description' =>"fast food for every one",
             'status'     => 'accept',
+            'client_ratio' => 30,
+            'client_vip_ratio'=>40,
             'store_logo' => 'avatar.png'
         ]);
         \App\Models\Client::create([
@@ -77,10 +81,11 @@ class DatabaseSeeder extends Seeder
         
       
         factory('App\Models\Category',9)->create();
-        factory('App\Models\ProductCategory',9)->create();
+        factory('App\Models\Vendor',25)->create();
+        factory('App\Models\ProductCategory',10)->create();
         factory('App\Models\VendorCategory',9)->create();
         factory('App\Models\Product',25)->create();
-        factory('App\Models\Vendor',25)->create();
+      
         factory('App\Models\WishList',25)->create();
         factory('App\Models\Order',10)->create();
 

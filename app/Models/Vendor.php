@@ -32,6 +32,10 @@ class Vendor extends Authenticatable
     {
         return $this->hasMany(Product::class);
     }
+    public function categories()
+    {
+        return $this->hasMany(ProductCategory::class);
+    }
     // public function getStoreLogoAttribute()
     // {
     //     if($this->attributes['store_logo'] == "avatar.png")

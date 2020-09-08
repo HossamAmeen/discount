@@ -67,7 +67,7 @@ class ProductController extends Controller
         }
         $requestArray = $request->all() ; 
         if($request->category_name){
-            $category = ProductCategory::create(['name' => $request->category_name]);
+            $category = ProductCategory::create(['name' => $request->category_name , 'vendor_id'=>Auth::guard('vendor-api')->user()->id ]);
             $requestArray['category_id'] = $category->id;
             VendorCategory::create(['vendor_id'=>Auth::guard('vendor-api')->user()->id , 'category_id' =>$category->id ]);
         }
@@ -176,14 +176,14 @@ class ProductController extends Controller
     public function showCategories()
     {
         // $categories = ProductCategory::with('products')->get(['id','name']);
-        $categories = ProductCategory::with('products')
-        ->select('product_categories.*')
-        ->join('vendor_categories', 'vendor_categories.category_id', '=', 'product_categories.id')
-        // ->join('vendors', 'vendors.id', '=', 'products.vendor_id')
-        // ->join('buildings', 'buildings.id', '=', 'blocks.building_id')
-        ->where('vendor_categories.vendor_id', Auth::guard('vendor-api')->user()->id)
-        ->get();
-
+        // $categories = ProductCategory::with('products')
+        // ->select('product_categories.*')
+        // ->join('vendor_categories', 'vendor_categories.category_id', '=', 'product_categories.id')
+        // // ->join('vendors', 'vendors.id', '=', 'products.vendor_id')
+        // // ->join('buildings', 'buildings.id', '=', 'blocks.building_id')
+        // ->where('vendor_categories.vendor_id', Auth::guard('vendor-api')->user()->id)
+        // ->get();
+        $categories = ProductCategory::with('products')->where('vendor_id' , Auth::guard('vendor-api')->user()->id)->get();
         return $this->APIResponse($categories, null, 200);
     }
     public function showProductCategories()/// not work

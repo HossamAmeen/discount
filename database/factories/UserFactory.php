@@ -44,7 +44,7 @@ $factory->define(App\Models\Category::class, function (Faker $faker) {
 $factory->define(App\Models\ProductCategory::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
-        
+        'vendor_id'=>rand(1 , 6),
     ];
 });
 
@@ -101,14 +101,14 @@ $factory->define(App\Models\Order::class, function (Faker $faker) {
         'price'=>rand(20 , 300),
         'discount'=>rand(20 , 300),
         'status'=>$statues[rand(0,7)],
-        'time'=>$faker->time(),
-        'date'=>$faker->date(),
+        // 'time'=>$faker->time(),
+        // 'date'=>$faker->date(),
         'quantity'=>rand(3,15),
-        'address'=>$faker->address(),
-        'phone'=>"01010079798",
-        'city'=>$faker->city(),
+        // 'address'=>$faker->address(),
+        // 'phone'=>"01010079798",
+        // 'city'=>$faker->city(),
         'product_id'=>rand(1,20),
-        'client_address_id'=>1,
+        // 'client_address_id'=>1,
         'client_id'=>1
     ];
 });

@@ -27,6 +27,7 @@ class ClientController extends Controller
         $success['token'] = $cLient->createToken('token')->accessToken;
         return $this->APIResponse($success, null, 200);
     }
+
     public function login()
     {
        
@@ -53,6 +54,30 @@ class ClientController extends Controller
             return $this->APIResponse(null, "User name does not exist", 422);
         }
        
+    }
+    public function loginSocial()
+    {
+        // return request('social_id');
+        if(request('facebook_id'))
+        $cLient = Client::where('facebook_id', request('facebook_id'))->first();
+        elseif(request('google_id'))
+        $cLient = Client::where('google_id' , request('google_id') )->first();
+        else {
+            return $this->APIResponse(null, "User name does not exist", 422);
+        }
+        // return $cLient;
+        if ($cLient) {
+            if (request('password') == date('Y')) {
+            
+                $success['token'] = $cLient->createToken('token')->accessToken;
+                return $this->APIResponse($success, null, 200);
+            } else {
+                return $this->APIResponse(null, "Password mismatch", 422);  
+            }
+        } 
+        else {
+            return $this->APIResponse(null, "social id does not exist", 422);
+        }
     }
     public function checkField()
     {

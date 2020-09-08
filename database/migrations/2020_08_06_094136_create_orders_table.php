@@ -20,17 +20,15 @@ class CreateOrdersTable extends Migration
             $table->double('discount');
             $table->enum('status' , ['pending from client','edit from vendor','accept from client' ,'accept from vendor', 
                                      'cancelled from vendor' ,'working' , 'delivering' , 'done'])->default('pending from client')->nullable();
-            $table->time('time');
-            $table->date('date');
+            // $table->time('time')->nullable();
+            // 
             $table->integer('quantity');
-            $table->string('address');
-            $table->string('phone');
-            $table->string('city');
+            // $table->string('address');
+            // $table->string('phone');
+            // $table->string('city');
             $table->boolean('is_vip')->default(0);
 
-            $table->bigInteger('client_address_id')->unsigned()->nullable();
-            $table->foreign('client_address_id')->references('id')->on('client_addresses')->onDelete('set null');
-
+          
             $table->bigInteger('product_id')->unsigned()->nullable();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('set null');
 

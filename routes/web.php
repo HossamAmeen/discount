@@ -26,8 +26,10 @@ Route::prefix('admin')->namespace('DashBoard')->group(function(){
         Route::resource('cities' , "CityController");
         Route::resource('vendors' , "VendorController");
         Route::resource('clients' , "ClientController");
+        Route::get('accept-client/{status}/{clientId}' , 'ClientController@changeStatus');
         Route::resource('categories' , "CategoryController");
         Route::resource('products' , "ProductController");
+        Route::resource('cities' , "CityController");
     });
 });
 

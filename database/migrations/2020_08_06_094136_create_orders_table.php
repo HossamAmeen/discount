@@ -27,13 +27,17 @@ class CreateOrdersTable extends Migration
             // $table->string('phone');
             // $table->string('city');
             $table->boolean('is_vip')->default(0);
-
+            $table->double('rating')->default(0)->nullable();
           
             $table->bigInteger('product_id')->unsigned()->nullable();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('set null');
 
+
             $table->bigInteger('client_id')->unsigned()->nullable();
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('set null');
+
+            $table->bigInteger('cart_id')->unsigned()->nullable();
+            $table->foreign('cart_id')->references('id')->on('carts')->onDelete('set null');
 
             $table->timestamps();
             $table->softDeletes();

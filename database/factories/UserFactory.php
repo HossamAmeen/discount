@@ -38,6 +38,7 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
 $factory->define(App\Models\Category::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
+        'user_id' => 1
     ];
 });
 
@@ -55,8 +56,9 @@ $factory->define(App\Models\Product::class, function (Faker $faker) {
         'price' => rand(10 , 600),
         'quantity'=>rand(10 , 600),
         
-        'vendor_id'=>1,
+        'vendor_id'=>rand(1 , 10),
         'category_id'=>rand(1,9),
+        'user_id'=>1
     ];
 });
 

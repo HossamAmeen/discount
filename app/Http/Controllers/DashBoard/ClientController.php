@@ -11,4 +11,11 @@ class ClientController extends BackEndController
     {
         parent::__construct($model);
     }
+    public function changeStatus($status , $clientID)
+    {
+        $client = Client::find($clientID);
+        $client->status = $status ; 
+        $client->save();
+        return json_encode(['status'=>'secuss']);
+    }
 }

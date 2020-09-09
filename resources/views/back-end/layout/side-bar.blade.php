@@ -161,8 +161,10 @@
             <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('users.index')}}" id="users"><i class="fas fa-table"></i><span>admins</span></a></li>
             <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('vendors.index')}}" id="vendors"><i class="fas fa-table"></i><span>vendors</span></a></li>
             <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('clients.index')}}" id="clients"><i class="fas fa-table"></i><span>clients</span></a></li>
-            <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('categories.index')}}" id="categories"><i class="fas fa-table"></i><span>categories</span></a></li>
+
             <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('products.index')}}" id="products"><i class="fas fa-table"></i><span>products</span></a></li>
+            <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('categories.index')}}" id="categories"><i class="fas fa-table"></i><span>categories</span></a></li>
+            <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('cities.index')}}" id="cities"><i class="fas fa-table"></i><span>cities</span></a></li>
             {{-- <li class="nav-item" role="presentation"><a class="nav-link" href="register.html"><i class="fas fa-user-circle"></i><span>Register</span></a></li> --}}
         </ul>
         <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>

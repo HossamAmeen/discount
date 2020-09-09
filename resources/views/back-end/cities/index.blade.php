@@ -3,15 +3,24 @@
 
 @section('content')
 
+<form method="POST" action="{{ route($routeName.'.store') }}"  enctype="multipart/form-data">
+    @csrf
+    <div class="form-row">
+        <div class="col-xs-4">
+            @php $inputName = 'name' ; @endphp
+          <label ><strong>{{$inputName}}</strong></label>
+          <input class="form-control" id="ex1" type="text" name="{{$inputName}}" value="{{Request::old($inputName) ?? " "}}" required>
+        </div>
+    </div>
+    <br>
+    <div class="form-group"><button class="btn btn-primary btn-sm"
+        type="submit">save </button></div>
+</form>
 <table class="table dataTable my-0" id="dataTable">
     <thead>
 
         <tr>
             <th>Name</th>
-
-            <th>Email</th>
-            <th>Phone</th>
-            <th>status</th>
             <th>user</th>
             <th>action</th>
         </tr>
@@ -19,21 +28,14 @@
     <tbody>
         @foreach($rows as $key => $value)
         <tr>
-            <td><img class="rounded-circle mr-2" width="30" height="30"
-                    src="{{asset('assets/img/avatars/avatar1.jpeg')}}">{{$value->first_name. $value->last_name }}</td>
-
-            <td>{{$value->email}}</td>
-            <td>{{$value->phone}}</td>
-            <td id="{{$value->id . 'status'}}">{{$value->status}}</td>
+            <td>{{$value->name}}</td>
+           
             <td>{{$value->user->name??" not found"}}</td>
             <td>
                 <form action="{{ route($routeName.'.destroy' ,$value ) }}" method="post">
                     {{ csrf_field() }}
                     {{ method_field('delete') }}
-                    <a href="#" class="btn-sm btn-info" onclick="acceptClient( 'accept',{{$value->id}})"
-                        style="display:inline-block;">{{-- <i class="far fa-edit f044"></i> --}} accept</a>
-                    <a href="#" class="btn-sm btn-danger" onclick="acceptClient( 'blocked',{{$value->id}})"
-                        style="display:inline-block;">{{-- <i class="far fa-edit f044"></i> --}} block</a>
+                  
                     <button type="submit" rel="tooltip" title="" class="btn-sm btn-danger" onclick="check()"
                         style="display:inline-block;">
                         <i class="fas fa-trash-alt"></i>
@@ -47,11 +49,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <th>Name</th>
-
-            <th>Email</th>
-            <th>Phone</th>
-            <th>status</th>
+            <th>Name</th>         
             <th>user</th>
             <th>action</th>
         </tr>

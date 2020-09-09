@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Cart extends Model
 {
      use SoftDeletes;
-     protected $fillable = ['is_done' ,'date', 'client_id'];
+     protected $fillable = ['is_done' ,'date', 'client_id','client_address_id'];
      protected $hidden = [
-         "created_at" , 'updated_at' 
+         "deleted_at","created_at" , 'updated_at' 
     ];
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
     public function user(){
         return $this->belongsTo(User::class);
     }

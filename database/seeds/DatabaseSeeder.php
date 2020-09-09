@@ -26,15 +26,15 @@ class DatabaseSeeder extends Seeder
       
         \App\Models\Category::create([
             'name'=> 'deals',
-            
+            'user_id'    =>1
         ]);
         \App\Models\City::create([
             'name'=> 'assuit',
-           
+            'user_id'    =>1
         ]);
         \App\Models\City::create([
             'name'=> 'Cairo',
-           
+            'user_id'    =>1
         ]);
         \App\Models\Vendor::create([
             'first_name' => "hossam",
@@ -70,6 +70,7 @@ class DatabaseSeeder extends Seeder
             'email'      => "client@gmail.com",
             'password'   => bcrypt('admin'),
             'phone'      => "01010079798",
+            'user_id'    =>1
         ]);
         \App\Models\ClientAddress::create([
             'address'   => "new address",

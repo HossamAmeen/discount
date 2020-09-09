@@ -63,15 +63,21 @@ Route::prefix('client')->namespace('Client')->group(function(){
         Route::put('/update-profile', 'ClientController@updateProfile');
         Route::post('/update-image', 'ClientController@updateImage');
 
-        Route::get('/show-orders/{orderId?}', 'ClientProductController@showOrders');
-        Route::get('/update-order/{orderId?}', 'ClientProductController@updateOrder');
-        Route::post('add-order' , 'ClientProductController@addOrder');
-        Route::get('show-cart' , 'ClientProductController@showCart');
-        Route::get('checkout-cart/{cartId}' , 'ClientProductController@checkoutCart');
+      
+         
+       
+      
         Route::get('show-wishlist' , 'ClientProductController@showWishList');
         Route::get('add-wishlist/{productId}' , 'ClientProductController@addWishList');
         Route::get('detial-product/{productId}' , 'ClientProductController@showProduct');
         
+        Route::get('show-cart' , 'ClientOrderController@showCart'); 
+        Route::put('checkout-cart/{cartId}' , 'ClientOrderController@checkoutCart');  
+        Route::get('/show-orders/{orderId?}', 'ClientOrderController@showOrders'); ///// لسه  show with choices
+        Route::post('add-order' , 'ClientOrderController@addOrder'); //////////// add with choice
+        Route::put('/update-order/{orderId?}', 'ClientOrderController@updateOrder'); 
+        Route::delete('delete-order/{orderId}' , 'ClientOrderController@deleteOrder'); 
+
         Route::get('show-vendors' , 'ClientVenodrController@showVendors');
         Route::get('show-vendors-categories/{vendorId}' , 'ClientVenodrController@showVendorsCategories');
         Route::get('show-vendor-products/{vendorId}', 'ClientVenodrController@showProducts');

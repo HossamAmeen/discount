@@ -3,12 +3,25 @@
 
 @section('content')
 
-
+<form method="POST" action="{{ route($routeName.'.store') }}"  enctype="multipart/form-data">
+    @csrf
+    <div class="form-row">
+        <div class="col-xs-4">
+            @php $inputName = 'name' ; @endphp
+          <label ><strong>{{$inputName}}</strong></label>
+          <input class="form-control" id="ex1" type="text" name="{{$inputName}}" value="{{Request::old($inputName) ?? " "}}" required>
+        </div>
+    </div>
+    <br>
+    <div class="form-group"><button class="btn btn-primary btn-sm"
+        type="submit">save </button></div>
+</form>
 <table class="table dataTable my-0" id="dataTable">
     <thead>
 
         <tr>
             <th>Name</th>
+            <th>User</th>
             <th>action</th>
            
         </tr>
@@ -30,7 +43,7 @@
     <tfoot>
         <tr>
             <th>Name</th>
-          
+            <th>User</th>
           
             <th>action</th>
         </tr>

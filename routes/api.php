@@ -54,7 +54,7 @@ Route::prefix('vendor')->namespace('Vendor')->group(function(){
 
 Route::prefix('client')->namespace('Client')->group(function(){
         Route::any('/register', 'ClientController@register');
-        Route::post('/login', 'ClientController@login');
+        Route::any('/login', 'ClientController@login');
         Route::post('/login-social', 'ClientController@loginSocial');
         Route::post('/logout', 'ClientController@logout');
     Route::middleware('checkLogin:client-api')->group(function () {

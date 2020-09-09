@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Route;
 
         //////////////// vender ///////////////////
 Route::prefix('vendor')->namespace('Vendor')->group(function(){
-    Route::any('/register', 'VendorController@register');
+    Route::post('/register', 'VendorController@register');
     Route::post('/login', 'VendorController@login');
     Route::post('/logout', 'VendorController@logout');
     Route::middleware('checkLogin:vendor-api')->group(function () {
@@ -53,7 +53,7 @@ Route::prefix('vendor')->namespace('Vendor')->group(function(){
 });
 
 Route::prefix('client')->namespace('Client')->group(function(){
-        Route::post('/register', 'ClientController@register');
+        Route::any('/register', 'ClientController@register');
         Route::post('/login', 'ClientController@login');
         Route::post('/login-social', 'ClientController@loginSocial');
         Route::post('/logout', 'ClientController@logout');

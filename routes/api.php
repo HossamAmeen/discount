@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
     
    
 // });
-Route::middleware('cors')->group(function () {
+
         //////////////// vender ///////////////////
 Route::prefix('vendor')->namespace('Vendor')->group(function(){
     Route::post('/register', 'VendorController@register');
@@ -88,4 +88,3 @@ Route::prefix('client')->namespace('Client')->group(function(){
 });
 Route::get('cities', 'HomeController@showCities');
 Route::get('categories', 'HomeController@showCategories');
-});

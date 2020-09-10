@@ -33,8 +33,8 @@ class ClientRequest extends FormRequest
             'password' => ['string'],
             'phone' => ['numeric', 'digits_between:11,11' ,Rule::unique('clients')->ignore($id)->whereNull('deleted_at')],
             'image' => ['image'],
-            'facebook_id' => ['numeric' , Rule::unique('clients')->ignore($id)->whereNull('deleted_at')],
-            "google_id" => ['numeric' , Rule::unique('clients')->ignore($id)->whereNull('deleted_at')],
+            'facebook_id' => ['numeric' , Rule::unique('clients')->ignore($id)->whereNull('deleted_at') ,'nullable'],
+            "google_id" => ['numeric' , Rule::unique('clients')->ignore($id)->whereNull('deleted_at'),'nullable'],
         ];
         // if ($this->isMethod('POST') )
         if(strpos($this->fullUrl(), "register") !== false)

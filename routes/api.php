@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Route;
 
         //////////////// vender ///////////////////
 Route::prefix('vendor')->namespace('Vendor')->group(function(){
-    Route::post('/register', 'VendorController@register');
+    Route::any('/register', 'VendorController@register');
     Route::post('/login', 'VendorController@login');
     Route::post('/logout', 'VendorController@logout');
     Route::middleware('checkLogin:vendor-api')->group(function () {
@@ -88,3 +88,10 @@ Route::prefix('client')->namespace('Client')->group(function(){
 });
 Route::get('cities', 'HomeController@showCities');
 Route::get('categories', 'HomeController@showCategories');
+
+
+
+Route::post('test', function ()
+{
+    return "tesst";
+});

@@ -37,6 +37,6 @@ class AppServiceProvider extends ServiceProvider
          catch (\Exception $e) {
           //  die("Could not connect to the database.  Please check your configuration. error:" . $e );
         }
-        \URL::forceScheme('https');
+        
     }
 }

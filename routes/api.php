@@ -53,7 +53,7 @@ Route::prefix('vendor')->namespace('Vendor')->group(function(){
 });
 
 Route::prefix('client')->namespace('Client')->group(function(){
-        Route::post('register', 'ClientController@register');
+        Route::post('register-client', 'ClientController@register');
         Route::any('/login', 'ClientController@login');
         Route::post('/login-social', 'ClientController@loginSocial');
         Route::post('/logout', 'ClientController@logout');

@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
     
    
 // });
-
+Route::middleware('cors')->group(function () {
         //////////////// vender ///////////////////
 Route::prefix('vendor')->namespace('Vendor')->group(function(){
     Route::post('/register', 'VendorController@register');
@@ -53,7 +53,7 @@ Route::prefix('vendor')->namespace('Vendor')->group(function(){
 });
 
 Route::prefix('client')->namespace('Client')->group(function(){
-        Route::post('register-client', 'ClientController@register');
+        Route::post('register', 'ClientController@register');
         Route::any('/login', 'ClientController@login');
         Route::post('/login-social', 'ClientController@loginSocial');
         Route::post('/logout', 'ClientController@logout');
@@ -86,5 +86,6 @@ Route::prefix('client')->namespace('Client')->group(function(){
         
     });
 });
-Route::post('/cities', 'HomeController@showCities');
-Route::post('categories', 'HomeController@showCategories');
+Route::get('cities', 'HomeController@showCities');
+Route::get('categories', 'HomeController@showCategories');
+});

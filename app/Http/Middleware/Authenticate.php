@@ -19,6 +19,14 @@ class Authenticate extends Middleware
             return route('login');
         }
     }
-
+    public function handle($request, Closure $next, ...$guards)
+    {
+        if(in_array('auth:api', $request->route()->action['middleware'])) {
+            $request->headers->set('authorization',['Bearer '.$request->input('accessToken')]);
+        }
+    
+        $this->authenticate($request, $guards);
+        return $next($request);
+    }
     
 }

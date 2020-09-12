@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\APIResponseTrait;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Cart , Wishlist ,Vendor,Order , Product , ProductChoice};
+use App\Models\{Cart , WishList ,Vendor,Order , Product , ProductChoice};
 use Auth;
 class ClientProductController extends Controller
 {
@@ -12,7 +12,7 @@ class ClientProductController extends Controller
     
     public function addWishList($productId)
     {
-        $wishlist = Wishlist::where(['client_id' =>Auth::guard('client-api')->user()->id,
+        $wishlist = WishList::where(['client_id' =>Auth::guard('client-api')->user()->id,
                                      'product_id'=> $productId
                                      ])
                             ->first();
@@ -20,7 +20,7 @@ class ClientProductController extends Controller
             return $this->APIResponse(null, "this product is added", 400);
         }
         else{
-            $wishlist = Wishlist::create([
+            $wishlist = WishList::create([
                 'client_id' =>Auth::guard('client-api')->user()->id,
                 'product_id'=> $productId
             ]);

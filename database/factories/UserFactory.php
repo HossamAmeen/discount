@@ -84,7 +84,7 @@ $factory->define(App\Models\Vendor::class, function (Faker $faker) {
 
 $factory->define(App\Models\WishList::class, function (Faker $faker) {
     return [
-        'client_id'=>1,
+        'client_id'=>rand(1,2),
         'product_id' =>rand(1,15)
     ];
 });
@@ -110,8 +110,9 @@ $factory->define(App\Models\Order::class, function (Faker $faker) {
         // 'phone'=>"01010079798",
         // 'city'=>$faker->city(),
         'product_id'=>rand(1,20),
+        'is_vip'=>rand(0,1),
         // 'client_address_id'=>1,
-        'client_id'=>1
+        'client_id'=>rand(1,2)
     ];
 });
 

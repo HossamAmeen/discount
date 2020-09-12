@@ -72,6 +72,15 @@ class DatabaseSeeder extends Seeder
             'phone'      => "01010079798",
             'user_id'    =>1
         ]);
+        \App\Models\Client::create([
+            'first_name' => "aya client 2 ",
+            'last_name'  => "ameen",
+            'gender'     => "female",
+            'email'      => "client2@gmail.com",
+            'password'   => bcrypt('admin'),
+            'phone'      => "01010079796",
+            'user_id'    =>1
+        ]);
         \App\Models\ClientAddress::create([
             'address'   => "new address",
             'first_name' => "hossam client",
@@ -88,7 +97,7 @@ class DatabaseSeeder extends Seeder
         factory('App\Models\Product',25)->create();
       
         factory('App\Models\WishList',25)->create();
-        factory('App\Models\Order',10)->create();
+        factory('App\Models\Order',35)->create();
 
         $this->productChoices();
         $this->OrderChoices();
@@ -136,6 +145,7 @@ class DatabaseSeeder extends Seeder
         
         \App\Models\OrderChoice::create([
             'name' => "larage",
+            'group_name' => "size",
             'price'=>rand(30 , 60),
             'type' => rand(1,2),
             //'group_name'=>"size",
@@ -143,6 +153,7 @@ class DatabaseSeeder extends Seeder
         ]);
         \App\Models\OrderChoice::create([
             'name' => "meduim",
+            'group_name' => "size",
             'price'=>rand(30 , 60),
             'type' => rand(1,2),
           //  'group_name'=>"size",
@@ -150,6 +161,7 @@ class DatabaseSeeder extends Seeder
         ]);
         \App\Models\OrderChoice::create([
             'name' => "small",
+            'group_name' => "size",
             'price'=>rand(30 , 60),
             'type' => rand(1,2),
             //'group_name'=>"size",
@@ -157,6 +169,7 @@ class DatabaseSeeder extends Seeder
         ]);
         \App\Models\OrderChoice::create([
             'name' => "in",
+            'group_name' => "takeaway",
             'price'=>rand(30 , 60),
             'type' => rand(1,2),
           //  'group_name'=>"place",
@@ -165,6 +178,7 @@ class DatabaseSeeder extends Seeder
         
         \App\Models\OrderChoice::create([
             'name' => "out",
+            'group_name' => "takeaway",
             'price'=>rand(30 , 60),
             'type' => rand(1,2),
          //   'group_name'=>"place",

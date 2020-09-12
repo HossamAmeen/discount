@@ -18,6 +18,7 @@ class CreateOrderChoicesTable extends Migration
             $table->id();
             $table->string('type');
             $table->string('name');
+            $table->string('group_name');
             $table->double('price');
 
             $table->bigInteger('order_id')->unsigned()->nullable();

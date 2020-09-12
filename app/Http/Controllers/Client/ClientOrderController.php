@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\APIResponseTrait;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Cart , Vendor,Order,Product };
+use App\Models\{Cart , Vendor,Order,Product ,OrderChoice};
 use Auth;
 class ClientOrderController extends Controller
 {
@@ -15,7 +15,10 @@ class ClientOrderController extends Controller
                     // ->get('id','price','quabtity','discount')
                     ->first();
         // return $cart ;
+        if($cart)
         return $this->APIResponse($cart->orders, null, 200); 
+        else
+        return $this->APIResponse(null, null, 200);
     }
     public function checkoutCart($cartId)
     {
@@ -73,6 +76,7 @@ class ClientOrderController extends Controller
             'client_id'=>  $clientId,
             'cart_id'=>$cart->id,
         ]);
+        $this->addChoiceForOrder($request->json , $order->id);
         return $this->APIResponse(null, null, 200);
     }
 
@@ -98,7 +102,92 @@ class ClientOrderController extends Controller
        }
        else{
         return $this->APIResponse(null, "this order not found", 400);
+       }
     }
+    public function addChoiceForOrder($jsonReuest , $productId)
+    {
+        $json = json_decode($jsonReuest , true) ; 
+       
+        $choices = $json['Groups'] ; 
+       
+        $type;$groupName; 
+        if(is_array($choices))
+        foreach($choices as $key=> $choiceItems){
+           
+            foreach($choiceItems as $itemKey =>$item)
+            if(is_array($item))
+            {
+                foreach($item as $itemKeyt =>$itemt){
+                  
+                    OrderChoice::create([
+                        'name' => $itemt['name'] , 
+                        'price' => $itemt['price'] , 
+                        'type' => $type,
+                        'group_name'=>$groupName,
+                        'order_id'=>$productId
+                    ]);
+                }
+            }
+            else
+            {
+                if($itemKey == "name")
+                {
+                   
+                    $groupName = $item ; 
+                }
+                else
+                {
+                    
+                    $type= $item ; 
+                    
+                }  
+            }
+        }
     }
-   
+
+     /**
+         * 
+         * {
+                
+                "Groups" : [
+                                {
+                                    "name":"size",
+                                    "type":1,
+                                    "items" : [
+                                        {
+                                        "name":"small",
+                                        "price":12
+                                        },
+                                        {
+                                        "name":"med",
+                                        "price":15
+                                        },
+                                        {
+                                        "name":"large",
+                                        "price":20
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name":"second choice ",
+                                    "type":2,
+                                     "items" : [
+                                        {
+                                        "name":"small",
+                                        "price":12
+                                        },
+                                        {
+                                        "name":"med",
+                                        "price":15
+                                        },
+                                        {
+                                        "name":"large",
+                                        "price":20
+                                        }
+                                    ]
+                                }
+                        ]
+            }
+
+         */
 }

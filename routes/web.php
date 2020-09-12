@@ -29,6 +29,7 @@ Route::prefix('admin')->namespace('DashBoard')->group(function(){
         Route::get('accept-client/{status}/{clientId}' , 'ClientController@changeStatus');
         Route::resource('categories' , "CategoryController");
         Route::resource('products' , "ProductController");
+        Route::resource('orders' , "OrderController");
         Route::resource('cities' , "CityController");
     });
 });

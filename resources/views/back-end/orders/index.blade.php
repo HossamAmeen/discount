@@ -1,59 +1,60 @@
 @extends('back-end.layout.app')
 
-@section('above-table')
-<form method="POST" action="{{ route($routeName.'.store') }}"  enctype="multipart/form-data">
-    @csrf
-    <div class="form-row">
-        <div class="col-xs-4">
-            @php $inputName = 'name' ; @endphp
-          <label ><strong>{{$inputName}}</strong></label>
-          <input class="form-control" id="ex1" type="text" name="{{$inputName}}" value="{{Request::old($inputName) ?? " "}}" required>
-        </div>
-    </div>
-    <br>
-    <div class="form-group"><button class="btn btn-primary btn-sm"
-        type="submit">save </button></div>
-</form>
-@endsection
-@section('content')
 
+@section('content')
 
 <table class="table dataTable my-0" id="dataTable">
     <thead>
-
+        {{-- 'price','discount','is_vip', 'status', 'quantity','product_id', 'client_id','cart_id' --}}
         <tr>
-            <th>Name</th>
-            <th>user</th>
-            <th>action</th>
+            <th>Client Name</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Discount</th>
+            <th>Price</th>
+            <th>is vip</th>
+            <th>status</th>
+           
         </tr>
     </thead>
     <tbody>
         @foreach($rows as $key => $value)
         <tr>
-            <td>{{$value->name}}</td>
-           
-            <td>{{$value->user->name??" not found"}}</td>
-            <td>
+            <td>{{$value->client->first_name ??" not found" . $value->client->last_name ??" not found" }}</td>
+            <td>{{$value->product->name}}</td>
+            <td>{{$value->quantity}}</td>
+            <td>{{$value->discount}}</td>
+            <td>{{$value->price}}</td>
+            <td>{{$value->is_vip ? "vip" : "free"}}</td>
+            <td id="{{$value->id . 'status'}}">{{$value->status}}</td>
+            
+            {{-- <td>
                 <form action="{{ route($routeName.'.destroy' ,$value ) }}" method="post">
                     {{ csrf_field() }}
                     {{ method_field('delete') }}
-                  
+                    <a href="#" class="btn-sm btn-info" onclick="acceptClient( 'accept',{{$value->id}})"
+                        style="display:inline-block;">
+                       block</a>
                     <button type="submit" rel="tooltip" title="" class="btn-sm btn-danger" onclick="check()"
                         style="display:inline-block;">
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </form>
 
-            </td>
+            </td>  --}}
 
         </tr>
         @endforeach
     </tbody>
     <tfoot>
         <tr>
-            <th>Name</th>         
-            <th>user</th>
-            <th>action</th>
+            <th>Client Name</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Discount</th>
+            <th>Price</th>
+            <th>is vip</th>
+            <th>status</th>
         </tr>
     </tfoot>
 </table>

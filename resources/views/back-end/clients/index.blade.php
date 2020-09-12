@@ -34,6 +34,8 @@
                         style="display:inline-block;">{{-- <i class="far fa-edit f044"></i> --}} accept</a>
                     <a href="#" class="btn-sm btn-danger" onclick="acceptClient( 'blocked',{{$value->id}})"
                         style="display:inline-block;">{{-- <i class="far fa-edit f044"></i> --}} block</a>
+                        <a href="{{url('admin/orders/'.$value->id.'?type=clients')}}" class="btn-sm btn-info" onclick="acceptClient( 'accept',{{$value->id}})"
+                            style="display:inline-block;">{{-- <i class="far fa-edit f044"></i> --}} orders</a>
                     <button type="submit" rel="tooltip" title="" class="btn-sm btn-danger" onclick="check()"
                         style="display:inline-block;">
                         <i class="fas fa-trash-alt"></i>

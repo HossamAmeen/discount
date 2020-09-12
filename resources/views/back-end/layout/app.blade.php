@@ -23,6 +23,7 @@
                 {{-- nav --}}
                 @include('back-end.layout.nav')
                 <div class="container-fluid">
+                    @yield('above-table')
                     <h3 class="text-dark mb-4">{{$routeName}}  </h3> 
                     <div class="card shadow">
                         <div class="card-header py-3">

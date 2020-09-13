@@ -17,7 +17,7 @@ class OfferController extends BackEndController
             $requestArray['user_id'] = Auth::user()->id;
             if(isset($requestArray['image']) )
             {
-                $fileName = uploadFile($request->image );
+                $fileName = uploadFile($request->image , 'offers' );
                 $requestArray['image'] =  $fileName;
             }
             $this->model->create($requestArray);

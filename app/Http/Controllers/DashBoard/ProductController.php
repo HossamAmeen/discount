@@ -11,4 +11,31 @@ class ProductController extends BackEndController
     {
         parent::__construct($model);
     }
+    public function show($VendorId)
+    {
+        $rows = Product::where('vendor_id' , $VendorId)->paginate(15);
+        $routeName = $this->getClassNameFromModel();
+        return view('back-end/products.index' , compact('rows' ,'routeName' ));
+    }
+    public function edit($id)
+    {
+        // return Auth::user()->role;
+        $row = $this->model->FindOrFail($id);
+        $moduleName = $this->getModelName();
+        $pageTitle = "Edit " . $moduleName;
+        $pageDes = "Here you can edit " .$moduleName;
+        $folderName = $this->getClassNameFromModel();
+        $routeName = $folderName;
+        $append = $this->append();
+        //  return $row->images;
+
+        return view('back-end.' . $folderName . '.edit', compact(
+            'row',
+            'pageTitle',
+            'moduleName',
+            'pageDes',
+            'folderName',
+            'routeName'
+        ))->with($append);
+    }
 }

@@ -56,12 +56,13 @@ class ClientOrderController extends Controller
         }
         $cart = Cart::where(  'client_id' , '=' ,  $clientId )->where( 'is_done' , false)->first();
         if(!isset($cart)){
-            $cart = Cart::create(['client_id' =>  $clientId  ]);
+            $cart = Cart::create(['client_id' =>  $clientId ,'total_cost'=>0 ]);
         }
-        $order = Order::where(['product_id'=> $request->product_id , 'client_id' =>  $clientId])->first();
+        $order = Order::where(['product_id'=> $request->product_id , 'client_id' =>  $clientId , 'cart_id' => $cart->id])->first();
         // return $order ;
         if(isset($order))
         {
+        
             return $this->APIResponse(null, 'this order is found in the cart', 400);
         }
         $vendor = Vendor::select('client_ratio','client_vip_ratio')->find($product->vendor_id);
@@ -76,6 +77,8 @@ class ClientOrderController extends Controller
             'client_id'=>  $clientId,
             'cart_id'=>$cart->id,
         ]);
+        $cart->total_cost += $order->quantity * $order->price ;
+        $cart->save();
         $this->addChoiceForOrder($request->json , $order->id);
         return $this->APIResponse(null, null, 200);
     }

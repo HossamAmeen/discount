@@ -37,7 +37,7 @@ class CreateVendorsTable extends Migration
             $table->string('google_id')->nullable();
             $table->string('facebook_id')->nullable();
             $table->double('rating')->default(0)->nullable();
-            $table->double('discount')->default(0);
+            $table->double('discount_ratio')->default(0);
             $table->double('client_ratio')->default(0);
             $table->double('client_vip_ratio')->default(0);
             

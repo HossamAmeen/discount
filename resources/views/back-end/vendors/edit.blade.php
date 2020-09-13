@@ -28,7 +28,16 @@
                         <div class="col">
                             <div class="card shadow mb-3">
                                 <div class="card-header py-3">
-                                    <p class="text-primary m-0 font-weight-bold">update admin ({{$row->store_name}})</p>
+                                    <p class="text-primary m-0 font-weight-bold">update vendor ({{$row->store_name}})</p>
+                                    <a href="{{ url('admin/products/'.$row->id) }}" class="btn-sm btn-info" style="display:inline-block;">
+                                       {{$products_count}} products     
+                                    </a>
+                                    <a href="{{ url('admin/products/'.$row->id) }}" class="btn-sm btn-info" style="display:inline-block;">
+                                        {{$orders_count}} orders     
+                                     </a>
+                                     <a href="{{ url('admin/products/'.$row->id) }}" class="btn-sm btn-info" style="display:inline-block;">
+                                        {{$total_gain}} pound     
+                                     </a>
                                 </div>
                                 <div class="card-body">
                                     @if ($errors->any())
@@ -81,7 +90,7 @@
                                                 @php $inputName = 'password_confirmation' ; @endphp
                                                 <div class="form-group"><label ><strong>{{$inputName}}</strong></label>
                                                     <input class="form-control" type="password" name="{{$inputName}}" 
-                                                     value="{{Request::old($inputName) ?? $row->$inputName}}" ></div>
+                                                      ></div>
                                             </div>
                                         </div>
                                         <div class="form-row">
@@ -98,7 +107,7 @@
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
-                                                @php $inputName = 'discount' ; @endphp
+                                                @php $inputName = 'discount_ratio' ; @endphp
                                                 <div class="form-group"><label ><strong>{{$inputName}}</strong></label><input class="form-control" type="text"
                                                          name="{{$inputName}}" value="{{Request::old($inputName) ?? $row->$inputName}}"></div>
                                             </div>
@@ -109,7 +118,7 @@
                                                           value="{{Request::old($inputName) ?? $row->$inputName}}" readonly></div>
                                             </div>
                                         </div>
-                                        <div class="form-row">
+                                        {{-- <div class="form-row">
                                             <div class="col">
                                                 @php $inputName = 'client_ratio' ; @endphp
                                                 <div class="form-group"><label ><strong>client ratio</strong></label><input class="form-control" type="text"
@@ -120,7 +129,7 @@
                                                 <div class="form-group"><label ><strong>client vip ratio</strong></label><input class="form-control" type="text"
                                                          name="{{$inputName}}"  value="{{Request::old($inputName) ?? $row->$inputName}}"></div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="form-row">
                                             <div class="col">
                                                 @php $inputName = 'delivery' ; @endphp

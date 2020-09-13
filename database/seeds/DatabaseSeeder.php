@@ -89,7 +89,20 @@ class DatabaseSeeder extends Seeder
             'client_id'  => 1
         ]);
         
-      
+        \App\Models\ProductCategory::create([
+            'name' => "sandwich",
+            'vendor_id'=>1,
+        ]);
+       
+        \App\Models\Product::create([
+            'name' => "big testy",
+            'description'=> "A sweet and delicious sandwich",
+            'price' => 100,
+            'quantity'=>5,
+            'vendor_id'=>1,
+            'category_id'=>1,
+            'user_id'=>1
+        ]);
         factory('App\Models\Category',9)->create();
         factory('App\Models\Vendor',25)->create();
         factory('App\Models\ProductCategory',10)->create();

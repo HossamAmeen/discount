@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Cart extends Model
 {
      use SoftDeletes;
-     protected $fillable = ['is_done' ,'date', 'client_id','client_address_id'];
+     protected $fillable = ['is_done' ,'date','total_cost', 'client_id','client_address_id'];
      protected $hidden = [
          "deleted_at","created_at" , 'updated_at' 
     ];

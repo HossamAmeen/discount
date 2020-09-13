@@ -71,7 +71,7 @@ $factory->define(App\Models\Vendor::class, function (Faker $faker) {
         'password'=>bcrypt('admins'), 
         'phone' => $faker->e164PhoneNumber,
         'store_name'=> $faker->name,
-        'discount'=>rand(1,15),
+        'discount_ratio'=>rand(1,15),
         'client_ratio'=>rand(1,6),
         'client_vip_ratio'=>rand(1,9),
         'store_description'=> $faker->name,

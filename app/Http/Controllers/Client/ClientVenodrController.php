@@ -61,7 +61,7 @@ class ClientVenodrController extends Controller
             $data[]=$product;
             
         }
-        $data[]=  $vendor ;
+        // $data[]=  $vendor ;
         // $data['vendor'] =$vendor ; // Vendor::select('first_name','rating')->find($id);
         return $this->APIResponse($data, null, 200);
     }

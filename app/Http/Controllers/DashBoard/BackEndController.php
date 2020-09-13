@@ -86,7 +86,7 @@ class BackEndController extends Controller
         $pageDes = "Here you can edit " .$moduleName;
         $folderName = $this->getClassNameFromModel();
         $routeName = $folderName;
-        $append = $this->append();
+        $append = $this->appendEdited($id);
         //  return $row->images;
 
         return view('back-end.' . $folderName . '.edit', compact(
@@ -176,5 +176,7 @@ class BackEndController extends Controller
     protected function append(){
         return [];
     }
-
+    protected function appendEdited($id){
+        return [];
+    }
 }

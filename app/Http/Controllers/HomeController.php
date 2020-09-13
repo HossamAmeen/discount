@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\{City,Category};
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -13,7 +13,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -24,5 +24,15 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+    public function showCities()
+    {
+        $data = City::all();
+        return $this->APIResponse($data, null, 200);
+    }
+    public function showCategories()
+    {
+        $data = Category::all();
+        return $this->APIResponse($data, null, 200);
     }
 }

@@ -164,6 +164,7 @@
             <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('products.index')}}" id="products"><i class="fas fa-table"></i><span>products</span></a></li>
             <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('orders.index')}}" id="orders"><i class="fas fa-table"></i><span>orders</span></a></li>
             <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('categories.index')}}" id="categories"><i class="fas fa-table"></i><span>categories</span></a></li>
+            <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('offers.index')}}" id="offers"><i class="fas fa-table"></i><span>offers</span></a></li>
             <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('cities.index')}}" id="cities"><i class="fas fa-table"></i><span>cities</span></a></li>
             {{-- <li class="nav-item" role="presentation"><a class="nav-link" href="register.html"><i class="fas fa-user-circle"></i><span>Register</span></a></li> --}}
         </ul>

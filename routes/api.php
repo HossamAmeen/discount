@@ -82,6 +82,7 @@ Route::prefix('client')->namespace('Client')->group(function(){
         Route::get('show-vendors' , 'ClientVenodrController@showVendors');
         Route::get('show-vendors-categories/{vendorId}' , 'ClientVenodrController@showVendorsCategories');
         Route::get('show-vendor-products/{vendorId}', 'ClientVenodrController@showProducts');
+        Route::get('offers' , 'ClientVenodrController@showOffers');
         Route::get('search' , 'ClientVenodrController@searchOfVendors');
         
     });

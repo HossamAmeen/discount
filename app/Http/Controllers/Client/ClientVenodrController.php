@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\APIResponseTrait;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Client,Vendor,Category,Order,Product,ProductCategory};
+use App\Models\{Client,Vendor,Category,Order,Product,ProductCategory , Offer};
 use Auth;
 class ClientVenodrController extends Controller
 {
@@ -26,6 +26,11 @@ class ClientVenodrController extends Controller
         return $this->APIResponse($vendors, null, 200);      
     }
 
+    public function showOffers()
+    {
+        $offers = Offer::get('image');
+        return $this->APIResponse($offers, null, 200);      
+    }
     public function showVendorsCategories($id)
     {
         $categories = ProductCategory::with('products')->where('vendor_id' , $id)->get();

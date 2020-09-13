@@ -22,7 +22,7 @@ class ClientVenodrController extends Controller
         }
         // if(request('city_id')){}
        
-        $vendors = $vendors->get(['id','first_name', 'last_name' ,'client_ratio', 'client_vip_ratio' ,'rating', 'store_description', 'store_logo' , 'store_background_image' ]);
+        $vendors = $vendors->get(['id','first_name', 'last_name' ,'store_name','client_ratio', 'client_vip_ratio' ,'rating', 'store_description', 'store_logo' , 'store_background_image' ]);
         return $this->APIResponse($vendors, null, 200);      
     }
 

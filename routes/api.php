@@ -79,7 +79,7 @@ Route::prefix('client')->namespace('Client')->group(function(){
         Route::put('/update-order/{orderId?}', 'ClientOrderController@updateOrder');    ////// لسه choice
         Route::delete('delete-order/{orderId}' , 'ClientOrderController@deleteOrder'); 
 
-        Route::get('show-vendors' , 'ClientVenodrController@showVendors');
+    Route::get('show-vendors' , 'ClientVenodrController@showVendors');
         Route::get('show-vendors-categories/{vendorId}' , 'ClientVenodrController@showVendorsCategories');
         Route::get('show-vendor-products/{vendorId}', 'ClientVenodrController@showProducts');
         Route::get('offers' , 'ClientVenodrController@showOffers');

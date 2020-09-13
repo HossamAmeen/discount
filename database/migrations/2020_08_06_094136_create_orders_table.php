@@ -23,6 +23,7 @@ class CreateOrdersTable extends Migration
             // $table->time('time')->nullable();
             // 
             $table->integer('quantity');
+            $table->double('vendor_penefit')->default(0);
             // $table->string('address');
             // $table->string('phone');
             // $table->string('city');
@@ -32,6 +33,8 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('product_id')->unsigned()->nullable();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('set null');
 
+            $table->bigInteger('vendor_id')->unsigned()->nullable();
+            $table->foreign('vendor_id')->references('id')->on('vendors')->onDelete('set null');
 
             $table->bigInteger('client_id')->unsigned()->nullable();
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('set null');

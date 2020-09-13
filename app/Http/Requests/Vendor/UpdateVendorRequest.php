@@ -44,8 +44,8 @@ class UpdateVendorRequest extends FormRequest
             'expiration_date' => [ 'date_format:Y-m-d'],   
             'client_ratio' => ['numeric'], 
             'client_vip_ratio' => ['numeric'], 
-            'delivery' => ['numeric'], 
-            'discount' => ['numeric'], 
+            'delivery' => ['numeric'  , 'nullable'], 
+            'discount_ratio' => ['numeric'], 
             
         ];
         return $rules;

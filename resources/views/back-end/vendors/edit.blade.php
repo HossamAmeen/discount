@@ -20,22 +20,22 @@
                 <div class="container-fluid">
                     <div class="d-sm-flex justify-content-between align-items-center mb-4">
                         <h3 class="text-dark mb-0">admins</h3>
-                        {{-- <a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i
-                                class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a> --}}
                     </div>
-                  
                     <div class="row">
                         <div class="col">
                             <div class="card shadow mb-3">
                                 <div class="card-header py-3">
                                     <p class="text-primary m-0 font-weight-bold">update vendor ({{$row->store_name}})</p>
+                                    <a href="{{ url('admin/product-categories/'.$row->id) }}" class="btn-sm btn-info" style="display:inline-block;">
+                                        {{$categories_count}} categories of product     
+                                     </a>
                                     <a href="{{ url('admin/products/'.$row->id) }}" class="btn-sm btn-info" style="display:inline-block;">
                                        {{$products_count}} products     
                                     </a>
-                                    <a href="{{ url('admin/products/'.$row->id) }}" class="btn-sm btn-info" style="display:inline-block;">
-                                        {{$orders_count}} orders     
-                                     </a>
-                                     <a href="{{ url('admin/products/'.$row->id) }}" class="btn-sm btn-info" style="display:inline-block;">
+                            
+                                     <a href="{{url('admin/orders/'.$row->id.'?type=vendors')}}" class="btn-sm btn-info"
+                                        style="display:inline-block;">{{$orders_count}} orders</a>
+                                     <a href="#" class="btn-sm btn-info" style="color:white ,display:inline-block;">
                                         {{$total_gain}} pound     
                                      </a>
                                 </div>
@@ -50,7 +50,7 @@
                                         <strong>{{session()->get('action')}}</strong>
                                     </div>
                                     @endif
-                                    <form method="POST" action="{{ route($routeName.'.update' , $row->id) }}"  enctype="multipart/form-data">
+                                    <form method="POST" action="{{ route($routeName.'.update' , $row->id) }}"  enctype="multipart/form-data" autocomplete="off">
                                         @csrf
                                         @method('put')
                                         {{-- '', '', 'password' ,'', '', 'role', 'image' ,'user_id' --}}
@@ -84,7 +84,7 @@
                                                 @php $inputName = 'password' ; @endphp
                                                 <div class="form-group"><label ><strong>{{$inputName}}</strong></label>
                                                     <input class="form-control" type="password"
-                                                         name="{{$inputName}}" ></div>
+                                                         name="{{$inputName}}" value=""></div>
                                             </div>
                                             <div class="col">
                                                 @php $inputName = 'password_confirmation' ; @endphp
@@ -118,18 +118,18 @@
                                                           value="{{Request::old($inputName) ?? $row->$inputName}}" readonly></div>
                                             </div>
                                         </div>
-                                        {{-- <div class="form-row">
+                                        <div class="form-row">
                                             <div class="col">
                                                 @php $inputName = 'client_ratio' ; @endphp
                                                 <div class="form-group"><label ><strong>client ratio</strong></label><input class="form-control" type="text"
-                                                         name="{{$inputName}}" value="{{Request::old('client_ratio') ?? $row->$inputName}}"></div>
+                                                         name="{{$inputName}}" value="{{Request::old('client_ratio') ?? $row->$inputName}}" readonly></div>
                                             </div>
                                             <div class="col">
                                                 @php $inputName = 'client_vip_ratio' ; @endphp
                                                 <div class="form-group"><label ><strong>client vip ratio</strong></label><input class="form-control" type="text"
-                                                         name="{{$inputName}}"  value="{{Request::old($inputName) ?? $row->$inputName}}"></div>
+                                                         name="{{$inputName}}"  value="{{Request::old($inputName) ?? $row->$inputName}}" readonly></div>
                                             </div>
-                                        </div> --}}
+                                        </div>
                                         <div class="form-row">
                                             <div class="col">
                                                 @php $inputName = 'delivery' ; @endphp

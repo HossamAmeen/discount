@@ -1,6 +1,34 @@
 @extends('back-end.layout.app')
 
+@section('above-table')
+<form method="get" action="{{ route('orders.index') }}" >
+    @csrf
+    <div class="form-row">
+        <div class="col-xs-4">
+          @php $inputName = 'status' ; @endphp
+          <label ><strong>{{$inputName}}</strong></label>
+          <select name="{{$inputName}}">
+            <option value="null"></option>
+              <option>done</option>
+          </select>
+          @php $inputName = 'is_vip' ; @endphp
+          <label ><strong>vip {{Request::old('is_vip')}}</strong></label>
+          <select name="{{$inputName}}"> 
+            <option value="null"></option>
+              <option value="1" {{Request::old('is_vip') == 1 ? "selected" : " " }}>yes</option>
+              <option value="0">no</option>
+          </select>
+          @php $inputName = 'date' ; @endphp
+          <label ><strong>{{$inputName}}</strong></label>
 
+          <input  id="ex1" type="date" name="{{$inputName}}" value="{{Request::old($inputName) ?? date('Y-m-d')}}" >
+        </div>
+    </div>
+    <br>
+    <div class="form-group"><button class="btn btn-primary btn-sm"
+        type="submit">search </button></div>
+</form>
+@endsection
 @section('content')
 
 <table class="table dataTable my-0" id="dataTable">
@@ -14,6 +42,7 @@
             <th>Price</th>
             <th>is vip</th>
             <th>status</th>
+            <th>date</th>
            
         </tr>
     </thead>
@@ -27,7 +56,7 @@
             <td>{{$value->price}}</td>
             <td>{{$value->is_vip ? "vip" : "free"}}</td>
             <td id="{{$value->id . 'status'}}">{{$value->status}}</td>
-            
+            <td>{{$value->created_at}}</td>
             {{-- <td>
                 <form action="{{ route($routeName.'.destroy' ,$value ) }}" method="post">
                     {{ csrf_field() }}

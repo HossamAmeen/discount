@@ -7,26 +7,26 @@
     <thead>
 
         <tr>
-            <th>Name</th>
-
-            <th>Email</th>
-            <th>Phone</th>
+            <th>total cost</th>
+            <th>date</th>
+            <th>address</th>
             <th>status</th>
-            <th>user</th>
-            <th>action</th>
+            {{-- <th>user</th>
+            <th>action</th> --}}
         </tr>
     </thead>
     <tbody>
         @foreach($rows as $key => $value)
         <tr>
-            <td><img class="rounded-circle mr-2" width="30" height="30"
-                    src="{{asset('assets/img/avatars/avatar1.jpeg')}}">{{$value->first_name. $value->last_name }}</td>
+            {{-- <td><img class="rounded-circle mr-2" width="30" height="30"
+                    src="{{asset('assets/img/avatars/avatar1.jpeg')}}">{{$value->first_name. $value->last_name }}</td> --}}
 
-            <td>{{$value->email}}</td>
-            <td>{{$value->phone}}</td>
-            <td id="{{$value->id . 'status'}}">{{$value->status}}</td>
-            <td>{{$value->user->name??" not found"}}</td>
-            <td>
+            <td>{{$value->total_cost}}</td>
+            <td>{{$value->date}}</td>
+            <td>{{$value->address->address??" not found"}}</td>
+            <td>{{$value->is_done == 1 ? "done" : "not checkout"}}</td>
+            {{-- <td>{{$value->user->name??" not found"}}</td> --}}
+            {{-- <td>
                 <form action="{{ route($routeName.'.destroy' ,$value ) }}" method="post">
                     {{ csrf_field() }}
                     {{ method_field('delete') }}
@@ -46,20 +46,19 @@
                     </button>
                 </form>
 
-            </td>
+            </td> --}}
 
         </tr>
         @endforeach
     </tbody>
     <tfoot>
         <tr>
-            <th>Name</th>
-
-            <th>Email</th>
-            <th>Phone</th>
+            <th>total cost</th>
+            <th>date</th>
+            <th>address</th>
             <th>status</th>
-            <th>user</th>
-            <th>action</th>
+            {{-- <th>user</th>
+            <th>action</th> --}}
         </tr>
     </tfoot>
 </table>
@@ -68,7 +67,7 @@
 @push('js')
 <script type="text/javascript">
     $(document).ready(function(){
-            $('#{{$routeName}}').addClass('active');
+            $('#clients').addClass('active');
         });
 </script>
 <script>

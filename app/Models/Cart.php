@@ -15,6 +15,9 @@ class Cart extends Model
     {
         return $this->hasMany(Order::class);
     }
+    public function address(){
+        return $this->belongsTo(ClientAddress::class ,'client_address_id');
+    }
     public function user(){
         return $this->belongsTo(User::class);
     }

@@ -13,7 +13,7 @@ class WishList extends Model
     ];
     public function product()
     {
-        return $this->belongsTo(Product::class)->select(['id' , 'name' , 'description' , 'price' , 'image']);
+        return $this->belongsTo(Product::class , 'product_id')->select(['id' , 'name' , 'description' , 'price' , 'image']);
     }
     public function user(){
         return $this->belongsTo(User::class);

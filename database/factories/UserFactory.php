@@ -106,6 +106,7 @@ $factory->define(App\Models\Order::class, function (Faker $faker) {
         // 'time'=>$faker->time(),
         // 'date'=>$faker->date(),
         'quantity'=>rand(3,15),
+        
         // 'address'=>$faker->address(),
         // 'phone'=>"01010079798",
         // 'city'=>$faker->city(),

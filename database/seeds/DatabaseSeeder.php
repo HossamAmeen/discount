@@ -44,8 +44,9 @@ class DatabaseSeeder extends Seeder
             'password'   => bcrypt('admin'),
             'phone'      => "01010079798",
             'store_name' => "mac",
-            'client_ratio' => 30,
-            'client_vip_ratio'=>40,
+            'discount_ratio'=>15,
+            'client_ratio' => 5,
+            'client_vip_ratio'=>10,
             'store_description' =>"good fast food",
             'store_logo' => 'avatar.png'
         ]);
@@ -55,12 +56,12 @@ class DatabaseSeeder extends Seeder
           //  'gender'     => "male",
             'email'      => "hosamameen948s@gmail.com",
             'password'   => bcrypt('admins'),
-            'phone'      => "01010079798",
+            'phone'      => "01010079793",
             'store_name' => "KFC",
             'store_description' =>"fast food for every one",
             'status'     => 'accept',
-            'client_ratio' => 30,
-            'client_vip_ratio'=>40,
+            'client_ratio' => 10,
+            'client_vip_ratio'=>20,
             'store_logo' => 'avatar.png'
         ]);
         \App\Models\Client::create([

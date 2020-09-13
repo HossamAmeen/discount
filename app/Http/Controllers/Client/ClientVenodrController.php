@@ -56,8 +56,8 @@ class ClientVenodrController extends Controller
         foreach($products as $item)
         {
             $product = $item ;
-            $product['client_price'] = $item->price - (  $vendor->client_ratio * $item->price / 100 ) ;
-            $product['client_vip_price'] = $item->price - (  $vendor->client_vip_ratio * $item->price / 100 ) ;
+            $product['client_price'] = $item->price - (  $vendor->discount_ratio / 3 * $item->price / 100 ) ;
+            $product['client_vip_price'] = $item->price - (  ( $vendor->discount_ratio * 2 / 3 )* $item->price / 100 ) ;
             $data[]=$product;
             
         }

@@ -54,6 +54,7 @@ class ClientOrderController extends Controller
         if(!isset($product)){
             return $this->APIResponse(null, "this product not found", 400);
         }
+        
         $cart = Cart::where(  'client_id' , '=' ,  $clientId )->where( 'is_done' , false)->first();
         if(!isset($cart)){
             $cart = Cart::create(['client_id' =>  $clientId ,'total_cost'=>0 ]);
@@ -65,17 +66,20 @@ class ClientOrderController extends Controller
         
             return $this->APIResponse(null, 'this order is found in the cart', 400);
         }
-        $vendor = Vendor::select('client_ratio','client_vip_ratio')->find($product->vendor_id);
+        $vendor = Vendor::select('id','discount_ratio','client_ratio','client_vip_ratio')->find($product->vendor_id);
         $is_client_vip = Auth::guard('client-api')->user()->is_vip ; 
         // $discount =  $is_client_vip == true ? $vendor->client_vip_ratio : $vendor->client_ratio ;
+        // $orderPrice =  ;
         $order = Order::create([
-            'price' => $is_client_vip == true ? $product->price - (  $vendor->client_vip_ratio * $product->price / 100 ) : $product->price - (  $vendor->client_ratio * $product->price / 100 ),
+            'price' =>  $is_client_vip == true ? $product->price - ($vendor->client_vip_ratio *$product->price /100 ) : $product->price -   ($vendor->client_ratio *$product->price /100 ),
             'discount' =>  $is_client_vip == true ? $vendor->client_vip_ratio : $vendor->client_ratio ,
             'is_vip'=>$is_client_vip,
             'quantity' =>$request->quantity ,
             'product_id' => $request->product_id,
             'client_id'=>  $clientId,
             'cart_id'=>$cart->id,
+            'vendor_id'=>$vendor->id,
+            'vendor_penefit'=>$product->price - ($vendor->discount_ratio * $product->price / 100  )
         ]);
         $cart->total_cost += $order->quantity * $order->price ;
         $cart->save();

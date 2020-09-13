@@ -25,9 +25,13 @@ Route::prefix('admin')->namespace('DashBoard')->group(function(){
         Route::resource('users' , "UserController");
         Route::resource('cities' , "CityController");
         Route::resource('vendors' , "VendorController");
+        Route::get('product-categories/{VendorId}' , 'VendorController@showCategoriesOfProducts');
         Route::resource('clients' , "ClientController");
+        Route::get('client-carts/{VendorId}' , 'ClientController@showCarts');
+        Route::get('client-wishlist/{VendorId}' , 'ClientController@showWishList');
         Route::get('accept-client/{status}/{clientId}' , 'ClientController@changeStatus');
         Route::resource('categories' , "CategoryController");
+        Route::get('admin/categories-products/{VendorId}' , 'VendorController@showCategoriesOfProducts');
         Route::resource('products' , "ProductController");
         Route::resource('orders' , "OrderController");
         Route::resource('cities' , "CityController");

@@ -46,13 +46,13 @@ class ClientRequest extends FormRequest
             $rules['password'][] = 'required';
             $rules['gender'][] = 'required';
         }
-        if(strpos($this->fullUrl(), "profile") !== false) { 
-            $rules['first_name'][] = 'required';
-            $rules['last_name'][] = 'required';
-            $rules['email'][] = 'required';
-            $rules['phone'][] = 'required';
-            $rules['gender'][] = 'required';
-        }
+        // if(strpos($this->fullUrl(), "profile") !== false) { 
+        //     $rules['first_name'][] = 'required';
+        //     $rules['last_name'][] = 'required';
+        //     $rules['email'][] = 'required';
+        //     $rules['phone'][] = 'required';
+        //     $rules['gender'][] = 'required';
+        // }
         return $rules;
     }
     public $validator = null;

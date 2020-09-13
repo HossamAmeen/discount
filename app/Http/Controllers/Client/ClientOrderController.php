@@ -12,11 +12,11 @@ class ClientOrderController extends Controller
     public function showCart()
     {
         $cart = Cart::with('orders.product')->where('client_id' , Auth::guard('client-api')->user()->id)->where('is_done' , false)
-                    // ->get('id','price','quabtity','discount')
+                    ->get(['id','total_cost'])
                     ->first();
         // return $cart ;
         if($cart)
-        return $this->APIResponse($cart->orders, null, 200); 
+        return $this->APIResponse($cart, null, 200); 
         else
         return $this->APIResponse(null, null, 200);
     }

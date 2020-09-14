@@ -19,6 +19,7 @@ class CreateClientAddressesTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('phone');
+            $table->boolean('is_favourite')->default(0);
             $table->string('city')->nullable();
             $table->bigInteger('client_id')->unsigned()->nullable();
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('set null');

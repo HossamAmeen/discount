@@ -35,14 +35,16 @@ class ClientOrderController extends Controller
     }
     public function showOrders($id = null)
     {
-        if($id != null){
-            $orders = Order::with(['choices','address'])->select('id','quantity','date','discount','status','price','client_address_id')->find($id);
+        if(request('id') != null){
+            $orders = Order::with(['choices','address'])->select('id','quantity','discount','status','price')
+            ->find(request('id') );
             
             return $this->APIResponse($orders, null, 200);
         }
         else
         {
-            $orders = Order::with('address')->where('client_id' ,  Auth::guard('client-api')->user()->id)->get(['id' , 'date','discount' , 'price' ,'status' ,'client_id']);
+            $orders = Order::where('client_id' ,  Auth::guard('client-api')->user()->id)
+                                        ->get(['id' ,'discount' , 'price' ,'status' ,'client_id']);
         return $this->APIResponse($orders, null, 200);
         }
         

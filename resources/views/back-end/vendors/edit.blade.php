@@ -29,14 +29,20 @@
                                     <a href="{{ url('admin/product-categories/'.$row->id) }}" class="btn-sm btn-info" style="display:inline-block;">
                                         {{$categories_count}} categories of product     
                                      </a>
+
                                     <a href="{{ url('admin/products/'.$row->id) }}" class="btn-sm btn-info" style="display:inline-block;">
                                        {{$products_count}} products     
                                     </a>
                             
-                                     <a href="{{url('admin/orders/'.$row->id.'?type=vendors')}}" class="btn-sm btn-info"
+                                     <a href="{{url('admin/orders?vendor_id='.$row->id)}}" class="btn-sm btn-info"
                                         style="display:inline-block;">{{$orders_count}} orders</a>
-                                     <a href="#" class="btn-sm btn-info" style="color:white ,display:inline-block;">
-                                        {{$total_gain}} pound     
+
+                                     <a href="#" class="btn-sm btn-info" style="display:inline-block;">
+                                        {{$total_gain}} total benefits      
+                                     </a>
+
+                                     <a href="#" class="btn-sm btn-info" style="display:inline-block;">
+                                         {{$monthly_benefit }} monthly benefit     
                                      </a>
                                 </div>
                                 <div class="card-body">

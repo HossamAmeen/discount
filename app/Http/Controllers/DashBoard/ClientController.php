@@ -11,10 +11,18 @@ class ClientController extends BackEndController
     {
         parent::__construct($model);
     }
-    public function changeStatus($status , $clientID)
+    public function changeStatus($status , $clientID , $blockReason)
     {
+        
         $client = Client::find($clientID);
         $client->status = $status ; 
+        if($status == "blocked"){
+          $client->block_reason = $blockReason ; 
+        }
+        else
+        {
+            $client->block_reason = "not found";
+        }
         $client->save();
         return json_encode(['status'=>'secuss']);
     }

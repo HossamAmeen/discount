@@ -11,6 +11,7 @@ class OrderController extends BackEndController
     {
         parent::__construct($model);
     }
+
     public function show($id)
     {
         // return request('type');
@@ -22,13 +23,22 @@ class OrderController extends BackEndController
         $routeName = $this->getClassNameFromModel();
         return view('back-end/orders.index' , compact('rows' ,'routeName' ));
     }
+
     public function filter($rows)
     {
-        if( request('status') != 'null')
+        if( request('client_id') != 'null' && request('client_id') != null && request('client_id') != '')
+        $rows = $rows->where('client_id' , '=' , request('client_id'));
+        // if( request('vendor_id') != 'null')
+        if( request('vendor_id') != 'null' && request('vendor_id') != null && request('vendor_id') != '')
+        $rows = $rows->where('vendor_id' ,request('vendor_id'));
+        // if( request('status') != 'null')
+        if( request('status') != 'null' && request('status') != null && request('status') != '')
         $rows = $rows->where('status' ,request('status'));
-        if(request('date') != 'null')
+        // if(request('date') != 'null' && request('date') != null && request('date') !='')
+        if( request('date') != 'null' && request('date') != null && request('date') != '')
         $rows = $rows->whereDate('created_at', '=', request('date'));
-        if(request('is_vip') != 'null')
+        // if(request('is_vip') != 'null')
+        if( request('is_vip') != 'null' && request('is_vip') != null && request('is_vip') != '')
         $rows = $rows->where('is_vip', '=', request('is_vip'));
         return $rows;
     }

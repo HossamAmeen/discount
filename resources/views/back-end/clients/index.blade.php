@@ -12,6 +12,7 @@
             <th>Email</th>
             <th>Phone</th>
             <th>status</th>
+            <th>block reason</th>
             <th>user</th>
             <th>action</th>
         </tr>
@@ -25,6 +26,7 @@
             <td>{{$value->email}}</td>
             <td>{{$value->phone}}</td>
             <td id="{{$value->id . 'status'}}">{{$value->status}}</td>
+            <td id="{{$value->id . 'blockReason'}}">{{$value->block_reason ?? "not found"}}</td>
             <td>{{$value->user->name??" not found"}}</td>
             <td>
                 <form action="{{ route($routeName.'.destroy' ,$value ) }}" method="post">
@@ -34,7 +36,7 @@
                         style="display:inline-block;"> accept</a>
                     <a href="#" class="btn-sm btn-danger" onclick="acceptClient( 'blocked',{{$value->id}})"
                         style="display:inline-block;"> block</a>
-                    <a href="{{url('admin/orders/'.$value->id.'?type=clients')}}" class="btn-sm btn-info" onclick="acceptClient( 'accept',{{$value->id}})"
+                    <a href="{{url('admin/orders/?client_id='.$value->id)}}" class="btn-sm btn-info" 
                             style="display:inline-block;"> orders</a>
                     <a href="{{url('admin/client-carts/'.$value->id)}}" class="btn-sm btn-danger" 
                         style="display:inline-block;"> <i class="fas fa-shopping-cart"></i></a>
@@ -58,6 +60,7 @@
             <th>Email</th>
             <th>Phone</th>
             <th>status</th>
+            <th>block reason</th>
             <th>user</th>
             <th>action</th>
         </tr>
@@ -72,10 +75,17 @@
         });
 </script>
 <script>
-    function acceptClient(status,clientId)
+    function acceptClient(status,clientId )
     {
+        var reason = "not found";
+        if(status == "blocked")
+        var reason = prompt("Please enter block reason : ", "he is not good");
+        // if (reason != null) {
+            
+        //     "Hello " + person + "! How are you today?";
+        // }
         $.ajax({
-                url:"{{url('admin/accept-client')}}"+'/'+status+'/'+clientId,
+                url:"{{url('admin/accept-client')}}"+'/'+status+'/'+clientId+'/'+reason,
                 type:"get",
                
                 contentType: false,
@@ -86,6 +96,7 @@
                     console.log("success");
                     // document.getElementById("addForm").reset();
                     document.getElementById(clientId+'status').innerText=status;
+                    document.getElementById(clientId+'blockReason').innerText=reason;
                     // showSelectReasonExchange('reasonExchange',  document.getElementById("in_or_out")) ;
                     
                     // $(".cont-data").prepend(dataBack)

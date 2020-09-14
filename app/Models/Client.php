@@ -26,6 +26,10 @@ class Client extends Authenticatable
             return asset('assets/img/avatars/avatar-1.jpg');
         }
     }
+    public function addresses()
+    {
+        return $this->hasMany(ClientAddress::class , 'client_id')->orderBy('id')->limit(1);
+    }
     public function user(){
         return $this->belongsTo(User::class);
     }

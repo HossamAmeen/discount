@@ -1,32 +1,40 @@
 @extends('back-end.layout.app')
 
 @section('above-table')
-<form method="get" action="{{ route('orders.index') }}" >
+<form method="get"  action="{{ route('orders.index') }}">
     @csrf
     <div class="form-row">
         <div class="col-xs-4">
-          @php $inputName = 'status' ; @endphp
-          <label ><strong>{{$inputName}}</strong></label>
-          <select name="{{$inputName}}">
-            <option value="null"></option>
-              <option>done</option>
-          </select>
-          @php $inputName = 'is_vip' ; @endphp
-          <label ><strong>vip {{Request::old('is_vip')}}</strong></label>
-          <select name="{{$inputName}}"> 
-            <option value="null"></option>
-              <option value="1" {{Request::old('is_vip') == 1 ? "selected" : " " }}>yes</option>
-              <option value="0">no</option>
-          </select>
-          @php $inputName = 'date' ; @endphp
-          <label ><strong>{{$inputName}}</strong></label>
+            @php $inputName = 'status' ; @endphp
+            <label><strong>{{$inputName}}</strong></label>
+            <select name="{{$inputName}}">
+                <option value="null"></option>
+                <option {{request('status') == 'pending from client' ? "selected" : " " }} >pending from client</option>
+                <option {{request('status') == 'edit from vendor' ? "selected" : " " }}>edit from vendor</option>
+                <option {{request('status') == 'accept from client' ? "selected" : " " }}>accept from client</option>
+                <option {{request('status') == 'accept from vendor' ? "selected" : " " }}>accept from vendor</option>
+                <option {{request('status') == 'cancelled from vendor' ? "selected" : " " }}>cancelled from vendor</option>
+                <option {{request('status') == 'working' ? "selected" : " " }}>working</option>
+                <option {{request('status') == 'delivering' ? "selected" : " " }}>delivering</option>
+                <option {{request('status') == 'done' ? "selected" : " " }}>done</option>
+            </select>
+            @php $inputName = 'is_vip' ; @endphp
+            <label><strong>vip </strong></label>
+            <select name="{{$inputName}}">
+                <option value="null"></option>
+                <option value="1" {{request('is_vip') == 1 ? "selected" : " " }}>yes</option>
+                <option value="0" {{request('is_vip') == '0' ? "selected" : " " }}>no</option>
+            </select>
+            @php $inputName = 'date' ; @endphp
+            <label><strong>{{$inputName}}</strong></label>
+            <input id="ex1" type="date" name="{{$inputName}}" value="{{request($inputName) ?? ''}}">
 
-          <input  id="ex1" type="date" name="{{$inputName}}" value="{{Request::old($inputName) ?? date('Y-m-d')}}" >
+            <input type="text" name="vendor_id" value="{{request('vendor_id')}}" hidden>
+            <input type="text" name="client_id" value="{{request('client_id')}}" hidden>
         </div>
     </div>
     <br>
-    <div class="form-group"><button class="btn btn-primary btn-sm"
-        type="submit">search </button></div>
+    <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">search </button></div>
 </form>
 @endsection
 @section('content')
@@ -43,7 +51,7 @@
             <th>is vip</th>
             <th>status</th>
             <th>date</th>
-           
+
         </tr>
     </thead>
     <tbody>
@@ -59,18 +67,18 @@
             <td>{{$value->created_at}}</td>
             {{-- <td>
                 <form action="{{ route($routeName.'.destroy' ,$value ) }}" method="post">
-                    {{ csrf_field() }}
-                    {{ method_field('delete') }}
-                    <a href="#" class="btn-sm btn-info" onclick="acceptClient( 'accept',{{$value->id}})"
-                        style="display:inline-block;">
-                       block</a>
-                    <button type="submit" rel="tooltip" title="" class="btn-sm btn-danger" onclick="check()"
-                        style="display:inline-block;">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </form>
+            {{ csrf_field() }}
+            {{ method_field('delete') }}
+            <a href="#" class="btn-sm btn-info" onclick="acceptClient( 'accept',{{$value->id}})"
+                style="display:inline-block;">
+                block</a>
+            <button type="submit" rel="tooltip" title="" class="btn-sm btn-danger" onclick="check()"
+                style="display:inline-block;">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+            </form>
 
-            </td>  --}}
+            </td> --}}
 
         </tr>
         @endforeach
@@ -84,6 +92,7 @@
             <th>Price</th>
             <th>is vip</th>
             <th>status</th>
+            <th>date</th>
         </tr>
     </tfoot>
 </table>

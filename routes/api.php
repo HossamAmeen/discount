@@ -61,15 +61,13 @@ Route::prefix('client')->namespace('Client')->group(function(){
         Route::get('/show-profile', 'ClientController@showProfile');
         Route::get('/show-address', 'ClientController@showAddress');
         Route::post('/add-address', 'ClientController@addAddress');
+        Route::put('/update-address/{addressId}', 'ClientController@updateAddress');
         Route::put('/update-profile', 'ClientController@updateProfile');
         Route::post('/update-image', 'ClientController@updateImage');
-
-      
-         
-       
       
         Route::get('show-wishlist' , 'ClientProductController@showWishList');
-        Route::get('add-wishlist/{productId}' , 'ClientProductController@addWishList');
+        Route::post('add-wishlist/{productId}' , 'ClientProductController@addWishList');
+        Route::delete('delete-wishlist/{productId}' , 'ClientProductController@deleteWishlist');
         Route::get('detial-product/{productId}' , 'ClientProductController@showProduct');
         
         Route::get('show-cart' , 'ClientOrderController@showCart'); 
@@ -89,4 +87,5 @@ Route::prefix('client')->namespace('Client')->group(function(){
 });
 Route::get('cities', 'HomeController@showCities');
 Route::get('categories', 'HomeController@showCategories');
+Route::get('configration', 'HomeController@configration');
 

@@ -33,7 +33,7 @@
                                         <div class="col mr-2">
                                             <div class="text-uppercase text-primary font-weight-bold text-xs mb-1">
                                                 <span>vendors</span></div>
-                                            <div class="text-dark font-weight-bold h5 mb-0"><span>45</span></div>
+                                            <div class="text-dark font-weight-bold h5 mb-0"><span>{{$configrationSite->vendors}}</span></div>
                                         </div>
                                         <div class="col-auto"><i class="fas fa-building fa-2x text-gray-300"></i></div>
                                     </div>
@@ -46,14 +46,42 @@
                                     <div class="row align-items-center no-gutters">
                                         <div class="col mr-2">
                                             <div class="text-uppercase text-primary font-weight-bold text-xs mb-1">
-                                                <span>vendors today</span></div>
-                                            <div class="text-dark font-weight-bold h5 mb-0"><span>3</span></div>
+                                                <span>vendors current month</span></div>
+                                            <div class="text-dark font-weight-bold h5 mb-0"><span>{{$configrationSite->current_month_vendors}}</span></div>
                                         </div>
                                         <div class="col-auto"><i class="fas fa-building fa-2x text-gray-300"></i></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        {{-- <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-left-primary py-2">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col mr-2">
+                                            <div class="text-uppercase text-primary font-weight-bold text-xs mb-1">
+                                                <span>blocked vendors</span></div>
+                                            <div class="text-dark font-weight-bold h5 mb-0"><span>{{$configrationSite->blocked_vendors}}</span></div>
+                                        </div>
+                                        <div class="col-auto"><i class="fas fa-building fa-2x text-gray-300"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> --}}
+                        {{-- <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-left-primary py-2">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col mr-2">
+                                            <div class="text-uppercase text-primary font-weight-bold text-xs mb-1">
+                                                <span>accept vendors</span></div>
+                                            <div class="text-dark font-weight-bold h5 mb-0"><span>{{$configrationSite->accepted_vendors}}</span></div>
+                                        </div>
+                                        <div class="col-auto"><i class="fas fa-building fa-2x text-gray-300"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> --}}
                         <div class="col-md-6 col-xl-3 mb-4">
                             <div class="card shadow border-left-success py-2">
                                 <div class="card-body">
@@ -61,7 +89,7 @@
                                         <div class="col mr-2">
                                             <div class="text-uppercase text-success font-weight-bold text-xs mb-1">
                                                 <span>clients</span></div>
-                                            <div class="text-dark font-weight-bold h5 mb-0"><span>300</span></div>
+                                            <div class="text-dark font-weight-bold h5 mb-0"><span>{{$configrationSite->clients}}</span></div>
                                         </div>
                                         <div class="col-auto"><i class="fas fa-user-friends fa-2x text-gray-300"></i>
                                         </div>
@@ -76,7 +104,7 @@
                                         <div class="col mr-2">
                                             <div class="text-uppercase text-success font-weight-bold text-xs mb-1">
                                                 <span>clients joined today</span></div>
-                                            <div class="text-dark font-weight-bold h5 mb-0"><span>300</span></div>
+                                            <div class="text-dark font-weight-bold h5 mb-0"><span>{{$configrationSite->today_clients}}</span></div>
                                         </div>
                                         <div class="col-auto"><i class="fas fa-user-friends fa-2x text-gray-300"></i>
                                         </div>
@@ -94,47 +122,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="text-dark font-weight-bold h5 mb-0 mr-3">
-                                                        <span>200</span></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card shadow border-left-info py-2">
-                                <div class="card-body">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col mr-2">
-                                            <div class="text-uppercase text-info font-weight-bold text-xs mb-1">
-                                                <span>products</span></div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="text-dark font-weight-bold h5 mb-0 mr-3">
-                                                        <span>800</span></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card shadow border-left-info py-2">
-                                <div class="card-body">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col mr-2">
-                                            <div class="text-uppercase text-info font-weight-bold text-xs mb-1">
-                                                <span>top product</span></div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="text-dark font-weight-bold h5 mb-0 mr-3">
-                                                        <span>big testy</span></div>
+                                                        <span>{{$configrationSite->orders}}</span></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -154,7 +142,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="text-dark font-weight-bold h5 mb-0 mr-3">
-                                                        <span>36</span></div>
+                                                        <span>{{$configrationSite->today_orders}}</span></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -165,6 +153,47 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-left-info py-2">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col mr-2">
+                                            <div class="text-uppercase text-info font-weight-bold text-xs mb-1">
+                                                <span>products</span></div>
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="text-dark font-weight-bold h5 mb-0 mr-3">
+                                                        <span>{{$configrationSite->products}}</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-left-info py-2">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col mr-2">
+                                            <div class="text-uppercase text-info font-weight-bold text-xs mb-1">
+                                                <span>top product</span></div>
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="text-dark font-weight-bold h5 mb-0 mr-3">
+                                                        <span>{{$configrationSite->top_product}}</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- <div class="col-md-6 col-xl-3 mb-4">
                             <div class="card shadow border-left-info py-2">
                                 <div class="card-body">
                                     <div class="row align-items-center no-gutters">
@@ -203,7 +232,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                        
                     </div>
                     <div class="row">
@@ -245,6 +274,16 @@
                                                 <div class="form-group"><label for="phone"><strong>Phone</strong></label><input class="form-control" type="text"
                                                         placeholder="01010079798" name="phone" value="{{$configrationSite->phone}}"></div>
                                             </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <div class="form-group"><label
+                                                        for="website_name"><strong>about us</strong></label>
+                                                    <textarea class="form-control" name="about">{{$configrationSite->about ?? ""}}</textarea>    
+                                                </div>
+                                            </div>
+                                          
                                         </div>
                                         <div class="form-group"><button class="btn btn-primary btn-sm"
                                                 type="submit">Save Settings</button></div>

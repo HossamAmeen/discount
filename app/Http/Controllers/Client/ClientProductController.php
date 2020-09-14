@@ -35,7 +35,20 @@ class ClientProductController extends Controller
         $wishlist = Wishlist::with('product')->where('client_id' , Auth::guard('client-api')->user()->id)->get(['id','client_id' , 'product_id']);
         return $this->APIResponse($wishlist, null, 200);
     }
-
+    public function deleteWishlist($productId)
+    {
+        $wishlist = WishList::where(['client_id' =>Auth::guard('client-api')->user()->id,
+                                     'product_id'=> $productId
+                                     ])
+                            ->first();
+         if(!isset($wishlist)){
+            return $this->APIResponse(null, "this product is not found in wishlist", 400);
+        }
+        else{
+            $wishlist->delete();
+            return $this->APIResponse(null, null, 200);
+        }
+    }
     public function showProduct($id)
     {
         $product = Product::find($id);

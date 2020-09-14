@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Http\Controllers\APIResponseTrait;
-use App\Models\{City,Category};
+use App\Models\{City,Category,Configration};
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -35,6 +35,11 @@ class HomeController extends Controller
     public function showCategories()
     {
         $data = Category::all();
+        return $this->APIResponse($data, null, 200);
+    }
+    public function configration()
+    {
+        $data = Configration::all();
         return $this->APIResponse($data, null, 200);
     }
 }

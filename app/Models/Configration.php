@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Configration extends Model
 {
      use SoftDeletes;
-     protected $fillable = ['website_name' , 'email' , 'address' , 'phone' , 'user_id'];
+     protected $fillable = ['website_name' , 'email' , 'address' , 'phone' ,'about', 'user_id'];
      protected $hidden = [
-         "created_at" , 'updated_at' 
+         'user_id',"created_at" , 'updated_at' ,'deleted_at'
     ];
     public function user(){
         return $this->belongsTo(User::class);

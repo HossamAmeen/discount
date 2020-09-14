@@ -8,13 +8,14 @@
                     <thead>
                        
                         <tr>
-                            <th>Name</th>
+                            {{-- <th>Name</th> --}}
                             <th>Store Name</th>
                             <th>Email</th>
                             <th>Phone</th>
                             <th>rating</th>
                             <th>client ratio</th>
                             <th>client vip ratio</th>
+                            <th>date of registration</th>
                             <th>user</th>
                             <th>action</th>
                         </tr>
@@ -22,15 +23,17 @@
                     <tbody>
                         @foreach($rows as $key => $value)
                             <tr>
-                                <td><img class="rounded-circle mr-2" width="30" height="30"
-                                        src="{{asset('assets/img/avatars/avatar1.jpeg')}}">{{$value->first_name. $value->last_name }}</td>
+                                {{-- <td><img class="rounded-circle mr-2" width="30" height="30"
+                                        src="{{asset('assets/img/avatars/avatar1.jpeg')}}">{{$value->first_name. $value->last_name }}</td> --}}
                             
-                                <td>{{$value->store_name }}</td>
+                                <td><img class="rounded-circle mr-2" width="30" height="30" 
+                                     src="{{$value->store_logo}}">{{$value->store_name }}</td>
                                 <td>{{$value->email}}</td>
                                 <td>{{$value->phone}}</td>
                                 <td>{{$value->rating}}</td>
                                 <td>{{$value->client_ratio}}</td>
                                 <td>{{$value->client_vip_ratio}}</td>
+                                <td>{{$value->created_at->format('Y-m-d')}}</td>
                                 <td>{{$value->user->name??" not found"}}</td>
                                 <td>
                                     <form action="{{ route($routeName.'.destroy' ,$value ) }}" method="post">
@@ -53,13 +56,14 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>Name</th>
+                            {{-- <th>Name</th> --}}
                             <th>Store Name</th>
                             <th>Email</th>
                             <th>Phone</th>
                             <th>rating</th>
                             <th>client ratio</th>
                             <th>client vip ratio</th>
+                            <th>date of registration</th>
                             <th>user</th>
                             <th>action</th>
                         </tr>
@@ -72,5 +76,6 @@
     $(document).ready(function(){
             $('#{{$routeName}}').addClass('active');
         });
+    
 </script>
 @endpush

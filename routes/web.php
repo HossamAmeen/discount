@@ -29,7 +29,7 @@ Route::prefix('admin')->namespace('DashBoard')->group(function(){
         Route::resource('clients' , "ClientController");
         Route::get('client-carts/{VendorId}' , 'ClientController@showCarts');
         Route::get('client-wishlist/{VendorId}' , 'ClientController@showWishList');
-        Route::get('accept-client/{status}/{clientId}' , 'ClientController@changeStatus');
+        Route::get('accept-client/{status}/{clientId}/{blockReason}' , 'ClientController@changeStatus');
         Route::resource('categories' , "CategoryController");
         Route::get('admin/categories-products/{VendorId}' , 'VendorController@showCategoriesOfProducts');
         Route::resource('products' , "ProductController");

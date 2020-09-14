@@ -64,12 +64,15 @@ class VendorController extends BackEndController
     public function appendEdited($vendorId)
     {
         $products = Product::where('vendor_id' , $vendorId)->get();
-        $orders= Order::where('vendor_id' , $vendorId)->get() ;
         $categories = ProductCategory::where('vendor_id' , $vendorId)->get();
-        $data['orders_count'] =  $orders->count();
+        $orders= Order::where('vendor_id' , $vendorId)->where('status' , 'done') ;
+
         $data['products_count'] = $products ->count() ;
         $data['categories_count'] = $categories ->count() ;
-        $data['total_gain'] = $orders ->sum('vendor_penefit') ;
+
+        $data['orders_count'] =  $orders->get()->count();
+        $data['total_gain'] = $orders->get()->sum('vendor_penefit') ;
+        $data['monthly_benefit'] = $orders->whereMonth('updated_at' , date('m') )->get()->sum('vendor_penefit') ;
         return $data;
     }
     public function showCategoriesOfProducts($vendorId)

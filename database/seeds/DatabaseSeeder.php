@@ -71,6 +71,7 @@ class DatabaseSeeder extends Seeder
             'email'      => "client@gmail.com",
             'password'   => bcrypt('admin'),
             'phone'      => "01010079798",
+            'status'     => "accept",
             'user_id'    =>1
         ]);
         \App\Models\Client::create([

@@ -112,7 +112,7 @@ $factory->define(App\Models\Order::class, function (Faker $faker) {
         // 'city'=>$faker->city(),
         'product_id'=>rand(1,20),
         'is_vip'=>rand(0,1),
-        // 'client_address_id'=>1,
+        'vendor_id'=>rand(1,20),
         'client_id'=>rand(1,2)
     ];
 });

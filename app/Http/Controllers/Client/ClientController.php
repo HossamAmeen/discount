@@ -98,7 +98,8 @@ class ClientController extends Controller
 
     public function showProfile()
     {
-        $cLient = Client::where('id' , Auth::guard('client-api')->user()->id)->get(['first_name','last_name', 'gender', 'email', 'rating','is_vip','image', 'phone'])->first();
+        $cLient = Client::with('addresses')->where('id' , Auth::guard('client-api')->user()->id)
+        ->get(['id','first_name','last_name', 'gender', 'email', 'rating','is_vip','image', 'phone'])->first();
         $monthEaarning = 0 ; 
         // $orders = Order::select('orders.*')
         // ->join('products', 'products.id', '=', 'orders.product_id')
@@ -176,6 +177,19 @@ class ClientController extends Controller
         $address = ClientAddress::where('client_id' ,  Auth::guard('client-api')->user()->id)->get();
         return $this->APIResponse($address, null, 200);
     }
-   
+   public function updateAddress($id , Request $request)
+   {
+       
+    $address = ClientAddress::where(['id' => $id , 'client_id' =>Auth::guard('client-api')->user()->id ])->first();
+    if($address){
+        $address->update($request->all());
+        return $this->APIResponse(null, null, 200);
+    }
+    else
+    {
+        return $this->APIResponse(null, "address not found", 400);
+    }
+
+   }
 }
 

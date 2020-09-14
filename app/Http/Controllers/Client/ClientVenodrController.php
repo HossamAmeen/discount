@@ -73,10 +73,24 @@ class ClientVenodrController extends Controller
     public function searchOfVendors()
     {
         // return request('name') ;
-        $vendors = Vendor::accepted()->where('first_name' , 'LIKE', '%' . request('name') . '%' )
-                                     ->orWhere('last_name' , 'LIKE', '%' . request('name') . '%')
-                                    ->get();
-        return $this->APIResponse($vendors, null, 200);   
+        if(request('vendorId'))
+        {
+            $vendor = Vendor::accepted()->find( request('vendorId'));
+            if(!$vendor){
+                return $this->APIResponse(null, "this vendor is blocked", 400);   
+            }
+            $data = Product::where('vendor_id' , request('vendorId'))
+                             ->where('name' , 'LIKE', '%' . request('name') . '%' )
+                             ->orWhere('description' , 'LIKE', '%' . request('name') . '%')
+                            ->get();
+        }
+       else
+       {
+        $data = Vendor::accepted()->where('store_name' , 'LIKE', '%' . request('name') . '%' )
+        // ->orWhere('last_name' , 'LIKE', '%' . request('name') . '%')
+       ->get(['store_name' , 'store_description','client_ratio','client_vip_ratio','store_logo','store_background_image','rating']);
+       }
+        return $this->APIResponse($data, null, 200);   
     }
 
 }

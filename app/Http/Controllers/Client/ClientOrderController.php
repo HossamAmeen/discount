@@ -25,7 +25,32 @@ class ClientOrderController extends Controller
         $cart = Cart::where(['id'=>$cartId , 'client_id' =>  Auth::guard('client-api')->user()->id , 'is_done'=> false ])->first();
         // return request('address_id') ;
         if(isset($cart)){
-            $cart->update(['is_done' =>1 , 'date'=>date('Y-m-d') , 'client_address_id' =>request('address_id') ]);
+            if(request('address_id') != null && request('address_id') != 'null'){
+                $addressId  =request('address_id') ; 
+                // return "Test2";
+               
+            }else{
+                if( Auth::guard('client-api')->user()->favouriteAddress->id == null) // ?? Auth::guard('client-api')->user()->addresses->id ;
+                {
+                    return $this->APIResponse(null, "please choose address", 400);
+                }
+                $addressId  = Auth::guard('client-api')->user()->favouriteAddress->id;
+                // return "test";
+            }
+          
+        //    return  $addressId ;
+           if(count($cart->orders) > 0){
+            $orders = Order::where('cart_id' ,$cart->id )->update(['status'=>'sending from client']);
+            // return $orders;
+            }
+            else
+            {
+                return $this->APIResponse(null, "this cart empty", 400);
+            }
+
+            $cart->update(['is_done' =>1 , 'date'=>date('Y-m-d') , 'client_address_id' => $addressId ]);
+         
+          
             return $this->APIResponse(null, null, 200);
         }
         else{
@@ -45,7 +70,7 @@ class ClientOrderController extends Controller
         {
             $orders = Order::where('client_id' ,  Auth::guard('client-api')->user()->id)
                                         ->get(['id' ,'discount' , 'price' ,'status' ,'client_id']);
-        return $this->APIResponse($orders, null, 200);
+            return $this->APIResponse($orders, null, 200);
         }
         
     }
@@ -74,18 +99,20 @@ class ClientOrderController extends Controller
         // $orderPrice =  ;
         $order = Order::create([
             'price' =>  $is_client_vip == true ? $product->price - ($vendor->client_vip_ratio *$product->price /100 ) : $product->price -   ($vendor->client_ratio *$product->price /100 ),
-            'discount' =>  $is_client_vip == true ? $vendor->client_vip_ratio : $vendor->client_ratio ,
+            'discount_ratio' =>  $is_client_vip == true ? $vendor->client_vip_ratio : $vendor->client_ratio ,
+            'discount' =>  $is_client_vip == true ? $vendor->client_vip_ratio *$product->price /100  : $vendor->client_ratio *$product->price /100 ,
             'is_vip'=>$is_client_vip,
             'quantity' =>$request->quantity ,
             'product_id' => $request->product_id,
             'client_id'=>  $clientId,
             'cart_id'=>$cart->id,
             'vendor_id'=>$vendor->id,
-            'vendor_penefit'=>$product->price - ($vendor->discount_ratio * $product->price / 100  )
+            'vendor_benefit'=>$product->price - ($vendor->discount_ratio * $product->price / 100  )
         ]);
-        $cart->total_cost += $order->quantity * $order->price ;
+        $choicesCost = $this->addChoiceForOrder($request->json , $order->id);
+        $cart->total_cost += $order->quantity * $order->price + $choicesCost ;
         $cart->save();
-        $this->addChoiceForOrder($request->json , $order->id);
+       
         return $this->APIResponse(null, null, 200);
     }
 
@@ -106,7 +133,19 @@ class ClientOrderController extends Controller
     {
        $order =  Order::where(['id'=>$orderId , 'client_id' => Auth::guard('client-api')->user()->id])->first();
        if(isset($order)){
+           $cart = Cart::find($order->cart_id);
+        //    $choicesCost = $this->choicesCost($order->id);
+           $choicesCost =  OrderChoice::where('order_id' , $order->id)->get('id');
+           $totalChoicesCost =  OrderChoice::where('order_id' , $order->id)->sum('price');
+        //    return $choicesCost ;
+       
+           $cart->total_cost -= $order->price * $order->quantity + $totalChoicesCost ;
+            OrderChoice::destroy($choicesCost->toArray());
+        // return ;
+        //    $choicesCost->delete();
+          
            $order->delete();
+           $cart->save();
         return $this->APIResponse(null, null, 200);
        }
        else{
@@ -118,7 +157,7 @@ class ClientOrderController extends Controller
         $json = json_decode($jsonReuest , true) ; 
        
         $choices = $json['Groups'] ; 
-       
+        $totalCost = 0 ;
         $type;$groupName; 
         if(is_array($choices))
         foreach($choices as $key=> $choiceItems){
@@ -127,7 +166,7 @@ class ClientOrderController extends Controller
             if(is_array($item))
             {
                 foreach($item as $itemKeyt =>$itemt){
-                  
+                    $totalCost += $itemt['price'] ;
                     OrderChoice::create([
                         'name' => $itemt['name'] , 
                         'price' => $itemt['price'] , 
@@ -152,8 +191,9 @@ class ClientOrderController extends Controller
                 }  
             }
         }
+        return $totalCost ; 
     }
-
+    
      /**
          * 
          * {

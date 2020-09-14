@@ -47,6 +47,7 @@ class DatabaseSeeder extends Seeder
             'discount_ratio'=>15,
             'client_ratio' => 5,
             'client_vip_ratio'=>10,
+            'status'=>"accept",
             'store_description' =>"good fast food",
             'store_logo' => 'avatar.png'
         ]);

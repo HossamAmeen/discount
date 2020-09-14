@@ -115,11 +115,23 @@ class ClientController extends Controller
         // $cLient['monthEarning'] = $monthOrders->sum('price');
         // $cLient['appFree'] =  0;
         // $cLient['appFreeRatio'] =  0;
-        $cLient['totalOrders'] = 15 ;
-        $cLient['totalVipOrders'] = 10 ;
+        $vendorBenefit = Order::where('vendor_id', Auth::guard('vendor-api')->user()->id)->sum('vendor_benefit');
+        $vendorBenefitVip = Order::where(['vendor_id'=> Auth::guard('vendor-api')->user()->id ,'is_vip'=>1 ])->sum('vendor_benefit');
+        $vendorBenefitFree = Order::where(['vendor_id'=> Auth::guard('vendor-api')->user()->id ,'is_vip'=>0 ])->sum('vendor_benefit');
+        
+        $totalDiscount = Order::where('vendor_id', Auth::guard('vendor-api')->user()->id)->sum('discount');
+        $totalVipDiscount = Order::where(['vendor_id'=> Auth::guard('vendor-api')->user()->id ,'is_vip'=>1 ])->sum('discount');
+        $totalFreeDiscount = Order::where(['vendor_id'=> Auth::guard('vendor-api')->user()->id ,'is_vip'=>0 ])->sum('discount');
 
-        $cLient['totalDiscount'] = 25 ;
-        $cLient['totalVipDiscount'] = 18 ;
+        $cLient['totalOrdersBenefit'] = $vendorBenefit ;
+        $cLient['ordersVip'] = $vendorBenefitVip ;
+        $cLient['ordersFree'] = $vendorBenefitFree ;
+
+       
+        $cLient['totalDiscount'] = $totalDiscount ;
+        $cLient['totalVipDiscount'] = $totalVipDiscount ;
+        $cLient['totalFreeDiscount'] = $totalFreeDiscount ;
+
         return $this->APIResponse($cLient, null, 200);
     }
 

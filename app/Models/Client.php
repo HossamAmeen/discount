@@ -30,6 +30,10 @@ class Client extends Authenticatable
     {
         return $this->hasMany(ClientAddress::class , 'client_id')->orderBy('id')->limit(1);
     }
+    public function favouriteAddress()
+    {
+        return $this->hasOne(ClientAddress::class , 'client_id')->where('is_favourite' , 1 );
+    }
     public function user(){
         return $this->belongsTo(User::class);
     }

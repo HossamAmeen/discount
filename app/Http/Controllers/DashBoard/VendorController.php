@@ -71,8 +71,8 @@ class VendorController extends BackEndController
         $data['categories_count'] = $categories ->count() ;
 
         $data['orders_count'] =  $orders->get()->count();
-        $data['total_gain'] = $orders->get()->sum('vendor_penefit') ;
-        $data['monthly_benefit'] = $orders->whereMonth('updated_at' , date('m') )->get()->sum('vendor_penefit') ;
+        $data['total_gain'] = $orders->get()->sum('vendor_benefit') ;
+        $data['monthly_benefit'] = $orders->whereMonth('updated_at' , date('m') )->get()->sum('vendor_benefit') ;
         return $data;
     }
     public function showCategoriesOfProducts($vendorId)

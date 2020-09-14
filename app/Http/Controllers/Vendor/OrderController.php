@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Vendor;
 use App\Http\Controllers\APIResponseTrait;
-use App\Models\{Order,Vendor , OrderChoice};
+use App\Models\{Order,Cart,Vendor , OrderChoice};
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
@@ -18,13 +18,47 @@ class OrderController extends Controller
                         // ->join('buildings', 'buildings.id', '=', 'blocks.building_id')
                         // ->where('vendors.id', Auth::guard('vendor-api')->user()->id)
                         ->get();
-        // $orders['choices'] = OrderChoice::where('order_id' , );
+         $orders = Order::with('choices')->where('vendor_id' , Auth::guard('vendor-api')->user()->id )
+                                         ->where('status' ,'!=','done')
+                                         ->where('status' ,'!=','pending from client')
+                                         ->where('status' ,'!=','cancelled from vendor')
+                                         ->get();
+                                        //  ->groupBy('cart_id')
+       
+        //   $orders = Cart::with('orders')
+        //                 ->select('carts.*')
+        //                 ->join('orders', 'orders.cart_id', '=', 'carts.id')
+        //                 ->where('orders.vendor_id', Auth::guard('vendor-api')->user()->id)
+        //                 ->get();
+        // return $orders;
+        // foreach($cartsId as $order){
+
+
+        // }
+        // $carts = array();
+        // foreach($orders as $order){
+        //     $cart = array();
+        //     foreach($orders as $order2){
+        //         if($order2->cart_id == $order->cart_id){
+        //             $cart[] = $order;
+        //         }
+        //     }
+        //     $carts[] = $cart ;
+        //     $cart = array();
+        // }                                
+        // return $carts;
+        // // return count($orders);
+        // for($i=1 ; $i<=count($orders) ; $i++){
+        //     return $orders[$i];
+        // }
+        // // $orders['choices'] = OrderChoice::where('order_id' , );
         return $this->APIResponse($orders, null, 200); 
     }
     public function showDoneOrders()
     {
         $oders = Order::with(['client','product'])
         ->where('status' ,'done')
+        ->where('vendor_id' , Auth::guard('vendor-api')->user()->id )
         ->orderBy('id' , 'DESC')
         ->take(10)
         ->get();

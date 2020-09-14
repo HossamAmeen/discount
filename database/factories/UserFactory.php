@@ -102,6 +102,7 @@ $factory->define(App\Models\Order::class, function (Faker $faker) {
     return [
         'price'=>rand(20 , 300),
         'discount'=>rand(20 , 300),
+        'discount_ratio'=>rand(20 , 300),
         'status'=>$statues[rand(0,7)],
         // 'time'=>$faker->time(),
         // 'date'=>$faker->date(),

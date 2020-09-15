@@ -22,7 +22,10 @@ class OrderController extends Controller
                                          ->where('status' ,'!=','done')
                                          ->where('status' ,'!=','pending from client')
                                          ->where('status' ,'!=','cancelled from vendor')
-                                         ->get();
+                                         ->orderBy('cart_id')
+                                         ->get()
+                                        //  ->sortBy('cart_id')
+                                         ;
                                         //  ->groupBy('cart_id')
        
         //   $orders = Cart::with('orders')

@@ -95,6 +95,15 @@ $factory->define(App\Models\VendorCategory::class, function (Faker $faker) {
         'category_id' =>rand(1,9)
     ];
 });
+$factory->define(App\Models\Cart::class, function (Faker $faker) {
+    return [
+        'is_done'=>rand(0,1) ,
+        'date'=>date('Y-m-d'),
+        'total_cost' =>rand(100 , 300),
+        'client_id'=>rand(1,2),
+        'client_address_id'=>1
+    ];
+});
 
 $factory->define(App\Models\Order::class, function (Faker $faker) {
     $statues = ['pending from client','edit from vendor','accept from client' ,'accept from vendor' 
@@ -105,7 +114,7 @@ $factory->define(App\Models\Order::class, function (Faker $faker) {
         'discount_ratio'=>rand(20 , 300),
         'status'=>$statues[rand(0,7)],
         // 'time'=>$faker->time(),
-        // 'date'=>$faker->date(),
+        'cart_id'=>rand(1 , 5),
         'quantity'=>rand(3,15),
         
         // 'address'=>$faker->address(),

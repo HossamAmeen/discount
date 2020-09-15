@@ -113,6 +113,7 @@ class DatabaseSeeder extends Seeder
         factory('App\Models\Product',25)->create();
       
         factory('App\Models\WishList',25)->create();
+        factory('App\Models\Cart',5)->create();
         factory('App\Models\Order',35)->create();
 
         $this->productChoices();

@@ -88,4 +88,6 @@ Route::prefix('client')->namespace('Client')->group(function(){
 Route::get('cities', 'HomeController@showCities');
 Route::get('categories', 'HomeController@showCategories');
 Route::get('configration', 'HomeController@configration');
+Route::get('questions', 'HomeController@showQuestions');
+Route::post('complaint', 'HomeController@addComplaint');
 

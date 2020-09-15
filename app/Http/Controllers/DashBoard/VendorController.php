@@ -88,4 +88,14 @@ class VendorController extends BackEndController
             'folderName',
         ));
     }
+    public function filter($rows)
+    {
+        if( request('search') != null )
+        $rows = $rows->where('first_name' , 'LIKE', '%' . request('search') . '%' )
+                     ->orWhere('last_name' , 'LIKE', '%' . request('search') . '%' )
+                     ->orWhere('store_name' , 'LIKE', '%' . request('search') . '%')
+                     ->orWhere('email' , 'LIKE', '%' . request('search') . '%')
+                     ->orWhere('phone' , 'LIKE', '%' . request('search') . '%');
+        return $rows; 
+    }
 }

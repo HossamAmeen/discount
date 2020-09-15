@@ -38,4 +38,11 @@ class ProductController extends BackEndController
             'routeName'
         ))->with($append);
     }
+    public function filter($rows)
+    {
+        if( request('search') != null )
+        $rows = $rows->where('name' , 'LIKE', '%' . request('search') . '%' )
+                     ->orWhere('description' , 'LIKE', '%' . request('search') . '%' );
+        return $rows; 
+    }
 }

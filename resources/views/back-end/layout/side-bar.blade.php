@@ -166,6 +166,8 @@
             <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('categories.index')}}" id="categories"><i class="fas fa-table"></i><span>categories</span></a></li>
             <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('offers.index')}}" id="offers"><i class="fas fa-table"></i><span>offers</span></a></li>
             <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('cities.index')}}" id="cities"><i class="fas fa-table"></i><span>cities</span></a></li>
+            <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('questions.index')}}" id="questions"><i class="fas fa-table"></i><span>questions</span></a></li>
+            <li class="nav-item" role="presentation"><a class="nav-link" href="{{route('complaints.index')}}" id="complaints"><i class="fas fa-table"></i><span>complaints</span></a></li>
             {{-- <li class="nav-item" role="presentation"><a class="nav-link" href="register.html"><i class="fas fa-user-circle"></i><span>Register</span></a></li> --}}
         </ul>
         <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>

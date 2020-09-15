@@ -127,3 +127,19 @@ $factory->define(App\Models\Order::class, function (Faker $faker) {
     ];
 });
 
+$factory->define(App\Models\Question::class, function (Faker $faker) {
+    return [
+        'question'=>$faker->text ,
+        'answer'=>$faker->text,
+        'user_id'=>1
+    ];
+});
+
+$factory->define(App\Models\Complaint::class, function (Faker $faker) {
+    return [
+        'complaint'=>$faker->text ,
+        'phone'=>$faker->e164PhoneNumber,
+        'name'=>$faker->name,
+        'user_id'=>1
+    ];
+});

@@ -8,34 +8,18 @@
 @endif
 @section('add-button')
 
-<a  href="{{ route($routeName.'.create') }}">
+{{-- <a  href="{{ route($routeName.'.create') }}">
     <button class="alert-success">
          <i class="fa fa-plus"></i> 
         </button>
-</a>
-@endsection
-@section('search')
-
-<form action="{{route($routeName.'.index')}}" >
-    <div class="text-md-right dataTables_filter" id="dataTable_filter"><label><input
-                type="search" class="form-control form-control-sm"
-                aria-controls="dataTable" placeholder="Search" name="search" value="{{request('search')?? ''}}" required></label>
-                <button type="submit" rel="tooltip" title="" class="btn-sm btn-info" style="display:inline-block;">
-                    <i class="fas fa-search"></i>  
-            </button>
-    </div>
-</form>
+</a> --}}
 @endsection
 <table class="table dataTable my-0" id="dataTable">
     <thead>
        
         <tr>
-            {{-- <th>image</th> --}}
-            <th>user name</th>
-            <th>name</th>
-            <th>phone</th>
-            <th>email</th>
-            <th>role</th>
+            <th>question</th>
+            <th>answer</th>
             <th>user</th>
             <th>action</th>
         </tr>
@@ -43,15 +27,11 @@
     <tbody>
         @foreach($rows as $key => $value)
             <tr>
-                <td><img class="rounded-circle mr-2" width="30" height="30"
-                        {{-- src="{{$value->image != null && $value->image !="" ? asset($value->image) : asset('assets/img/avatars/avatar1.jpeg')}}"> --}}
-                        src="{{$value->image}}">
-                        {{$value->user_name}}</td>
+                
              
-                <td>{{$value->name}}</td>
-                <td>{{$value->phone}}</td>
-                <td>{{$value->email}}</td>
-                <td>{{$value->role == 1 ? "admin" : "employer"}}</td>
+                <td>{{$value->question}}</td>
+                <td>{{$value->answer}}</td>
+             
                 <td>{{$value->user->name??" not found"}}</td>
                 <td>
                     <form action="{{ route($routeName.'.destroy' ,$value ) }}" method="post">
@@ -75,11 +55,8 @@
     </tbody>
     <tfoot>
         <tr>
-            <th>user name</th>
-            <th>name</th>
-            <th>phone</th>
-            <th>email</th>
-            <th>role</th>
+            <th>question</th>
+            <th>answer</th>
             <th>user</th>
             <th>action</th>
         </tr>

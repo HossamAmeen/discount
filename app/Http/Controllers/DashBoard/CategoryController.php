@@ -19,4 +19,10 @@ class CategoryController extends BackEndController
         session()->flash('action', 'add successfully');     
         return redirect()->route($this->getClassNameFromModel().'.index');
     }
+    public function filter($rows)
+    {
+        if( request('search') != null )
+        $rows = $rows->where('name' , 'LIKE', '%' . request('search') . '%' );
+        return $rows; 
+    }
 }

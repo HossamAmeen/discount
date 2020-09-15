@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Configration extends Model
 {
      use SoftDeletes;
-     protected $fillable = ['website_name' , 'email' , 'address' , 'phone' ,'about', 'user_id'];
+     protected $fillable = ['website_name' , 'email' , 'address' , 'phone' ,'about','terms_conditions','privacy_policy', 'user_id'];
      protected $hidden = [
          'user_id',"created_at" , 'updated_at' ,'deleted_at'
     ];

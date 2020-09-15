@@ -1,6 +1,17 @@
 @extends('back-end.layout.app')
 
+@section('search')
 
+<form action="{{route($routeName.'.index')}}" >
+    <div class="text-md-right dataTables_filter" id="dataTable_filter"><label><input
+                type="search" class="form-control form-control-sm"
+                aria-controls="dataTable" placeholder="Search" name="search" value="{{request('search')?? ''}}" required></label>
+                <button type="submit" rel="tooltip" title="" class="btn-sm btn-info" style="display:inline-block;">
+                    <i class="fas fa-search"></i>  
+            </button>
+    </div>
+</form>
+@endsection
 @section('content')
 
 <table class="table dataTable my-0" id="dataTable">

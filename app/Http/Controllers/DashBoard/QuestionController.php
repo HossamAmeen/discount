@@ -4,11 +4,11 @@ namespace App\Http\Controllers\DashBoard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\City;
+use App\Models\Question;
 use Auth;
-class CityController extends BackEndController
+class QuestionController extends BackEndController
 {
-    public function __construct(City $model)
+    public function __construct(Question $model)
     {
         parent::__construct($model);
     }
@@ -19,10 +19,15 @@ class CityController extends BackEndController
             session()->flash('action', 'add successfully');     
             return redirect()->route($this->getClassNameFromModel().'.index');
     }
-    public function filter($rows)
-    {
-        if( request('search') != null )
-        $rows = $rows->where('name' , 'LIKE', '%' . request('search') . '%' );
-        return $rows; 
+
+    public function update($id , Request $request){
+
+        $row = $this->model->FindOrFail($id);
+        $requestArray = $request->all(); 
+        $requestArray['user_id'] = Auth::user()->id;
+        $row->update($requestArray);
+        $row->save();
+        session()->flash('action', 'updated successfully');
+        return redirect()->route($this->getClassNameFromModel().'.index');
     }
 }

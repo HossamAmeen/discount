@@ -4,7 +4,7 @@ namespace App\Http\Controllers\DashBoard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Configration;
+use App\Models\{Configration,Complaint};
 use Auth;
 class ConfigrationController extends BackEndController
 {
@@ -59,5 +59,26 @@ class ConfigrationController extends BackEndController
         return redirect()->back();
 
     }
-    
+    public function showComlpaints()
+    {
+        $rows = Complaint::paginate(15);
+        $folderName ='complaints';
+        $pageTitle = "Show complaints from clients";
+        $routeName = "complaints";
+        return view('back-end.complaints', compact(
+            'rows',
+            'routeName',
+            'pageTitle',
+            'folderName',
+        ));
+    }
+    public function deleteComlpaint($complaintId)
+    {
+        $row = Complaint::find($complaintId);
+        if($row){
+            $row->delete();
+            session()->flash('action', 'deleted successfully');
+        }
+        return redirect()->back();
+    }
 }

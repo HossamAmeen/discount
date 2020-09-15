@@ -36,6 +36,9 @@ Route::prefix('admin')->namespace('DashBoard')->group(function(){
         Route::resource('orders' , "OrderController");
         Route::resource('offers' , "OfferController");
         Route::resource('cities' , "CityController");
+        Route::get('complaints' , "ConfigrationController@showComlpaints")->name('complaints.index');
+        Route::delete('complaints/{complaintId}' , "ConfigrationController@deleteComlpaint")->name('complaints.destroy');
+        Route::resource('questions' , "QuestionController");
     });
 });
 

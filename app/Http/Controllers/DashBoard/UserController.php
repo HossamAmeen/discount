@@ -61,6 +61,15 @@ class UserController extends BackEndController
         return redirect()->route($this->getClassNameFromModel().'.index');
     }
 
-   
+    public function filter($rows)
+    {
+       
+        if( request('search') != null )
+        $rows = $rows->where('user_name' , 'LIKE', '%' . request('search') . '%' )
+                     ->orWhere('name' , 'LIKE', '%' . request('search') . '%' )
+                     ->orWhere('email' , 'LIKE', '%' . request('search') . '%')
+                     ->orWhere('phone' , 'LIKE', '%' . request('search') . '%');
+        return $rows; 
+    }
    
 }

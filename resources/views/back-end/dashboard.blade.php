@@ -285,6 +285,24 @@
                                             </div>
                                           
                                         </div>
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <div class="form-group"><label
+                                                        for="website_name"><strong>terms and conditions</strong></label>
+                                                    <textarea class="form-control" name="terms_conditions">{{$configrationSite->terms_conditions ?? ""}}</textarea>    
+                                                </div>
+                                            </div>
+                                          
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <div class="form-group"><label
+                                                        for="website_name"><strong>privacy and policy</strong></label>
+                                                    <textarea class="form-control" name="privacy_policy">{{$configrationSite->privacy_policy ?? ""}}</textarea>    
+                                                </div>
+                                            </div>
+                                          
+                                        </div>
                                         <div class="form-group"><button class="btn btn-primary btn-sm"
                                                 type="submit">Save Settings</button></div>
                                     </form>

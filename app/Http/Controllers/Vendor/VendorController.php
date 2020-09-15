@@ -75,18 +75,24 @@ class VendorController extends Controller
     {
         $vendor = Vendor::find(Auth::guard('vendor-api')->user()->id);
         $monthEaarning = 0 ; 
-        $orders = Order::select('orders.*')
-        ->join('products', 'products.id', '=', 'orders.product_id')
-        ->join('vendors', 'vendors.id', '=', 'products.vendor_id')
-        ->where('vendors.id', Auth::guard('vendor-api')->user()->id);
+        $orders = Order::where('vendor_id', Auth::guard('vendor-api')->user()->id)
+                         ->where('status' , 'done');
+
         $ordersTotal = $orders->get();
-        $monthOrders =  $orders->whereYear('date' , date('Y'))->whereMonth('date' , date('m'))->get();
-       
+        $monthOrders = Order::select('orders.*')
+        ->join('carts', 'carts.id', '=', 'orders.cart_id')
+        ->where('orders.vendor_id', Auth::guard('vendor-api')->user()->id)
+        ->where('orders.status' , 'done')
+        ->whereYear('carts.date' , date('Y'))
+        ->whereMonth('carts.date' , date('m'))
+        ->get();
+
+        // return $monthOrders;
         $vendor['total'] =  count($ordersTotal);
-        $vendor['totalEarning'] = $ordersTotal->sum('price');
+        $vendor['totalEarning'] = $ordersTotal->sum('vendor_benefit');
     
         $vendor['monthOrders'] =  count($monthOrders);
-        $vendor['monthEarning'] = $monthOrders->sum('price');
+        $vendor['monthEarning'] = $monthOrders->sum('vendor_benefit');
         $vendor['appFree'] =  0;
         $vendor['appFreeRatio'] =  0;
         return $this->APIResponse($vendor, null, 200);

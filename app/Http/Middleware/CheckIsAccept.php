@@ -16,11 +16,16 @@ class CheckIsAccept
      */
     public function handle($request, Closure $next, $guard = 'api')
     {
-        if (Auth::guard($guard)->user()->status == "accept"  ) {
+        $status = Auth::guard($guard)->user()->status ; 
+
+        if ($status == "accept"  ) {
             return $next($request);
             }
-            else
+            elseif($status == "pending" )
             {
+                return $this->APIResponse(null, " This account has not been approved from admin", 401);
+            }
+            elseif($status == "blocked"){
                 return $this->APIResponse(null, "this accout not accept from admin because :" 
                 . Auth::guard($guard)->user()->block_reason, 401);
             }

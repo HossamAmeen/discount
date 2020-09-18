@@ -219,7 +219,11 @@ class ClientController extends Controller
                 'date'=>date('Y-m-d'),
                 'benefactor_id'=>Auth::guard('client-api')->user()->id
             ]);
-            return $this->APIResponse(null, null, 200);
+            $client = Client::find(Auth::guard('client-api')->user()->id);
+            $client->is_vip= 1 ;
+            $client->save();
+            // Auth::guard('client-api')->user()->is_vip= 1 ;
+            return $this->APIResponse(['is_vip'=>$client->is_vip], null, 200);
         }
         else{
             return $this->APIResponse(null, "this card not found", 400);

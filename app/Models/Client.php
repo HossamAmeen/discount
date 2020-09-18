@@ -15,6 +15,10 @@ class Client extends Authenticatable
      protected $hidden = [
        'password', 'user_id' , "created_at" , 'updated_at' ,'deleted_at'
     ];
+    public function getFullNameAttribute()
+    {
+        return $this->attributes['first_name'] .' '. $this->attributes['last_name'] ;
+    }
     public function getImageAttribute()
     {
         

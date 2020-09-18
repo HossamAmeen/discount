@@ -228,8 +228,8 @@
             function Validate() {
                 var password = document.getElementById("password").value;
                 var confirmPassword = document.getElementById("password_confirmation").value;
-                console.log(password);
-                console.log(confirmPassword);
+                // console.log(password);
+                // console.log(confirmPassword);
                 if (password != confirmPassword) {
                     alert("Passwords do not match.");
                     return false;

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Client\ClientRequest;
-use App\Models\{Client,Category,Order,ProductCategory , ClientAddress};
+use App\Models\{Client,Category,Order,ProductCategory , ClientAddress , ShippingCard};
 use Auth ,File;
 class ClientController extends Controller
 {
@@ -202,6 +202,28 @@ class ClientController extends Controller
         return $this->APIResponse(null, "address not found", 400);
     }
 
+   }
+
+   public function rechargeBalance(Request $request)
+   {
+       $balance = ShippingCard::where('number' , $request->number)->first();
+    //    return $request->number;
+        if($balance){
+            if($balance->is_used == true)
+            {
+                return $this->APIResponse(null, "this card is used", 400);
+            }
+            $balance->update([
+                'is_used'=>true,
+                'user_table'=>'clients',
+                'date'=>date('Y-m-d'),
+                'benefactor_id'=>Auth::guard('client-api')->user()->id
+            ]);
+            return $this->APIResponse(null, null, 200);
+        }
+        else{
+            return $this->APIResponse(null, "this card not found", 400);
+        }
    }
 }
 

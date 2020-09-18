@@ -14,13 +14,14 @@ class CreateShippingCardsTable extends Migration
     public function up()
     {
         Schema::create('shipping_cards', function (Blueprint $table) {
-            $table->id();
+            $table->id(); 
             $table->string('number');
-            $table->double('value');
+            // $table->double('value');
             $table->boolean('is_used')->default(false);
-            $table->string('user_table');
+            $table->string('user_table')->nullable();
+            $table->date('date')->nullable();
             $table->bigInteger('benefactor_id')->unsigned()->nullable();
-            
+           
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
 

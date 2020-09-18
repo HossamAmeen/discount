@@ -37,6 +37,7 @@ Route::prefix('vendor')->namespace('Vendor')->group(function(){
         Route::post('/update-store', 'VendorController@updateProfile');
         Route::post('update-store-image', 'VendorController@updateProfile');
         Route::get('product-categories', 'VendorController@showProductCategories');
+        Route::put('recharge-balance' , 'VendorController@rechargeBalance');
             /////////// products ////////////
         Route::post('/add-product', 'ProductController@addProduct');
         Route::post('/update-product/{id}', 'ProductController@updateProduct');
@@ -67,24 +68,26 @@ Route::prefix('client')->namespace('Client')->group(function(){
         Route::put('/update-profile', 'ClientController@updateProfile');
         Route::post('/update-image', 'ClientController@updateImage');
       
-        Route::get('show-wishlist' , 'ClientProductController@showWishList');
-        Route::post('add-wishlist/{productId}' , 'ClientProductController@addWishList');
-        Route::delete('delete-wishlist/{productId}' , 'ClientProductController@deleteWishlist');
-        Route::get('detial-product/{productId}' , 'ClientProductController@showProduct');
-        
-        Route::get('show-cart' , 'ClientOrderController@showCart'); 
-        Route::put('checkout-cart' , 'ClientOrderController@checkoutCart');  
-        Route::get('/show-orders/{orderId?}', 'ClientOrderController@showOrders'); ///// لسه  show with choices
-        Route::post('add-order' , 'ClientOrderController@addOrder'); 
-        Route::put('/update-order/{orderId?}', 'ClientOrderController@updateOrder');    ////// لسه choice
-        Route::delete('delete-order/{orderId}' , 'ClientOrderController@deleteOrder'); 
+        Route::middleware('checkIsAccept:client-api')->group(function () {
+            Route::get('show-wishlist' , 'ClientProductController@showWishList');
+            Route::post('add-wishlist/{productId}' , 'ClientProductController@addWishList');
+            Route::delete('delete-wishlist/{productId}' , 'ClientProductController@deleteWishlist');
+            Route::get('detial-product/{productId}' , 'ClientProductController@showProduct');
+            
+            Route::get('show-cart' , 'ClientOrderController@showCart'); 
+            Route::put('checkout-cart' , 'ClientOrderController@checkoutCart');  
+            Route::get('/show-orders/{orderId?}', 'ClientOrderController@showOrders'); ///// لسه  show with choices
+            Route::post('add-order' , 'ClientOrderController@addOrder'); 
+            Route::put('/update-order/{orderId?}', 'ClientOrderController@updateOrder');    ////// لسه choice
+            Route::delete('delete-order/{orderId}' , 'ClientOrderController@deleteOrder'); 
 
-        Route::get('show-vendors' , 'ClientVenodrController@showVendors');
-        Route::get('show-vendors-categories/{vendorId}' , 'ClientVenodrController@showVendorsCategories');
-        Route::get('show-vendor-products/{vendorId}', 'ClientVenodrController@showProducts');
-        Route::get('offers' , 'ClientVenodrController@showOffers');
-        Route::get('search' , 'ClientVenodrController@searchOfVendors');
-        
+            Route::get('show-vendors' , 'ClientVenodrController@showVendors');
+            Route::get('show-vendors-categories/{vendorId}' , 'ClientVenodrController@showVendorsCategories');
+            Route::get('show-vendor-products/{vendorId}', 'ClientVenodrController@showProducts');
+            Route::get('offers' , 'ClientVenodrController@showOffers');
+            Route::get('search' , 'ClientVenodrController@searchOfVendors');
+            Route::put('recharge-balance' , 'ClientController@rechargeBalance');
+        }); 
     });
 });
 Route::get('cities', 'HomeController@showCities');
@@ -92,4 +95,5 @@ Route::get('categories', 'HomeController@showCategories');
 Route::get('configration', 'HomeController@configration');
 Route::get('questions', 'HomeController@showQuestions');
 Route::post('complaint', 'HomeController@addComplaint');
+
 

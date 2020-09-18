@@ -4,19 +4,20 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\APIResponseTrait;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Cart , Vendor,Order,Product ,OrderChoice};
+use App\Models\{Cart , Vendor,Order,OrderItem,Product ,OrderChoice};
 use Auth;
 class ClientOrderController extends Controller
 {
     use APIResponseTrait;
     public function showCart()
     {
-        $cart = Cart::with('orders.product')->where('client_id' , Auth::guard('client-api')->user()->id)->where('is_done' , false)
-                    ->get(['id','total_cost'])
+        $order = Order::with('items')->where('client_id' , Auth::guard('client-api')->user()->id)
+                    ->where(['status'=>'pending from client'])
+                    ->get(['id'  ,'date','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id'])
                     ->first();
         // return $cart ;
-        if($cart)
-        return $this->APIResponse($cart, null, 200); 
+        if($order)
+        return $this->APIResponse($order, null, 200); 
         else
         return $this->APIResponse(null, null, 200);
     }
@@ -66,15 +67,15 @@ class ClientOrderController extends Controller
     public function showOrders($id = null)
     {
         if(request('id') != null){
-            $orders = Order::with(['choices','address'])->select('id','quantity','discount','status','price')
+            $orders = Order::with(['itemsDone','address'])->select('id'  ,'date','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id')
             ->find(request('id') );
             
             return $this->APIResponse($orders, null, 200);
         }
         else
         {
-            $orders = Order::where('client_id' ,  Auth::guard('client-api')->user()->id)
-                                        ->get(['id' ,'discount' , 'price' ,'status' ,'client_id']);
+            $orders = Order::with(['itemsDone'])->where('client_id' ,  Auth::guard('client-api')->user()->id)
+                                        ->get(['id'  ,'date','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id']);
             return $this->APIResponse($orders, null, 200);
         }
         
@@ -82,41 +83,70 @@ class ClientOrderController extends Controller
     public function addOrder(Request $request)
     {
         $clientId = Auth::guard('client-api')->user()->id ; 
-        $product = Product::find($request->product_id);
+         $product= Product::find($request->product_id);
         if(!isset($product)){
             return $this->APIResponse(null, "this product not found", 400);
         }
         
-        $cart = Cart::where(  'client_id' , '=' ,  $clientId )->where( 'is_done' , false)->first();
-        if(!isset($cart)){
-            $cart = Cart::create(['client_id' =>  $clientId ,'total_cost'=>0 ]);
-        }
-        $order = Order::where(['product_id'=> $request->product_id , 'client_id' =>  $clientId , 'cart_id' => $cart->id])->first();
-        // return $order ;
-        if(isset($order))
-        {
-        
-            return $this->APIResponse(null, 'this order is found in the cart', 400);
-        }
+        // $cart = Cart::where(  'client_id' , '=' ,  $clientId )->where( 'is_done' , false)->first();
+        // if(!isset($cart)){
+        //     $cart = Cart::create(['client_id' =>  $clientId ,'total_cost'=>0 ]);
+        // }
+
+       
+        $over_quantity = ( $request->quantity - $product->quantity ) >0 ? $request->quantity - $product->quantity : 0 ;
+
         $vendor = Vendor::select('id','discount_ratio','client_ratio','client_vip_ratio')->find($product->vendor_id);
         $is_client_vip = Auth::guard('client-api')->user()->is_vip ; 
-        // $discount =  $is_client_vip == true ? $vendor->client_vip_ratio : $vendor->client_ratio ;
-        // $orderPrice =  ;
-        $order = Order::create([
-            'price' =>  $is_client_vip == true ? $product->price - ($vendor->client_vip_ratio *$product->price /100 ) : $product->price -   ($vendor->client_ratio *$product->price /100 ),
-            'discount_ratio' =>  $is_client_vip == true ? $vendor->client_vip_ratio : $vendor->client_ratio ,
-            'discount' =>  $is_client_vip == true ? $vendor->client_vip_ratio *$product->price /100  : $vendor->client_ratio *$product->price /100 ,
+        
+        $order = Order::where(['client_id' =>  $clientId , 'vendor_id' => $vendor->id] )->where( 'status' , 'pending from client' )->first();
+
+        if(!isset($order)){
+
+            $order = Order::create([
+                'price'=> $is_client_vip == true ? $product->price - ($vendor->client_vip_ratio *$product->price /100 ) : $product->price -   ($vendor->client_ratio *$product->price /100 ),
+                'delivery_cost' => $vendor->delivery_cost ?? 0,
+                'discount_ratio'=>$is_client_vip == true ? $vendor->client_vip_ratio : $vendor->client_ratio ,
+                'total_discount'=>$is_client_vip == true ? $vendor->client_vip_ratio *$product->price /100  : $vendor->client_ratio *$product->price /100 ,
+                'vendor_id' =>$vendor->id,
+                'client_id'=>  $clientId 
+            ]);
+        }
+        $orderItem = OrderItem::where(['product_id'=> $request->product_id , 'order_id' =>  $order->id , 'status'=>'pending from client' ])->first();
+        // return $order ;
+        if(isset($orderItem))
+        {
+            return $this->APIResponse(null, 'this order item is founded', 400);
+        }
+        $orderItem = OrderItem::create([
+            'price'=> $is_client_vip == true ? $product->price - ($vendor->client_vip_ratio *$product->price /100 ) : $product->price -   ($vendor->client_ratio *$product->price /100 ),
+            'choice_price'=>0,
+            'discount'=>$is_client_vip == true ? $vendor->client_vip_ratio *$product->price /100  : $vendor->client_ratio *$product->price /100 ,
+            'discount_ratio'=>$is_client_vip == true ? $vendor->client_vip_ratio : $vendor->client_ratio ,
             'is_vip'=>$is_client_vip,
-            'quantity' =>$request->quantity ,
-            'product_id' => $request->product_id,
-            'client_id'=>  $clientId,
-            'cart_id'=>$cart->id,
-            'vendor_id'=>$vendor->id,
-            'vendor_benefit'=>$product->price - ($vendor->discount_ratio * $product->price / 100  )
+            'quantity'=>$request->quantity ,
+            'over_quantity'=> $over_quantity,
+            'product_id'=>$request->product_id,
+            'order_id' => $order->id
+
         ]);
-        $choicesCost = $this->addChoiceForOrder($request->json , $order->id);
-        $cart->total_cost += $order->quantity * $order->price + $choicesCost ;
-        $cart->save();
+        $product->quantity = $product->quantity - $request->quantity;
+        $product->save();
+        // $order = Order::create([
+        //     'price' =>  $is_client_vip == true ? $product->price - ($vendor->client_vip_ratio *$product->price /100 ) : $product->price -   ($vendor->client_ratio *$product->price /100 ),
+        //     'discount_ratio' =>  $is_client_vip == true ? $vendor->client_vip_ratio : $vendor->client_ratio ,
+        //     'discount' =>  $is_client_vip == true ? $vendor->client_vip_ratio *$product->price /100  : $vendor->client_ratio *$product->price /100 ,
+        //     'is_vip'=>$is_client_vip,
+        //     'quantity' =>$request->quantity ,
+        //     'product_id' => $request->product_id,
+        //     'client_id'=>  $clientId,
+        //     'cart_id'=>$cart->id,
+        //     'vendor_id'=>$vendor->id,
+        //     'vendor_benefit'=>$product->price - ($vendor->discount_ratio * $product->price / 100  )
+        // ]);
+        // $choicesCost = $this->addChoiceForOrder($request->json , $order->id);
+        // $cart->total_cost += $order->quantity * $order->price + $choicesCost ;
+        // $cart->save();
        
         return $this->APIResponse(null, null, 200);
     }

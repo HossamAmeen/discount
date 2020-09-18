@@ -21,8 +21,8 @@ class CreateOrderChoicesTable extends Migration
             $table->string('group_name');
             $table->double('price');
 
-            $table->bigInteger('order_id')->unsigned()->nullable();
-            $table->foreign('order_id')->references('id')->on('orders')->onDelete('set null');
+            $table->bigInteger('order_item_id')->unsigned()->nullable();
+            $table->foreign('order_item_id')->references('id')->on('order_items')->onDelete('set null');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -115,6 +115,7 @@ class DatabaseSeeder extends Seeder
         factory('App\Models\WishList',25)->create();
         factory('App\Models\Cart',5)->create();
         factory('App\Models\Order',35)->create();
+        factory('App\Models\OrderItem',35)->create();
 
         factory('App\Models\Question',5)->create();
         factory('App\Models\Complaint',5)->create();
@@ -169,7 +170,7 @@ class DatabaseSeeder extends Seeder
             'price'=>rand(30 , 60),
             'type' => rand(1,2),
             //'group_name'=>"size",
-            'order_id'=>1
+            'order_item_id'=>1
         ]);
         \App\Models\OrderChoice::create([
             'name' => "meduim",
@@ -177,7 +178,7 @@ class DatabaseSeeder extends Seeder
             'price'=>rand(30 , 60),
             'type' => rand(1,2),
           //  'group_name'=>"size",
-            'order_id'=>1
+            'order_item_id'=>1
         ]);
         \App\Models\OrderChoice::create([
             'name' => "small",
@@ -185,7 +186,7 @@ class DatabaseSeeder extends Seeder
             'price'=>rand(30 , 60),
             'type' => rand(1,2),
             //'group_name'=>"size",
-            'order_id'=>1
+            'order_item_id'=>1
         ]);
         \App\Models\OrderChoice::create([
             'name' => "in",
@@ -193,7 +194,7 @@ class DatabaseSeeder extends Seeder
             'price'=>rand(30 , 60),
             'type' => rand(1,2),
           //  'group_name'=>"place",
-            'order_id'=>1
+            'order_item_id'=>1
         ]);
         
         \App\Models\OrderChoice::create([
@@ -202,7 +203,7 @@ class DatabaseSeeder extends Seeder
             'price'=>rand(30 , 60),
             'type' => rand(1,2),
          //   'group_name'=>"place",
-            'order_id'=>1
+            'order_item_id'=>1
         ]);
     }
 }

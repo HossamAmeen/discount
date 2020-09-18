@@ -110,20 +110,35 @@ $factory->define(App\Models\Order::class, function (Faker $faker) {
     , 'cancelled from vendor' ,'working' , 'delivering' , 'done'] ;
     return [
         'price'=>rand(20 , 300),
-        'discount'=>rand(20 , 300),
+        'delivery_cost'=>rand(20 , 300),
         'discount_ratio'=>rand(20 , 300),
+        'total_discount'=>rand(20 , 300),
         'status'=>$statues[rand(0,7)],
         // 'time'=>$faker->time(),
         'cart_id'=>rand(1 , 5),
-        'quantity'=>rand(3,15),
+        // 'quantity'=>rand(3,15),
         
         // 'address'=>$faker->address(),
         // 'phone'=>"01010079798",
         // 'city'=>$faker->city(),
-        'product_id'=>rand(1,20),
-        'is_vip'=>rand(0,1),
+        // 'product_id'=>rand(1,20),
+        // 'is_vip'=>rand(0,1),
         'vendor_id'=>rand(1,20),
         'client_id'=>rand(1,2)
+    ];
+});
+
+$factory->define(App\Models\OrderItem::class, function (Faker $faker) {
+   return [
+        'price'=>rand(20 , 300),
+        'choice_price'=>rand(20 , 300),
+        'discount'=>rand(20 , 300),
+        'discount_ratio'=>rand(20 , 300),
+        'vendor_benefit'=>rand(20 , 300),
+        'quantity'=>rand(3,15),
+        'is_vip'=>rand(0,1),
+        'product_id'=>rand(1,20),
+        'order_id'=>rand(1,20),
     ];
 });
 

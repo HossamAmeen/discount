@@ -47,7 +47,7 @@ class Vendor extends Authenticatable
     public function getStoreLogoAttribute()
     {
         
-        if($this->attributes['store_logo'] != null && file_exists(($this->attributes['store_logo'])) ){
+        if($this->attributes['store_logo'] != null ){
             return asset($this->attributes['store_logo']);
         }
         else
@@ -58,7 +58,7 @@ class Vendor extends Authenticatable
     public function getStoreBackgroundImageAttribute()
     {
         
-        if($this->attributes['store_background_image'] != null && file_exists(($this->attributes['store_background_image'])) ){
+        if($this->attributes['store_background_image'] != null ){
             return asset($this->attributes['store_background_image']);
         }
         else
@@ -69,7 +69,7 @@ class Vendor extends Authenticatable
     public function getCompanyRegistrationImageAttribute()
     {
         
-        if($this->attributes['company_registration_image'] != null && file_exists(($this->attributes['company_registration_image'])) ){
+        if($this->attributes['company_registration_image'] != null ){
             return asset($this->attributes['company_registration_image']);
         }
         else
@@ -80,7 +80,7 @@ class Vendor extends Authenticatable
     public function getNationalIdFrontImageAttribute()
     {
         
-        if($this->attributes['national_id_front_image'] != null && file_exists(($this->attributes['national_id_front_image'])) ){
+        if($this->attributes['national_id_front_image'] != null ){
             return asset($this->attributes['national_id_front_image']);
         }
         else
@@ -91,7 +91,7 @@ class Vendor extends Authenticatable
     public function getNationalIdBackImageAttribute()
     {
         
-        if($this->attributes['national_id_back_image'] != null && file_exists(($this->attributes['national_id_back_image'])) ){
+        if($this->attributes['national_id_back_image'] != null ){
             return asset($this->attributes['national_id_back_image']);
         }
         else

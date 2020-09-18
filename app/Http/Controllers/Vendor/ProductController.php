@@ -113,14 +113,17 @@ class ProductController extends Controller
         if(isset($product)){
             $requestArray = $request->all() ; 
             $requestArray['image'] =  $request->image != null ? uploadFile($request->image , 'products') : null;
-            $requestArray['image'] =  $request->image != null ? uploadFile($request->image , 'products') : null;
+            // $requestArray['image'] =  $request->image != null ? uploadFile($request->image , 'products') : null;
             if($request->category_name){
                 $category = ProductCategory::create(['name' => $request->category_name]);
                 $requestArray['category_id'] = $category->id ; 
             }
             $product->update($requestArray) ;
-            $product->choices()->delete();
-            $this->addChoiceForProduct($request->json , $product->id);
+            if($request->json != null){
+                $product->choices()->delete();
+                $this->addChoiceForProduct($request->json , $product->id);
+            }
+         
             // return $product->choices;
             return $this->APIResponse(null, null, 200);
         }
@@ -129,8 +132,11 @@ class ProductController extends Controller
     }
     public function addChoiceForProduct($jsonReuest , $productId)
     {
+
         $json = json_decode($jsonReuest , true) ; 
-       
+        // if(!is_array($json)){
+        //     return ;
+        // }
         $choices = $json['Groups'] ; 
        
         $type;$groupName; 

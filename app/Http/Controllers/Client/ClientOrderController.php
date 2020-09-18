@@ -20,9 +20,9 @@ class ClientOrderController extends Controller
         else
         return $this->APIResponse(null, null, 200);
     }
-    public function checkoutCart($cartId)
+    public function checkoutCart()
     {
-        $cart = Cart::where(['id'=>$cartId , 'client_id' =>  Auth::guard('client-api')->user()->id , 'is_done'=> false ])->first();
+        $cart = Cart::where(['client_id' =>  Auth::guard('client-api')->user()->id , 'is_done'=> false ])->first();
         // return request('address_id') ;
         if(isset($cart)){
             if(request('address_id') != null && request('address_id') != 'null'){
@@ -30,11 +30,16 @@ class ClientOrderController extends Controller
                 // return "Test2";
                
             }else{
-                if( Auth::guard('client-api')->user()->favouriteAddress->id == null) // ?? Auth::guard('client-api')->user()->addresses->id ;
+                if( Auth::guard('client-api')->user()->favouriteAddress == null ) // ?? Auth::guard('client-api')->user()->addresses->id ;
                 {
                     return $this->APIResponse(null, "please choose address", 400);
                 }
-                $addressId  = Auth::guard('client-api')->user()->favouriteAddress->id;
+                else
+                {
+                    $addressId  =  Auth::guard('client-api')->user()->favouriteAddress->id ;
+                    // $addressId  = Auth::guard('client-api')->user()->favouriteAddress->id;
+                }
+               
                 // return "test";
             }
           
@@ -118,7 +123,13 @@ class ClientOrderController extends Controller
 
     public function updateOrder($id)
     {
-        $order = Order::where(['id'=>$id , 'client_id' => Auth::guard('client-api')->user()->id ] )->first();
+        // $order = Order::where(['id'=>$id , 'client_id' => Auth::guard('client-api')->user()->id ] )->first();
+        $order = Order::find($id);
+
+        if($order)
+        {
+            if($order->client_id != Auth::guard('client-api')->user()->id)
+            return $this->APIResponse(null, "this order not for this client", 400);
             if(request('quantity')){
                 $order->quantity = request('quantity');
             }
@@ -127,6 +138,12 @@ class ClientOrderController extends Controller
             }
         $order->save();
         return $this->APIResponse(null, null, 200);
+        }
+       else
+        {
+            return $this->APIResponse(null, "this order not found", 400);
+        }
+       
     }
 
     public function deleteOrder($orderId)

@@ -13,7 +13,7 @@ class Cart extends Model
     ];
     public function orders()
     {
-        return $this->hasMany(Order::class)->select(['id' ,'cart_id' ,'product_id' , 'price' , 'discount']);
+        return $this->hasMany(Order::class)->select(['id' ,'cart_id' ,'product_id' , 'price' ,'quantity', 'discount_ratio']);
     }
     public function address(){
         return $this->belongsTo(ClientAddress::class ,'client_address_id');

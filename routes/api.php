@@ -33,22 +33,24 @@ Route::prefix('vendor')->namespace('Vendor')->group(function(){
     Route::post('/logout', 'VendorController@logout');
     Route::middleware('checkLogin:vendor-api')->group(function () {
         Route::get('/show-profile', 'VendorController@showProfile');
-        Route::put('/update-profile', 'VendorController@updateProfile');
-        Route::put('/update-store', 'VendorController@updateProfile');
+        Route::post('/update-profile', 'VendorController@updateProfile');
+        Route::post('/update-store', 'VendorController@updateProfile');
         Route::post('update-store-image', 'VendorController@updateProfile');
         Route::get('product-categories', 'VendorController@showProductCategories');
             /////////// products ////////////
         Route::post('/add-product', 'ProductController@addProduct');
-        Route::put('/update-product/{id}', 'ProductController@updateProduct');
+        Route::post('/update-product/{id}', 'ProductController@updateProduct');
         Route::get('/show-products', 'ProductController@showProducts');
         Route::get('/show-product/{id}', 'ProductController@showProductDetails');
         Route::get('/show-categories', 'ProductController@showCategories');
-            ////////// orders ////////////////
-        Route::get('/show-orders', 'OrderController@showOrders');    
-        Route::get('/show-done-orders', 'OrderController@showDoneOrders');
-        Route::get('/change-status-order/{id}', 'OrderController@changeStatus');
-        Route::put('/edit-order/{id}', 'OrderController@editOrder');
-        Route::get('/scan-qrcode/{order_id}', 'OrderController@scanQRCode');
+            ////////// orders //////////////// 
+            Route::middleware('checkIsAccept:vendor-api')->group(function () {
+                Route::get('/show-orders', 'OrderController@showOrders');    
+                Route::get('/show-done-orders', 'OrderController@showDoneOrders');
+                Route::get('/change-status-order/{id}', 'OrderController@changeStatus');
+                Route::put('/edit-order/{id}', 'OrderController@editOrder');
+                Route::get('/scan-qrcode/{order_id}', 'OrderController@scanQRCode');
+            });
     });
 });
 
@@ -71,7 +73,7 @@ Route::prefix('client')->namespace('Client')->group(function(){
         Route::get('detial-product/{productId}' , 'ClientProductController@showProduct');
         
         Route::get('show-cart' , 'ClientOrderController@showCart'); 
-        Route::put('checkout-cart/{cartId}' , 'ClientOrderController@checkoutCart');  
+        Route::put('checkout-cart' , 'ClientOrderController@checkoutCart');  
         Route::get('/show-orders/{orderId?}', 'ClientOrderController@showOrders'); ///// لسه  show with choices
         Route::post('add-order' , 'ClientOrderController@addOrder'); 
         Route::put('/update-order/{orderId?}', 'ClientOrderController@updateOrder');    ////// لسه choice

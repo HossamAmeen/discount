@@ -15,7 +15,7 @@ class Product extends Model
     public function getImageAttribute()
     {
         
-        if($this->attributes['image'] != null && file_exists(($this->attributes['image'])) ){
+        if($this->attributes['image'] != null && !file_exists(asset($this->attributes['image'])) ){
             return asset($this->attributes['image']);
         }
         else

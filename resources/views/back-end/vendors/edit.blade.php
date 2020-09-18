@@ -56,10 +56,11 @@
                                         <strong>{{session()->get('action')}}</strong>
                                     </div>
                                     @endif
-                                    <form method="POST" action="{{ route($routeName.'.update' , $row->id) }}"  enctype="multipart/form-data" autocomplete="off">
+                                    <form method="POST" action="{{ route($routeName.'.update' , $row->id) }}"  enctype="multipart/form-data"
+                                         autocomplete="off">
                                         @csrf
                                         @method('put')
-                                        {{-- '', '', 'password' ,'', '', 'role', 'image' ,'user_id' --}}
+                                       
                                         <input type="hidden" name="id" value="{{$row->id}}" id="">
                                         <div class="form-row">
                                             <div class="col">
@@ -89,13 +90,14 @@
                                             <div class="col">
                                                 @php $inputName = 'password' ; @endphp
                                                 <div class="form-group"><label ><strong>{{$inputName}}</strong></label>
-                                                    <input class="form-control" type="password"
+                                                    <input class="form-control" type="password" id="password"
                                                          name="{{$inputName}}" value=""></div>
                                             </div>
                                             <div class="col">
                                                 @php $inputName = 'password_confirmation' ; @endphp
                                                 <div class="form-group"><label ><strong>{{$inputName}}</strong></label>
-                                                    <input class="form-control" type="password" name="{{$inputName}}" 
+                                                    <input class="form-control" type="password" id="password_confirmation"
+                                                    
                                                       ></div>
                                             </div>
                                         </div>
@@ -166,7 +168,7 @@
                                            
                                         </div>
                                         <div class="form-group"><button class="btn btn-primary btn-sm"
-                                            type="submit">update </button></div>
+                                            type="submit" onclick="return Validate()">update </button></div>
                                         <div class="form-row">
                                             <div class="col">
                                                 @php $inputName = 'store_logo' ; @endphp
@@ -221,6 +223,19 @@
             $(document).ready(function(){
                 $('#{{$routeName}}').addClass('active');
                 });
+        </script>
+         <script type="text/javascript">
+            function Validate() {
+                var password = document.getElementById("password").value;
+                var confirmPassword = document.getElementById("password_confirmation").value;
+                console.log(password);
+                console.log(confirmPassword);
+                if (password != confirmPassword) {
+                    alert("Passwords do not match.");
+                    return false;
+                }
+                return true;
+            }
         </script>
 </body>
 

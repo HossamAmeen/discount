@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'superAdmin' => \App\Http\Middleware\SuperAdminAuth::class,
         'checkLogin' => \App\Http\Middleware\CheckLogin::class,
         'cors' => 'App\Http\Middleware\Cors',
+        'checkIsAccept' => \App\Http\Middleware\CheckIsAccept::class,
     ];
 }

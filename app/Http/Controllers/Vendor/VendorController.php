@@ -107,9 +107,11 @@ class VendorController extends Controller
         }
         $vendor = Vendor::find(Auth::guard('vendor-api')->user()->id);
         $requestArray = $request->validated();
-        $this->uploadImages(request() , $requestArray);
-        if(isset(request()->password))
-        $requestArray['password'] = bcrypt(request()->password);
+        
+        $this->uploadImages($request , $requestArray);
+    //    return "test";
+        if(isset($request->password))
+        $requestArray['password'] = bcrypt($request->password);
         $vendor->update($requestArray);
         return $this->APIResponse($vendor, null, 200);
     }
@@ -136,11 +138,11 @@ class VendorController extends Controller
         copy (  public_path().'/avatar.png',  $path.'/avatar2.png' );
         
          */
-        $requestArray['store_logo'] =  $request->logo_image != null ? uploadFile($request->logo_image , 'vendors') : null;   ///// upload File helper function
-        $requestArray['store_background_image'] =  $request->background_image != null ? uploadFile($request->background_image , 'vendors') : null;
-        $requestArray['company_registration_image'] =  $request->company_registration_photo != null ? uploadFile($request->company_registration_photo , 'vendors') : null;
-        $requestArray['national_id_front_image'] =  $request->national_id_front_photo != null ? uploadFile($request->national_id_front_photo , 'vendors') : null;
-        $requestArray['national_id_back_image'] =  $request->national_id_back_image != null ? uploadFile($request->national_id_back_image , 'vendors') : null;
+        $request->logo_image != null ? $requestArray['store_logo'] = uploadFile($request->logo_image , 'vendors') :  null;   ///// upload File helper function
+        $request->background_image != null ?  $requestArray['store_background_image'] =  uploadFile($request->background_image , 'vendors') : null;
+        $request->company_registration_photo != null ?   $requestArray['company_registration_image'] = uploadFile($request->company_registration_photo , 'vendors') : null;
+        $request->national_id_front_photo != null ?  $requestArray['national_id_front_image'] =  uploadFile($request->national_id_front_photo , 'vendors') : null;
+        $request->national_id_back_image != null ?  $requestArray['national_id_back_image'] =  uploadFile($request->national_id_back_image , 'vendors') : null;
        
     }
     public function logout (Request $request) {

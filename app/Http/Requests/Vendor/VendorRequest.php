@@ -58,10 +58,10 @@ class VendorRequest extends FormRequest
             $rules['category_id'][] = 'required';
         }
         if(strpos($this->fullUrl(), "profile") !== false) { 
-            $rules['first_name'][] = 'required';
-            $rules['last_name'][] = 'required';
-            $rules['email'][] = 'required';
-            $rules['phone'][] = 'required';
+            // $rules['first_name'][] = 'required';
+            // $rules['last_name'][] = 'required';
+            // $rules['email'][] = 'required';
+            // $rules['phone'][] = 'required';
         }
         return $rules;
     }

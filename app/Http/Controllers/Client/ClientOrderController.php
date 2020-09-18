@@ -148,8 +148,12 @@ class ClientOrderController extends Controller
 
     public function deleteOrder($orderId)
     {
-       $order =  Order::where(['id'=>$orderId , 'client_id' => Auth::guard('client-api')->user()->id])->first();
+       $order =  Order::where(['id'=>$orderId])->first();
        if(isset($order)){
+           
+           if($order->client_id != Auth::guard('client-api')->user()->id){
+            return $this->APIResponse(null, "this order not for this client", 400);
+           }
            $cart = Cart::find($order->cart_id);
         //    $choicesCost = $this->choicesCost($order->id);
            $choicesCost =  OrderChoice::where('order_id' , $order->id)->get('id');

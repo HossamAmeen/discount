@@ -119,11 +119,11 @@ class ClientController extends Controller
         $orderPricesVip = Order::where(['client_id'=> Auth::guard('client-api')->user()->id ,'is_vip'=>1 ])->sum('price');
         $orderPricesFree = Order::where(['client_id'=> Auth::guard('client-api')->user()->id ,'is_vip'=>0 ])->sum('price');
         
-        $totalDiscount = Order::where('client_id', Auth::guard('client-api')->user()->id)->sum('discount');
-        $totalVipDiscount = Order::where(['client_id'=> Auth::guard('client-api')->user()->id ,'is_vip'=>1 ])->sum('discount');
-        $totalFreeDiscount = Order::where(['client_id'=> Auth::guard('client-api')->user()->id ,'is_vip'=>0 ])->sum('discount');
+        $totalDiscount = Order::where('client_id', Auth::guard('client-api')->user()->id)->sum('total_discount');
+        $totalVipDiscount = Order::where(['client_id'=> Auth::guard('client-api')->user()->id ,'is_vip'=>1 ])->sum('total_discount');
+        $totalFreeDiscount = Order::where(['client_id'=> Auth::guard('client-api')->user()->id ,'is_vip'=>0 ])->sum('total_discount');
 
-        $cLient['totalOrders'] = $orderPrices ;
+        $cLient['totalOrdersPrices'] = $orderPrices ;
         $cLient['ordersVip'] = $orderPricesVip ;
         $cLient['ordersFree'] = $orderPricesFree ;
 

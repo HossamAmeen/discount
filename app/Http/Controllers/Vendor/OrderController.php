@@ -11,21 +11,21 @@ class OrderController extends Controller
     use APIResponseTrait;
     public function showOrders()
     {
-        $orders = Order::with('choices')
-                        ->select('orders.*')
-                        ->join('products', 'products.id', '=', 'orders.product_id')
-                        ->join('vendors', 'vendors.id', '=', 'products.vendor_id')
-                        // ->join('buildings', 'buildings.id', '=', 'blocks.building_id')
-                        // ->where('vendors.id', Auth::guard('vendor-api')->user()->id)
-                        ->get();
-         $orders = Order::with('choices')->where('vendor_id' , Auth::guard('vendor-api')->user()->id )
-                                         ->where('status' ,'!=','done')
-                                         ->where('status' ,'!=','pending from client')
-                                         ->where('status' ,'!=','cancelled from vendor')
-                                         ->orderBy('cart_id')
-                                         ->get()
-                                        //  ->sortBy('cart_id')
-                                         ;
+        // $orders = Order::with('choices')
+        //                 ->select('orders.*')
+        //                 ->join('products', 'products.id', '=', 'orders.product_id')
+        //                 ->join('vendors', 'vendors.id', '=', 'products.vendor_id')
+        //                 // ->join('buildings', 'buildings.id', '=', 'blocks.building_id')
+        //                 // ->where('vendors.id', Auth::guard('vendor-api')->user()->id)
+        //                 ->get();
+        //  $orders = Order::with('choices')->where('vendor_id' , Auth::guard('vendor-api')->user()->id )
+        //                                  ->where('status' ,'!=','done')
+        //                                  ->where('status' ,'!=','pending from client')
+        //                                  ->where('status' ,'!=','cancelled from vendor')
+        //                                  ->orderBy('cart_id')
+        //                                  ->get()
+        //                                 //  ->sortBy('cart_id')
+        //                                  ;
                                         //  ->groupBy('cart_id')
        
         //   $orders = Cart::with('orders')
@@ -55,11 +55,15 @@ class OrderController extends Controller
         //     return $orders[$i];
         // }
         // // $orders['choices'] = OrderChoice::where('order_id' , );
+        $orders = Order::with(['items.choices','items.product', 'address','client'])->where('vendor_id' , Auth::guard('vendor-api')->user()->id )
+                                              ->where('status' , '!=' , 'done')
+                                              ->where('status' , '!=' , 'pending from client')
+                                              ->get();
         return $this->APIResponse($orders, null, 200); 
     }
     public function showDoneOrders()
     {
-        $oders = Order::with(['client','product'])
+        $oders =Order::with(['items.choices','items.product', 'address','client'])
         ->where('status' ,'done')
         ->where('vendor_id' , Auth::guard('vendor-api')->user()->id )
         ->orderBy('id' , 'DESC')

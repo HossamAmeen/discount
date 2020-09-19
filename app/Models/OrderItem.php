@@ -11,7 +11,15 @@ class OrderItem extends Model
      protected $hidden = [
          'user_id',"created_at" , 'updated_at','deleted_at' 
     ];
+    public function product(){
+        return $this->belongsTo(Product::class)->select(['id','name','description','image']);
+    }
+    public function choices()
+    {
+        return $this->hasMany(OrderChoice::class , 'order_item_id');
+    }
     public function user(){
         return $this->belongsTo(User::class);
     }
+
 }

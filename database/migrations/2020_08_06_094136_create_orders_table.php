@@ -16,10 +16,10 @@ class CreateOrdersTable extends Migration
         
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->double('price');
-            $table->double('delivery_cost');
+            $table->double('price')->default(0);
+            $table->double('delivery_cost')->default(0);
             $table->double('discount_ratio');
-            $table->double('total_discount');
+            $table->double('total_discount')->default(0);
             $table->enum('status' , ['pending from client','sending from client','edit from vendor','accept from client' ,'accept from vendor', 
                                      'cancelled from vendor' ,'working' , 'delivering' , 'done'])->default('pending from client')->nullable();
                                      
@@ -27,7 +27,7 @@ class CreateOrdersTable extends Migration
             // $table->integer('quantity');
             $table->double('vendor_benefit')->default(0);
             
-            // $table->boolean('is_vip')->default(0);
+            $table->boolean('is_vip')->default(0);
             // $table->double('rating')->default(0)->nullable();
           
             // $table->bigInteger('product_id')->unsigned()->nullable();

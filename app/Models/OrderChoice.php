@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class OrderChoice extends Model
 {
      use SoftDeletes;
-     protected $fillable =['type' ,'name', 'price','group_name', 'order_id'];
+     protected $fillable =['type' ,'name', 'price','group_name', 'order_item_id'];
      protected $hidden = [
-         "created_at" , 'updated_at' 
+         "created_at" , 'updated_at' ,'deleted_at'
     ];
     public function user(){
         return $this->belongsTo(User::class);

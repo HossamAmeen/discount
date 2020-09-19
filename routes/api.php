@@ -80,6 +80,7 @@ Route::prefix('client')->namespace('Client')->group(function(){
             Route::post('add-order' , 'ClientOrderController@addOrder'); 
             Route::put('/update-order/{orderId?}', 'ClientOrderController@updateOrder');    ////// لسه choice
             Route::delete('delete-order/{orderId}' , 'ClientOrderController@deleteOrder'); 
+            Route::delete('delete-order-item/{orderId}' , 'ClientOrderController@deleteOrderItem'); 
 
             Route::get('show-vendors' , 'ClientVenodrController@showVendors');
             Route::get('show-vendors-categories/{vendorId}' , 'ClientVenodrController@showVendorsCategories');

@@ -42,4 +42,8 @@ class Product extends Model
     {
         return $this->belongsTo(Vendor::class);
     }
+    public function vendorDiscount()
+    {
+        return $this->belongsTo(Vendor::class , 'vendor_id')->select(['id','client_ratio','client_vip_ratio']);
+    }
 }

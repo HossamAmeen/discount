@@ -32,7 +32,7 @@ class ClientProductController extends Controller
     
     public function showWishList()
     {
-        $wishlist = Wishlist::with('product')->where('client_id' , Auth::guard('client-api')->user()->id)->get(['id','client_id' , 'product_id']);
+        $wishlist = Wishlist::with(['product' ,'product.vendorDiscount' ])->where('client_id' , Auth::guard('client-api')->user()->id)->get(['id','client_id' , 'product_id']);
         return $this->APIResponse($wishlist, null, 200);
     }
     

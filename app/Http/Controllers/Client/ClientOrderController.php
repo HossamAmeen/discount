@@ -11,14 +11,16 @@ class ClientOrderController extends Controller
     use APIResponseTrait;
     public function showCart()
     {
-        $order = Order::with(['items.choices' ,'items.product' ])->where('client_id' , Auth::guard('client-api')->user()->id)
+        $orders = Order::with(['items.choices' ,'items.product' ])->where('client_id' , Auth::guard('client-api')->user()->id)
                     ->where(['status'=>'pending from client'])
                     ->get(['id'  ,'date','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id']);
-                    // ->get();
+        $data['orders'] =  $orders;    
+        $data['totalCost'] =  $orders->sum('price'); 
+       
         // return $cart ;
-        if($order){
+        if($orders){
             // $order['totalCost'] = $order->sum('price');
-            return $this->APIResponse($order, null, 200); 
+            return $this->APIResponse($data, null, 200); 
         }
        
         else
@@ -26,13 +28,12 @@ class ClientOrderController extends Controller
     }
     public function checkoutCart()
     {
-        $cart = Cart::where(['client_id' =>  Auth::guard('client-api')->user()->id , 'is_done'=> false ])->first();
-        // return request('address_id') ;
-        if(isset($cart)){
+        // $cart = Cart::where(['client_id' =>  Auth::guard('client-api')->user()->id , 'is_done'=> false ])->first();
+        $orders = Order::where(['client_id' =>  Auth::guard('client-api')->user()->id ,'status' =>'pending from client' ] );
+
+        if($orders){
             if(request('address_id') != null && request('address_id') != 'null'){
-                $addressId  =request('address_id') ; 
-                // return "Test2";
-               
+                $addressId  =request('address_id') ;                
             }else{
                 if( Auth::guard('client-api')->user()->favouriteAddress == null ) // ?? Auth::guard('client-api')->user()->addresses->id ;
                 {
@@ -43,34 +44,28 @@ class ClientOrderController extends Controller
                     $addressId  =  Auth::guard('client-api')->user()->favouriteAddress->id ;
                     // $addressId  = Auth::guard('client-api')->user()->favouriteAddress->id;
                 }
-               
-                // return "test";
+                $orders->update([
+                    'status'            => 'sending from client',
+                    'client_address_id' => $addressId,
+                    'date'              => date('Y-m-d'),
+                ]);
+                 
+                OrderItem::whereIn('order_id' , $orders->get('id')->toArray())->update([
+                    'status'            => 'sending from client',
+                ]);
+                return $this->APIResponse(null, null, 200);
             }
-          
-        //    return  $addressId ;
-           if(count($cart->orders) > 0){
-            $orders = Order::where('cart_id' ,$cart->id )->update(['status'=>'sending from client']);
-            // return $orders;
-            }
-            else
-            {
-                return $this->APIResponse(null, "this cart empty", 400);
-            }
-
-            $cart->update(['is_done' =>1 , 'date'=>date('Y-m-d') , 'client_address_id' => $addressId ]);
-         
-          
-            return $this->APIResponse(null, null, 200);
-        }
+        }        
         else{
             return $this->APIResponse(null, "this cart not found", 400);
         }
 
     }
+
     public function showOrders($id = null)
     {
         if(request('id') != null){
-            $orders = Order::with(['itemsDone','address'])
+            $orders = Order::with(['itemsSent','address'])
             ->select('id'  ,'date','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id')
             ->find(request('id') );
             
@@ -78,7 +73,7 @@ class ClientOrderController extends Controller
         }
         else
         {
-            $orders = Order::with(['itemsDone'])->where('client_id' ,  Auth::guard('client-api')->user()->id)
+            $orders = Order::with(['itemsSent'])->where('client_id' ,  Auth::guard('client-api')->user()->id)
                                                 ->where('status', '!=', 'pending from client')
                                         ->get(['id'  ,'date','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id']);
             return $this->APIResponse($orders, null, 200);

@@ -114,7 +114,7 @@ $factory->define(App\Models\Order::class, function (Faker $faker) {
         'discount_ratio'=>rand(20 , 300),
         'total_discount'=>rand(20 , 300),
         'status'=>$statues[rand(0,8)],
-        // 'time'=>$faker->time(),
+        'date'=>date('Y-m-d'),
         'cart_id'=>rand(1 , 5),
         // 'quantity'=>rand(3,15),
         
@@ -130,12 +130,15 @@ $factory->define(App\Models\Order::class, function (Faker $faker) {
 });
 
 $factory->define(App\Models\OrderItem::class, function (Faker $faker) {
+    $statues = ['pending from client','sending from client','edit from vendor','accept from client' ,'accept from vendor' 
+    , 'cancelled from vendor' ,'working' , 'delivering' , 'done'] ;
    return [
         'price'=>rand(20 , 300),
         'choice_price'=>rand(20 , 300),
         'discount'=>rand(20 , 300),
         'discount_ratio'=>rand(20 , 300),
         'vendor_benefit'=>rand(20 , 300),
+        'status'=>$statues[rand(0,8)],
         'quantity'=>rand(3,15),
         'is_vip'=>rand(0,1),
         'product_id'=>rand(1,20),

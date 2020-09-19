@@ -70,7 +70,8 @@ class ClientOrderController extends Controller
     public function showOrders($id = null)
     {
         if(request('id') != null){
-            $orders = Order::with(['itemsDone','address'])->select('id'  ,'date','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id')
+            $orders = Order::with(['itemsDone','address'])
+            ->select('id'  ,'date','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id')
             ->find(request('id') );
             
             return $this->APIResponse($orders, null, 200);
@@ -78,6 +79,7 @@ class ClientOrderController extends Controller
         else
         {
             $orders = Order::with(['itemsDone'])->where('client_id' ,  Auth::guard('client-api')->user()->id)
+                                                ->where('status', '!=', 'pending from client')
                                         ->get(['id'  ,'date','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id']);
             return $this->APIResponse($orders, null, 200);
         }

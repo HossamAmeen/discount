@@ -42,6 +42,9 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('cart_id')->unsigned()->nullable();
             $table->foreign('cart_id')->references('id')->on('carts')->onDelete('set null');
 
+            $table->bigInteger('client_address_id')->unsigned()->nullable();
+            $table->foreign('client_address_id')->references('id')->on('client_addresses')->onDelete('set null');
+            
             $table->timestamps();
             $table->softDeletes();
         });

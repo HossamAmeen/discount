@@ -106,14 +106,14 @@ $factory->define(App\Models\Cart::class, function (Faker $faker) {
 });
 
 $factory->define(App\Models\Order::class, function (Faker $faker) {
-    $statues = ['pending from client','edit from vendor','accept from client' ,'accept from vendor' 
+    $statues = ['pending from client','sending from client','edit from vendor','accept from client' ,'accept from vendor' 
     , 'cancelled from vendor' ,'working' , 'delivering' , 'done'] ;
     return [
         'price'=>rand(20 , 300),
         'delivery_cost'=>rand(20 , 300),
         'discount_ratio'=>rand(20 , 300),
         'total_discount'=>rand(20 , 300),
-        'status'=>$statues[rand(0,7)],
+        'status'=>$statues[rand(0,8)],
         // 'time'=>$faker->time(),
         'cart_id'=>rand(1 , 5),
         // 'quantity'=>rand(3,15),
@@ -124,7 +124,8 @@ $factory->define(App\Models\Order::class, function (Faker $faker) {
         // 'product_id'=>rand(1,20),
         // 'is_vip'=>rand(0,1),
         'vendor_id'=>rand(1,20),
-        'client_id'=>rand(1,2)
+        'client_id'=>rand(1,2),
+        'client_address_id'=>1
     ];
 });
 

@@ -9,7 +9,7 @@ use Auth;
 class ClientOrderController extends Controller
 {
     use APIResponseTrait;
-    public function showCart()
+    public function showCart() 
     {
         $orders = Order::with(['items.choices' ,'items.product' ])->where('client_id' , Auth::guard('client-api')->user()->id)
                     ->where(['status'=>'pending from client'])
@@ -26,6 +26,7 @@ class ClientOrderController extends Controller
         else
         return $this->APIResponse(null, null, 200);
     }
+
     public function checkoutCart()
     {
         // $cart = Cart::where(['client_id' =>  Auth::guard('client-api')->user()->id , 'is_done'=> false ])->first();
@@ -83,7 +84,7 @@ class ClientOrderController extends Controller
     public function addOrder(Request $request)
     {
         $clientId = Auth::guard('client-api')->user()->id ; 
-         $product= Product::find($request->product_id);
+        $product= Product::find($request->product_id);
         if(!isset($product)){
             return $this->APIResponse(null, "this product not found", 400);
         }
@@ -100,7 +101,7 @@ class ClientOrderController extends Controller
         $is_client_vip = Auth::guard('client-api')->user()->is_vip ; 
         
         $order = Order::where(['client_id' =>  $clientId , 'vendor_id' => $vendor->id] )->where( 'status' , 'pending from client' )->first();
-
+                //// 
         if(!isset($order)){
 
             $order = Order::create([
@@ -124,6 +125,7 @@ class ClientOrderController extends Controller
             'choice_price'=>0,
             'discount'=>$is_client_vip == true ? $vendor->client_vip_ratio *$product->price /100  : $vendor->client_ratio *$product->price /100 ,
             'discount_ratio'=>$is_client_vip == true ? $vendor->client_vip_ratio : $vendor->client_ratio ,
+            'vendor_benefit'=>$request->quantity *( $product->price - ($vendor->discount_ratio * $product->price / 100  ) ) ,
             'is_vip'=>$is_client_vip,
             'quantity'=>$request->quantity ,
             'over_quantity'=> $over_quantity,
@@ -131,8 +133,9 @@ class ClientOrderController extends Controller
             'order_id' => $order->id
 
         ]);
-        $product->quantity = $product->quantity - $request->quantity;
-        $product->save();
+       
+        // $product->quantity = $product->quantity - $request->quantity;
+        // $product->save();
         // $order = Order::create([
         //     'price' =>  $is_client_vip == true ? $product->price - ($vendor->client_vip_ratio *$product->price /100 ) : $product->price -   ($vendor->client_ratio *$product->price /100 ),
         //     'discount_ratio' =>  $is_client_vip == true ? $vendor->client_vip_ratio : $vendor->client_ratio ,
@@ -148,10 +151,12 @@ class ClientOrderController extends Controller
 
         if($request->choices){
             $orderItem->choice_price = $this->addChoiceForOrder($request->choices , $orderItem->id);
+            $orderItem->vendor_benefit += $orderItem->choice_price  ;
             $orderItem->save();
             $order->price  += $orderItem->choice_price ;
         }
         $order->price  +=  $orderItem->quantity * $orderItem->price;
+        // $order->vendor_benefit  +=  $orderItem->quantity * $orderItem->vendor_benefit;
         $order->total_discount +=  $orderItem->discount ;
         $order->delivery_cost = $vendor->delivery ?? 0 ;
         $order->save();
@@ -161,29 +166,38 @@ class ClientOrderController extends Controller
         return $this->APIResponse(null, null, 200);
     }
 
-    public function updateOrder($id)
+    public function updateOrder($id , Request $request)
     {
-        // $order = Order::where(['id'=>$id , 'client_id' => Auth::guard('client-api')->user()->id ] )->first();
-        $order = Order::find($id);
+        $orderItem = OrderItem::where(['id'=>$id] )->first();
+        if(! isset($orderItem))
+        {
+            return $this->APIResponse(null, "this order item not found", 400);
+        }
 
-        if($order)
+        $order = Order::find($orderItem->order_id);
+
+        if(! isset($order))
         {
-            if($order->client_id != Auth::guard('client-api')->user()->id)
-            return $this->APIResponse(null, "this order not for this client", 400);
-            if(request('quantity')){
-                $order->quantity = request('quantity');
-            }
-            if(request('rating')){
-                $order->rating = ( $order->rating + request('rating') ) / 2 ;
-            }
-        $order->save();
-        return $this->APIResponse(null, null, 200);
+            return $this->APIResponse(null, "this order  not found", 400);
         }
-       else
-        {
-            return $this->APIResponse(null, "this order not found", 400);
-        }
+        if($order->client_id != Auth::guard('client-api')->user()->id)
+        return $this->APIResponse(null, "this order not for this client", 400);
        
+
+        if($request->quantity){
+            $product = Product::find($orderItem->product_id);
+            if(!isset( $product)){
+                return $this->APIResponse(null, "this product not found", 400);
+            }
+            
+            $orderItem->over_quantity =$request->quantity > $product->quantity  ? $request->quantity - abs($product->quantity) : 0 ;
+            $orderItem->quantity = $request->quantity;
+        }
+        if(request('rating')){
+            $orderItem->rating = ( $order->rating + request('rating') ) / 2 ;
+        }
+        $orderItem->save();
+        return $this->APIResponse(null, null, 200);
     }
     public function deleteOrderItem($orderItemId)
     {
@@ -210,6 +224,7 @@ class ClientOrderController extends Controller
             return $this->APIResponse(null, "this order item not found", 400);
            }
     }
+
     public function deleteOrder($orderId)
     {
        $order =  Order::find($orderId);
@@ -237,6 +252,7 @@ class ClientOrderController extends Controller
         return $this->APIResponse(null, "this order not found", 400);
        }
     }
+
     public function addChoiceForOrder($choices , $orderItemId)
     {
        $choices = ProductChoice::whereIn('id' , $choices )->get();

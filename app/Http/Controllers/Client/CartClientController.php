@@ -70,7 +70,7 @@ class CartClientController extends Controller
     {
         $orderItems = OrderItem::with('product')->where('client_id' , Auth::guard('client-api')->user()->id)
         ->where(['status'=>'pending from client'])
-        ->get(['id','product_id' , 'discount_ratio' , 'price' ,'choice_price','quantity']);
+        ->get(['id','product_id' , 'discount_ratio' , 'price' ,'choice_price','over_quantity','quantity']);
         $data['products'] = $orderItems ; 
         // $data['total_cost'] =  $orderItems->sum(\DB::raw('price + choice_price')); //->sum(['price','choice_price']) ; 
         $sql = "SELECT SUM(quantity * price + choice_price) as total_cost FROM order_items WHERE status = 'pending from client' and  client_id = :ID";

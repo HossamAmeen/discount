@@ -89,6 +89,7 @@ class DatabaseSeeder extends Seeder
             'first_name' => "hossam client",
             'last_name'  => "ameen",
             'phone'      => "01010079798",
+            'is_favourite' => 1 ,
             'client_id'  => 1
         ]);
         
@@ -113,7 +114,7 @@ class DatabaseSeeder extends Seeder
         factory('App\Models\Product',25)->create();
       
         factory('App\Models\WishList',25)->create();
-        factory('App\Models\Cart',5)->create();
+        factory('App\Models\Cart',5)->create();//
         factory('App\Models\Order',35)->create();
         factory('App\Models\OrderItem',35)->create();
 

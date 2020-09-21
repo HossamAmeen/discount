@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->double('price')->default(0);
+            // $table->double('total_cost')->default(0);
             $table->double('delivery_cost')->default(0);
             $table->double('discount_ratio');
             $table->double('total_discount')->default(0);

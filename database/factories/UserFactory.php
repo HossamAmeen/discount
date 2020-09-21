@@ -71,7 +71,7 @@ $factory->define(App\Models\Vendor::class, function (Faker $faker) {
         'password'=>bcrypt('admins'), 
         'phone' => $faker->e164PhoneNumber,
         'store_name'=> $faker->name,
-        'discount_ratio'=>rand(1,15),
+        'discount_ratio'=>rand(1,90),
         'client_ratio'=>rand(1,6),
         'client_vip_ratio'=>rand(1,9),
         'store_description'=> $faker->name,
@@ -101,7 +101,7 @@ $factory->define(App\Models\Cart::class, function (Faker $faker) {
         'date'=>date('Y-m-d'),
         'total_cost' =>rand(100 , 300),
         'client_id'=>rand(1,2),
-        'client_address_id'=>1
+        // 'client_address_id'=>1
     ];
 });
 
@@ -111,7 +111,7 @@ $factory->define(App\Models\Order::class, function (Faker $faker) {
     return [
         'price'=>rand(20 , 300),
         'delivery_cost'=>rand(20 , 300),
-        'discount_ratio'=>rand(20 , 300),
+        'discount_ratio'=>rand(20 , 90),
         'total_discount'=>rand(20 , 300),
         'status'=>$statues[rand(0,8)],
         'date'=>date('Y-m-d'),
@@ -136,13 +136,14 @@ $factory->define(App\Models\OrderItem::class, function (Faker $faker) {
         'price'=>rand(20 , 300),
         'choice_price'=>rand(20 , 300),
         'discount'=>rand(20 , 300),
-        'discount_ratio'=>rand(20 , 300),
+        'discount_ratio'=>rand(20 , 90),
         'vendor_benefit'=>rand(20 , 300),
         'status'=>$statues[rand(0,8)],
         'quantity'=>rand(3,15),
         'is_vip'=>rand(0,1),
         'product_id'=>rand(1,20),
         'order_id'=>rand(1,20),
+        'client_id'=>rand(1,2),
     ];
 });
 

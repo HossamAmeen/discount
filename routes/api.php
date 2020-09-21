@@ -74,10 +74,10 @@ Route::prefix('client')->namespace('Client')->group(function(){
             Route::delete('delete-wishlist/{productId}' , 'ClientProductController@deleteWishlist');
             Route::get('detial-product/{productId}' , 'ClientProductController@showProduct');
             
-            Route::get('show-cart' , 'ClientOrderController@showCart'); 
-            Route::put('checkout-cart' , 'ClientOrderController@checkoutCart');  
+            Route::get('show-cart' , 'CartClientController@showCart'); 
+            Route::put('checkout-cart' , 'CartClientController@checkoutCart');  
             Route::get('/show-orders/{orderId?}', 'ClientOrderController@showOrders'); ///// لسه  show with choices
-            Route::post('add-order' , 'ClientOrderController@addOrder'); 
+            Route::post('add-order' , 'CartClientController@addOrder'); 
             Route::put('/update-order/{orderId?}', 'ClientOrderController@updateOrder');    ////// لسه choice
             Route::delete('delete-order/{orderId}' , 'ClientOrderController@deleteOrder'); 
             Route::delete('delete-order-item/{orderId}' , 'ClientOrderController@deleteOrderItem'); 

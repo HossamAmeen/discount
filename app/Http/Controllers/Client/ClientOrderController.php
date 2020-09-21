@@ -9,7 +9,7 @@ use Auth;
 class ClientOrderController extends Controller
 {
     use APIResponseTrait;
-    public function showCart() 
+    public function showCart()  ///// not work
     {
         $orders = Order::with(['items.choices' ,'items.product' ])->where('client_id' , Auth::guard('client-api')->user()->id)
                     ->where(['status'=>'pending from client'])
@@ -80,8 +80,8 @@ class ClientOrderController extends Controller
             return $this->APIResponse($orders, null, 200);
         }
         
-    }
-    public function addOrder(Request $request)
+    } 
+    public function addOrder(Request $request) ///// not work
     {
         $clientId = Auth::guard('client-api')->user()->id ; 
         $product= Product::find($request->product_id);

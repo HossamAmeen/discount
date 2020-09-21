@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Cart extends Model
 {
      use SoftDeletes;
-     protected $fillable = ['is_done' ,'date','total_cost', 'client_id','client_address_id'];
+     protected $fillable = ['is_done' ,'date','total_cost', 'client_id','client_address_id','product_id'];
      protected $hidden = [
          "deleted_at","created_at" , 'updated_at' 
     ];
+    public function products()
+    {
+        return $this->hasMany(Product::class)->select(['id','name','description','image']);
+    }
     public function orders()
     {
         return $this->hasMany(Order::class)->select(['id' ,'cart_id' ,'product_id' , 'price' ,'quantity', 'discount_ratio']);

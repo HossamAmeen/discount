@@ -38,7 +38,7 @@ class CartClientController extends Controller
             'quantity'=>$request->quantity ,
             'over_quantity'=> $over_quantity,
             'product_id'=>$request->product_id,
-           
+            'vendor_id'=>$vendor->id,
             'client_id'=> $clientId
         ]);
         // return $orderItem;
@@ -73,20 +73,29 @@ class CartClientController extends Controller
         ->get(['id','product_id' , 'discount_ratio' , 'price' ,'choice_price','over_quantity','quantity']);
         $data['products'] = $orderItems ; 
         // $data['total_cost'] =  $orderItems->sum(\DB::raw('price + choice_price')); //->sum(['price','choice_price']) ; 
-        $sql = "SELECT SUM(quantity * price + choice_price) as total_cost FROM order_items WHERE status = 'pending from client' and  client_id = :ID";
+        // $sql = "SELECT SUM(quantity * price + choice_price) as total_cost FROM order_items 
+        // WHERE status = 'pending from client'
+        
+        //  and  client_id = :ID";
 
-        $result = DB::select($sql,['ID'=>Auth::guard('client-api')->user()->id]);
-        $data['total_cost'] =$result[0]->total_cost ; 
+        // $result = DB::select($sql,['ID'=>Auth::guard('client-api')->user()->id]);
+        // // return $result[0]->total_cost;
+        // if($result[0]->total_cost != null)
+        // $data['total_cost'] =$result[0]->total_cost ; 
+        // else
+        // $data['total_cost'] = 0 ; 
+
+        $total_cost = OrderItem::where('client_id' , Auth::guard('client-api')->user()->id)
+        ->where(['status'=>'pending from client'])
+                ->value(DB::raw("SUM(quantity * price + choice_price)"));
+        // return $stats;
+        $data['total_cost'] = $total_cost ?? 0 ;
         // $data['total_cost'] =$result;//  $orderItems->sum('price');
         return $this->APIResponse($data, null, 200); 
     }
 
     public function checkoutCart()
     {
-        // $cart = Cart::where(['client_id' =>  Auth::guard('client-api')->user()->id , 'is_done'=> false ])->first();
-        // $orders = Order::where(['client_id' =>  Auth::guard('client-api')->user()->id ,'status' =>'pending from client' ] );
-
-       
             if(request('address_id') != null && request('address_id') != 'null'){
                 $addressId  =request('address_id') ;                
             }else{
@@ -100,21 +109,90 @@ class CartClientController extends Controller
                     // $addressId  = Auth::guard('client-api')->user()->favouriteAddress->id;
                 }
 
-                // $orders->update([
-                //     'status'            => 'sending from client',
-                //     'client_address_id' => $addressId,
-                //     'date'              => date('Y-m-d'),
-                // ]);
-                // $order = Order::create([
-                //     'date'=>date('Y-m-d'),
-                //     'price'=>30,
-                //     'delivery_cost','discount_ratio','is_vip','total_discount','vendor_benefit', 'status','client_address_id','vendor_id', 'client_id','cart_id'
-                // ]);
-                OrderItem::where('client_id' , Auth::guard('client-api')->user()->id )->update([
-                    'status'            => 'sending from client',
-                ]);
+             
+                $vendors_id= OrderItem::where(['client_id' => Auth::guard('client-api')->user()->id , 'status'=>'pending from client' ])
+                                    
+                                        ->get();
+                $orderItems = OrderItem::where(['client_id' => Auth::guard('client-api')->user()->id , 'status'=>'pending from client' ])
+                                    
+                                        ->get();
+                // return  $orderItems;
+                foreach($vendors_id as $vendor_id)
+                {
+                   $vendor = Vendor::find($vendor_id->vendor_id);
+                //    return $vendor_id;
+                   $order  = Order::create([
+                    'date'=>date('Y-m-d'),
+                    'time'=>date("h:i"),
+                    'price'=>0,
+                    'delivery_cost'=>$vendor->delivery ?? 0,
+                    'discount_ratio'=>$vendor->discount_ratio,
+                    'is_vip'=>Auth::guard('client-api')->user()->is_vip,
+                    'total_discount'=>0,
+                    'vendor_benefit'=>0,
+                    'status'=>'sending from client',
+                    'client_address_id'=> $addressId,
+                    'vendor_id'=>$vendor->id,
+                    'client_id'=>Auth::guard('client-api')->user()->id,
+                   ]);
+                   $orderPrice = 0;
+                   $orderTotaldiscount=0;
+                   foreach($orderItems as $orderItem){
+                    // return $order->vendor_id ;
+                       if($orderItem->vendor_id ==  $order->vendor_id)
+                       {
+                        $orderItem->update([
+                            'status'   => 'sending from client',
+                            'order_id' => $order->id,
+                        ]); 
+                        
+                        $orderPrice += $orderItem->price * $orderItem->quantity + $orderItem->choice_price;
+                        $orderTotaldiscount += $orderItem->discount;
+                       }
+                       
+                   }
+                   $order->price = $orderPrice +  $order->delivery_cost  ; //$order->itemsSent->sum('price') +  $order->delivery_cost;
+                   $order->total_discount = $order->itemsSent->sum('discount');
+                   $order->save();
+                }
+                // foreach($orderItems as $orderItem){
+                       
+                //     // if($orderItem->vendor_id ==  $order->vendor_id)
+                //     {
+                //      $orderItem->update([
+                //          'status'   => 'sending from client',
+                //         //  'order_id' => $order,
+                //      ]); 
+                //     //  $orderPrice += $orderItem->price;
+                //     //  $orderTotaldiscount += $orderItem->discount;
+                //     }
+                    
+                //  }
+               if(count($orderItems) == 0){
+                return $this->APIResponse(null, "this cart is empty", 400);
+               }
+
                 return $this->APIResponse(null, null, 200);
             }
     }
-    
+
+    public function deleteOrderItem($orderItemId)
+    {
+        
+        $orderItem =  OrderItem::find($orderItemId);
+       if(isset($orderItem)){
+        //    return $orderItem;
+            if( $orderItem->client_id != Auth::guard('client-api')->user()->id){
+                return $this->APIResponse(null, "this order item not for this client", 400);
+            }
+           $totalChoicesCost =  OrderChoice::where('order_item_id' , $orderItem->id)->sum('price');
+           $choicesCost =OrderChoice::where('order_item_id' , $orderItem->id)->get('id');
+           OrderChoice::destroy($choicesCost->toArray());
+           $orderItem->delete();
+           return $this->APIResponse(null, null, 200);
+        }
+        else{
+            return $this->APIResponse(null, "this order item not found", 400);
+           }
+    }
 }

@@ -115,8 +115,8 @@ class DatabaseSeeder extends Seeder
       
         factory('App\Models\WishList',25)->create();
         factory('App\Models\Cart',5)->create();//
-        factory('App\Models\Order',35)->create();
-        factory('App\Models\OrderItem',35)->create();
+        factory('App\Models\Order',50)->create();
+        factory('App\Models\OrderItem',60)->create();
 
         factory('App\Models\Question',5)->create();
         factory('App\Models\Complaint',5)->create();

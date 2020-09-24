@@ -116,7 +116,7 @@ $factory->define(App\Models\Order::class, function (Faker $faker) {
         'status'=>$statues[rand(0,8)],
         'date'=>date('Y-m-d'),
         'cart_id'=>rand(1 , 5),
-        // 'quantity'=>rand(3,15),
+        'time'=>date("h:i"),
         
         // 'address'=>$faker->address(),
         // 'phone'=>"01010079798",
@@ -142,6 +142,7 @@ $factory->define(App\Models\OrderItem::class, function (Faker $faker) {
         'quantity'=>rand(3,15),
         'is_vip'=>rand(0,1),
         'product_id'=>rand(1,20),
+        'vendor_id'=>rand(1,20),
         'order_id'=>rand(1,20),
         'client_id'=>rand(1,2),
     ];

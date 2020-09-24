@@ -25,7 +25,7 @@ class CreateOrdersTable extends Migration
                                      'cancelled from vendor' ,'working' , 'delivering' , 'done'])->default('pending from client')->nullable();
                                      
              $table->date('date')->nullable();
-            // $table->integer('quantity');
+            $table->time('time')->nullable();
             $table->double('vendor_benefit')->default(0);
             
             $table->boolean('is_vip')->default(0);

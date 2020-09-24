@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Vendor;
 use App\Http\Controllers\APIResponseTrait;
-use App\Models\{Order,Cart,Vendor , OrderChoice};
+use App\Models\{Order,Cart,Vendor , OrderChoice , OrderItem};
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
@@ -55,10 +55,12 @@ class OrderController extends Controller
         //     return $orders[$i];
         // }
         // // $orders['choices'] = OrderChoice::where('order_id' , );
-        $orders = Order::with(['items.choices','items.product', 'address','client'])->where('vendor_id' , Auth::guard('vendor-api')->user()->id )
+        $orders = Order::with(['itemsSent.choices','itemsSent.product', 'address','client'])
+                            ->where('vendor_id' , Auth::guard('vendor-api')->user()->id )
                                               ->where('status' , '!=' , 'done')
+                                              ->where('status' , '!=' , 'accept from vendor')
                                               ->where('status' , '!=' , 'pending from client')
-                                              ->get();
+                                              ->get(['id','date' ,'time','price','status','client_address_id','client_id']);
         return $this->APIResponse($orders, null, 200); 
     }
     public function showDoneOrders()
@@ -74,10 +76,13 @@ class OrderController extends Controller
     public function changeStatus($id)
     {
        
-        $order = Order::find($id);
-        if(isset($order)){
+        $orderItem = OrderItem::find($id);
+        if(isset($orderItem)){
             $status =  request('status') ; 
+            $orderItem->update(['status' => $status]);
+            $order=Order::find($orderItem->order_id);
             $order->update(['status' => $status]);
+            // return $order ;
             return $this->APIResponse(null, null, 200);  
         }
         return $this->APIResponse(null, "this order not found", 400);  

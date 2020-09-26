@@ -3,7 +3,7 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Auth;
 class Product extends Model
 {
      use SoftDeletes;
@@ -41,6 +41,14 @@ class Product extends Model
     public function vendor()
     {
         return $this->belongsTo(Vendor::class);
+    }
+    // public function isFavourite()
+    // {
+    //     return $this->Favourite == null ? 0 : 1;
+    // }
+    public function isFavourite()
+    {
+        return $this->hasOne(WishList::class , 'product_id')->where('client_id' , Auth::guard('client-api')->user()->id);
     }
     public function vendorDiscount()
     {

@@ -19,7 +19,7 @@ class CreateOrderItemsTable extends Migration
             $table->double('total_cost')->default(0);
             $table->double('choice_price')->default(0);
             $table->enum('status' , ['pending from client','sending from client','edit from vendor','accept from client' ,'accept from vendor', 
-            'cancelled from vendor' ,'working' , 'delivering' , 'done'])->default('pending from client')->nullable();
+            'cancelled from vendor' ,'working' , 'delivering' , 'done','User returned product','vendor accept returned product','vendor rejects returned product'])->default('pending from client')->nullable();
             $table->double('discount');
             $table->double('discount_ratio');
             $table->boolean('is_vip')->default(0);

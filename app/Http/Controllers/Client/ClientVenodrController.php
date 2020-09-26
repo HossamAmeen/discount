@@ -33,7 +33,7 @@ class ClientVenodrController extends Controller
     }
     public function showVendorsCategories($id)
     {
-        $categories = ProductCategory::with('products')->where('vendor_id' , $id)->get();
+        $categories = ProductCategory::with(['products' , 'products.isFavourite'])->where('vendor_id' , $id)->get();
         // $products = Product::where('vendor_id' , $id)->get(['id' , 'name','description','price','category_id','image']);
         $data = array();
         $vendor = Vendor::select('first_name','last_name','client_ratio','client_vip_ratio','store_logo','rating')->find($id);
@@ -55,7 +55,7 @@ class ClientVenodrController extends Controller
     }
     public function showProducts($id)
     {
-        $products = Product::where('vendor_id' , $id)->get(['id' , 'name','description','price','category_id','image']);
+        $products = Product::with('isFavourite')->where('vendor_id' , $id)->get(['id' , 'name','description','price','category_id','image']);
         $data = array();
         $vendor = Vendor::select('first_name','last_name','client_ratio','client_vip_ratio','store_logo','rating')->find($id);
         foreach($products as $item)

@@ -9,7 +9,7 @@ class WishList extends Model
      use SoftDeletes;
      protected $fillable = ['client_id' , 'product_id'];
      protected $hidden = [
-         'user_id',"created_at" , 'updated_at' 
+         'user_id',"created_at" , 'updated_at' ,'deleted_at'
     ];
     public function product()
     {

@@ -22,7 +22,7 @@ class CreateOrdersTable extends Migration
             $table->double('discount_ratio');
             $table->double('total_discount')->default(0);
             $table->enum('status' , ['pending from client','sending from client','edit from vendor','accept from client' ,'accept from vendor', 
-                                     'cancelled from vendor' ,'working' , 'delivering' , 'done'])->default('pending from client')->nullable();
+                                     'cancelled from vendor' ,'working' , 'delivering' , 'done','User returned product','vendor accept returned product','vendor rejects returned product'])->default('pending from client')->nullable();
                                      
              $table->date('date')->nullable();
             $table->time('time')->nullable();

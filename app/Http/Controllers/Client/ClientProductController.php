@@ -53,13 +53,14 @@ class ClientProductController extends Controller
     }
     public function showProduct($id)
     {
-        $product = Product::find($id);
-        
+        $product = Product::with('isFavourite')->find($id);
+        // return $product;
       
         if(isset($product)){
             $vendor = Vendor::find($product->vendor_id);
             $product['choices'] = json_encode(ProductChoice::where('product_id' , $id )->get() );//->groupBy('group_name');
             $choices = ProductChoice::where('product_id' , $id )->get()->groupBy('group_name');
+            $choicesArray[] = array();
             foreach($choices as $key=> $item){
                $data['name'] = $key ; 
                $data['items'] = array();
@@ -76,6 +77,9 @@ class ClientProductController extends Controller
            
             $product['client_price'] = $vendor->client_ratio ;//$product->price - (  $vendor->client_ratio * $product->price / 100 ) ;
             $product['client_vip_price'] =  $vendor->client_vip_ratio;// $product->price - (  $vendor->client_vip_ratio * $product->price / 100 ) ;
+            // $is_favourite =  $product->isFavourite() ;   
+            // $product['is_favourite'] = $product->isFavourite()  ;
+            // return $product->isFavourite() ;
             return $this->APIResponse($product, null, 200);
         }
         else

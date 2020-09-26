@@ -31,6 +31,7 @@ class ClientVenodrController extends Controller
         $offers = Offer::get('image');
         return $this->APIResponse($offers, null, 200);      
     }
+    
     public function showVendorsCategories($id)
     {
         $categories = ProductCategory::with(['products' , 'products.isFavourite'])->where('vendor_id' , $id)->get();

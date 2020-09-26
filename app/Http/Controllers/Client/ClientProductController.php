@@ -60,7 +60,7 @@ class ClientProductController extends Controller
             $vendor = Vendor::find($product->vendor_id);
             $product['choices'] = json_encode(ProductChoice::where('product_id' , $id )->get() );//->groupBy('group_name');
             $choices = ProductChoice::where('product_id' , $id )->get()->groupBy('group_name');
-            $choicesArray[] = array();
+            // $choicesArray[] = array();
             foreach($choices as $key=> $item){
                $data['name'] = $key ; 
                $data['items'] = array();
@@ -73,7 +73,10 @@ class ClientProductController extends Controller
                }
                 $choicesArray[] = $data ;
             }
-            $product['choices'] = $choicesArray ;
+            if( isset($choicesArray))
+                $product['choices'] = $choicesArray ;
+            else
+                 $product['choices'] = array();
            
             $product['client_price'] = $vendor->client_ratio ;//$product->price - (  $vendor->client_ratio * $product->price / 100 ) ;
             $product['client_vip_price'] =  $vendor->client_vip_ratio;// $product->price - (  $vendor->client_vip_ratio * $product->price / 100 ) ;

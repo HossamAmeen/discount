@@ -111,15 +111,17 @@ class CartClientController extends Controller
 
              
                 $vendors_id= OrderItem::where(['client_id' => Auth::guard('client-api')->user()->id , 'status'=>'pending from client' ])
-                                    
-                                        ->get();
+                                        ->pluck('vendor_id');
                 $orderItems = OrderItem::where(['client_id' => Auth::guard('client-api')->user()->id , 'status'=>'pending from client' ])
-                                    
                                         ->get();
-                // return  $orderItems;
-                foreach($vendors_id as $vendor_id)
+                // return  array_unique($vendors_id->toArray() );
+                // return  ($vendors_id->toArray() );
+                // $vendors_id = array_unique($vendors_id->toArray());
+                $vendors = array_unique($vendors_id->toArray());
+                foreach($vendors as $vendor_id)
+                
                 {
-                   $vendor = Vendor::find($vendor_id->vendor_id);
+                   $vendor = Vendor::find($vendor_id);
                 //    return $vendor_id;
                    $order  = Order::create([
                     'date'=>date('Y-m-d'),
@@ -135,19 +137,23 @@ class CartClientController extends Controller
                     'vendor_id'=>$vendor->id,
                     'client_id'=>Auth::guard('client-api')->user()->id,
                    ]);
+
                    $orderPrice = 0;
                    $orderTotaldiscount=0;
+                    // return "Test";
                    foreach($orderItems as $orderItem){
                     // return $order->vendor_id ;
                        if($orderItem->vendor_id ==  $order->vendor_id)
                        {
-                        $orderItem->update([
-                            'status'   => 'sending from client',
-                            'order_id' => $order->id,
-                        ]); 
+                            $orderItem->update([
+                                'status'   => 'sending from client',
+                                'order_id' => $order->id,
+                            ]); 
                         
-                        $orderPrice += $orderItem->price * $orderItem->quantity + $orderItem->choice_price;
-                        $orderTotaldiscount += $orderItem->discount;
+                            $orderPrice += $orderItem->price * $orderItem->quantity + $orderItem->choice_price;
+                            $orderTotaldiscount += $orderItem->discount;
+
+                            $order->vendor_benefit +=   $orderItem->vendor_benefit ;
                        }
                        
                    }

@@ -13,7 +13,7 @@ class ClientOrderController extends Controller
     {
         if(request('id') != null){
             $orders = Order::with(['itemsSent.product','address'])
-            ->select('id'  ,'date','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id')
+            ->select('id'  ,'date','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id','client_address_id')
             ->find(request('id') );
             
             return $this->APIResponse($orders, null, 200);
@@ -27,6 +27,7 @@ class ClientOrderController extends Controller
         }
         
     } 
+
     public function updateOrder($id , Request $request)
     {
         $orderItem = OrderItem::where(['id'=>$id] )->first();
@@ -42,7 +43,7 @@ class ClientOrderController extends Controller
         //     return $this->APIResponse(null, "this order  not found", 400);
         // }
         if($orderItem->client_id != Auth::guard('client-api')->user()->id)
-        return $this->APIResponse(null, "this order not for this client", 400);
+           return $this->APIResponse(null, "this order not for this client", 400);
        
 
         if($request->quantity){
@@ -54,12 +55,15 @@ class ClientOrderController extends Controller
             $orderItem->over_quantity =$request->quantity > $product->quantity  ? $request->quantity - abs($product->quantity) : 0 ;
             $orderItem->quantity = $request->quantity;
         }
+
         if(request('rating')){
             $orderItem->rating = ( $orderItem->rating + request('rating') ) / 2 ;
         }
+
         $orderItem->save();
         return $this->APIResponse(null, null, 200);
     }
+    
     public function showCart()  ///// not work
     {
         $orders = Order::with(['items.choices' ,'items.product' ])->where('client_id' , Auth::guard('client-api')->user()->id)

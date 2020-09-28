@@ -20,9 +20,10 @@ class ClientOrderController extends Controller
         }
         else
         {
-            $orders = Order::with(['itemsSent'])->where('client_id' ,  Auth::guard('client-api')->user()->id)
-                                                ->where('status', '!=', 'pending from client')
-                                        ->get(['id'  ,'date','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id']);
+            $orders = Order::with(['itemsSent.product','address'])
+                            ->where('client_id' ,  Auth::guard('client-api')->user()->id)
+                            ->where('status', '!=', 'pending from client')
+                            ->get(['id'  ,'date','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id','client_address_id']);
             return $this->APIResponse($orders, null, 200);
         }
         

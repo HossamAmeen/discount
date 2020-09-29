@@ -13,7 +13,7 @@ class Cart extends Model
     ];
     public function products()
     {
-        return $this->hasMany(Product::class)->select(['id','name','description','image']);
+        return $this->hasMany(Product::class)->select(['id','name','description','discount_ratio','image']);
     }
     public function orders()
     {

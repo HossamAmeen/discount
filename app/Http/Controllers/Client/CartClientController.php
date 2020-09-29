@@ -27,13 +27,15 @@ class CartClientController extends Controller
         {
             return $this->APIResponse(null, 'this order item is founded', 400);
         }
-       
+        $discountRatio = $product->discount_ratio != 0 ? $product->discount_ratio : ($is_client_vip == true ? $vendor->client_vip_ratio : $vendor->client_ratio );
+        $discount =  $discountRatio * $product->price /100;
+        $vendorBenefit = $request->quantity * ( $product->discount_ratio != 0 ? $product->discount_ratio  : $vendor->discount_ratio * $product->price / 100 );
         $orderItem = OrderItem::create([
-            'price'=> $is_client_vip == true ? $product->price - ($vendor->client_vip_ratio *$product->price /100 ) : $product->price -   ($vendor->client_ratio *$product->price /100 ),
+            'price'=> $product->price - $discount,
             'choice_price'=>0,
-            'discount'=>$is_client_vip == true ? $vendor->client_vip_ratio *$product->price /100  : $vendor->client_ratio *$product->price /100 ,
-            'discount_ratio'=>$is_client_vip == true ? $vendor->client_vip_ratio : $vendor->client_ratio ,
-            'vendor_benefit'=>$request->quantity *( $product->price - ($vendor->discount_ratio * $product->price / 100  ) ) ,
+            'discount'=> $discount,
+            'discount_ratio'=>$discountRatio ,
+            'vendor_benefit'=>$vendorBenefit ,
             'is_vip'=>$is_client_vip,
             'quantity'=>$request->quantity ,
             'over_quantity'=> $over_quantity,
@@ -119,7 +121,6 @@ class CartClientController extends Controller
                 // $vendors_id = array_unique($vendors_id->toArray());
                 $vendors = array_unique($vendors_id->toArray());
                 foreach($vendors as $vendor_id)
-                
                 {
                    $vendor = Vendor::find($vendor_id);
                 //    return $vendor_id;
@@ -182,6 +183,21 @@ class CartClientController extends Controller
             }
     }
 
+    public function proccesingCart()
+    {
+        $data['favouriteAddress']= Auth::guard('client-api')->user()->favouriteAddress ;
+        $vendors_id= OrderItem::where(['client_id' => Auth::guard('client-api')->user()->id , 'status'=>'pending from client' ])
+        ->pluck('vendor_id');
+        $totalPrice = OrderItem::where(['client_id' => Auth::guard('client-api')->user()->id , 'status'=>'pending from client' ])
+                ->get()->sum('price');
+        $totaldiscount = OrderItem::where(['client_id' => Auth::guard('client-api')->user()->id , 'status'=>'pending from client' ])
+                ->get()->sum('discount');
+        $totalShipping = Vendor::whereIn('id' , $vendors_id->toArray())->get()->sum('delivery');
+        $data['totalDiscount']=$totaldiscount;
+        $data['total']=  $totalPrice ;
+        $data['shipping']=$totalShipping ;
+        return $this->APIResponse($data, null, 200);
+    }
     public function deleteOrderItem($orderItemId)
     {
         

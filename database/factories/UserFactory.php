@@ -55,7 +55,7 @@ $factory->define(App\Models\Product::class, function (Faker $faker) {
         'description'=> $faker->text,
         'price' => rand(10 , 600),
         'quantity'=>rand(10 , 600),
-        
+        'discount_ratio'=>rand(20,70),
         'vendor_id'=>rand(1 , 10),
         'category_id'=>rand(1,9),
         'user_id'=>1

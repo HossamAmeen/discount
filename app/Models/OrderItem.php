@@ -16,7 +16,7 @@ class OrderItem extends Model
         return $this->attributes['price'] * $this->attributes['quantity'] ;
     }
     public function product(){
-        return $this->belongsTo(Product::class)->select(['id','name','description','image']);
+        return $this->belongsTo(Product::class)->select(['id','name','description','discount_ratio','image']);
     }
     
     public function choices()

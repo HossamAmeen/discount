@@ -8,7 +8,7 @@ class Product extends Model
 {
      use SoftDeletes;
      protected $fillable = ['name', 'description', 'price', 
-     'quantity','image', 'vendor_id', 'category_id'];
+     'quantity','discount_ratio','image', 'vendor_id', 'category_id'];
      protected $hidden = [
         'user_id' , "created_at" , 'updated_at' ,'deleted_at'
     ];

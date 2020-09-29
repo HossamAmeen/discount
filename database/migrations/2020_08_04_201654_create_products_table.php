@@ -20,6 +20,7 @@ class CreateProductsTable extends Migration
             $table->text('description')->nullable();
             $table->double('price');
             $table->integer('quantity');
+            $table->double('discount_ratio')->default(0);
             $table->double('rating')->default(0)->nullable();
             $table->string('image')->nullable();
 

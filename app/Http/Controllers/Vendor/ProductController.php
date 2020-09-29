@@ -176,7 +176,7 @@ class ProductController extends Controller
     public function showProducts()
     {
         $products = Product::where('vendor_id' , Auth::guard('vendor-api')->user()->id)
-                            ->get(['id' , 'name','description','price','category_id','image']);
+                            ->get(['id' , 'name','description','price','category_id','image','discount_ratio']);
         return $this->APIResponse($products, null, 200);
     }
     public function showCategories()

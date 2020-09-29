@@ -89,10 +89,6 @@ class ClientProductController extends Controller
         {
             return $this->APIResponse(null, "this product not found", 400);
         }
-       
-       
-       
-        
     }
     
    

@@ -91,7 +91,7 @@ class CartClientController extends Controller
         ->where(['status'=>'pending from client'])
                 ->value(DB::raw("SUM(quantity * price + choice_price)"));
         // return $stats;
-        $data['total_cost'] = $total_cost ?? 0 ;
+        $data['total_cost'] = (integer)$total_cost ?? 0 ;
         // $data['total_cost'] =$result;//  $orderItems->sum('price');
         return $this->APIResponse($data, null, 200); 
     }

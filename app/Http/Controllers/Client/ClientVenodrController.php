@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\APIResponseTrait;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Client,Vendor,Category,Order,Product,ProductCategory , Offer};
+use App\Models\{Client,Vendor,Category,Order,Product,ProductCategory , Offer , WishList};
 use Auth;
 class ClientVenodrController extends Controller
 {
@@ -34,7 +34,8 @@ class ClientVenodrController extends Controller
     
     public function showVendorsCategories($id)
     {
-        $categories = ProductCategory::with(['products' , 'products.isFavourite'])->where('vendor_id' , $id)->get();
+        // $categories = ProductCategory::with(['products'])->where('vendor_id' , $id)->paginate(30);
+        $categories = ProductCategory::with(['products'])->where('vendor_id' , $id)->get();
         // $products = Product::where('vendor_id' , $id)->get(['id' , 'name','description','price','category_id','image']);
         $data = array();
         $vendor = Vendor::select('first_name','last_name','client_ratio','client_vip_ratio','store_logo','rating')->find($id);
@@ -44,6 +45,8 @@ class ClientVenodrController extends Controller
             {
                 $product['client_price'] = $product->price - (  $vendor->client_ratio * $product->price / 100 ) ;
                 $product['client_vip_price'] = $product->price - (  $vendor->client_vip_ratio * $product->price / 100 ) ;
+                $favouriteProduct = WishList::where('product_id' , $product->id)->where('client_id' , Auth::guard('client-api')->user()->id)->first();
+                $product['is_favourite'] =  $favouriteProduct != null ?1:0;
             }
             // $product[$item->name] = $item ;
             // // $product[$item->name][] = $item->products ;

@@ -280,6 +280,15 @@
                                             <div class="col">
                                                 <div class="form-group"><label
                                                         for="website_name"><strong>about us</strong></label>
+                                                    <textarea class="form-control" name="en_about">{{$configrationSite->en_about ?? ""}}</textarea>    
+                                                </div>
+                                            </div>
+                                          
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <div class="form-group"><label
+                                                        for="website_name"><strong>about us (arabic) </strong></label>
                                                     <textarea class="form-control" name="about">{{$configrationSite->about ?? ""}}</textarea>    
                                                 </div>
                                             </div>

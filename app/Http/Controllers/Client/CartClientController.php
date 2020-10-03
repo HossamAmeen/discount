@@ -100,7 +100,8 @@ class CartClientController extends Controller
     {
             if(request('address_id') != null && request('address_id') != 'null'){
                 $addressId  =request('address_id') ;                
-            }else{
+            }
+            else{
                 if( Auth::guard('client-api')->user()->favouriteAddress == null ) // ?? Auth::guard('client-api')->user()->addresses->id ;
                 {
                     return $this->APIResponse(null, "please choose address", 400);
@@ -108,9 +109,9 @@ class CartClientController extends Controller
                 else
                 {
                     $addressId  =  Auth::guard('client-api')->user()->favouriteAddress->id ;
-                    // $addressId  = Auth::guard('client-api')->user()->favouriteAddress->id;
+                   
                 }
-
+            }
              
                 $vendors_id= OrderItem::where(['client_id' => Auth::guard('client-api')->user()->id , 'status'=>'pending from client' ])
                                         ->pluck('vendor_id');
@@ -178,9 +179,8 @@ class CartClientController extends Controller
                if(count($orderItems) == 0){
                 return $this->APIResponse(null, "this cart is empty", 400);
                }
-
                 return $this->APIResponse(null, null, 200);
-            }
+            
     }
 
     public function proccesingCart()

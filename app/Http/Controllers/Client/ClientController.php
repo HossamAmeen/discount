@@ -177,10 +177,14 @@ class ClientController extends Controller
         }
         return $this->APIResponse(null, "you should send file", 400);
     }
-
+        ///////////////////// address ////////////////////////
     public function addAddress(Request $request)
     {
         $request['client_id'] = Auth::guard('client-api')->user()->id ;
+        $isFirstAddress  = ClientAddress::where('client_id' , Auth::guard('client-api')->user()->id)->first();
+        if(! isset($isFirstAddress)){
+            $request['is_favourite'] =1 ;
+        }
         ClientAddress::create($request->all());
         return $this->APIResponse(null, null, 200);
     }
@@ -194,11 +198,16 @@ class ClientController extends Controller
        
     $address = ClientAddress::where(['id' => $id , 'client_id' =>Auth::guard('client-api')->user()->id ])->first();
     if($address){
+        if($request->is_favourite){
+            $addresses = ClientAddress::where('client_id' ,Auth::guard('client-api')->user()->id )->update(['is_favourite' => 0]);
+        }
         $address->update($request->all());
+        
         return $this->APIResponse(null, null, 200);
     }
     else
     {
+      
         return $this->APIResponse(null, "address not found", 400);
     }
 

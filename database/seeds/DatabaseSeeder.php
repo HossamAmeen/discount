@@ -16,11 +16,13 @@ class DatabaseSeeder extends Seeder
             UserSeed::class,
         ]);
         factory('App\Models\User',5)->create();
+        
         \App\Models\Configration::create([
             'website_name'=> 'ekhsemly',
             'email' =>"ekhsemly@gmail.com",
             'address'=>'El-Gomhoreya',
-            'phone' => "01010079798"
+            'phone' => "01010079798",
+            'about' => "good company",
             
         ]);
       

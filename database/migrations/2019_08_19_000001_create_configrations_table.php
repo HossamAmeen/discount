@@ -21,6 +21,7 @@ class CreateConfigrationsTable extends Migration
             $table->string('phone')->nullable();
             
             $table->text('about')->nullable();
+            $table->text('en_about')->nullable();
             $table->text('terms_conditions')->nullable();
             $table->text('privacy_policy')->nullable();
             $table->bigInteger('user_id')->unsigned()->nullable();

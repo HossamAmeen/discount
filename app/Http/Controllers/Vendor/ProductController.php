@@ -98,6 +98,7 @@ class ProductController extends Controller
                $tchoice['price']=$choice->price;
                $data['items'][] = $tchoice;
            }
+           $data['type'] =$choice->type; 
             $choicesArray[] = $data ;
         }
         $product['choices'] = $choicesArray ;

@@ -69,7 +69,7 @@ class ClientProductController extends Controller
                    $tchoice['id']=$choice->id;
                    $tchoice['name']=$choice->name;
                    $tchoice['price']=$choice->price;
-                   $tchoice['type']=$choice->type;
+                //    $tchoice['type']=$choice->type;
                    $data['items'][] = $tchoice;
                }
                $data['type'] = $choice->type; 

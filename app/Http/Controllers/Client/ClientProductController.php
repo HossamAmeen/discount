@@ -73,7 +73,7 @@ class ClientProductController extends Controller
                    $data['items'][] = $tchoice;
                }
                $data['type'] = $choice->type; 
-                $choicesArray[] = $data ;
+               $choicesArray[] = $data ;
             }
             if( isset($choicesArray))
                 $product['choices'] = $choicesArray ;

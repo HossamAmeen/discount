@@ -76,9 +76,9 @@ class ProductController extends Controller
         $requestArray['image'] =  $request->image != null ? uploadFile($request->image , 'products') : null;
         $requestArray['vendor_id'] = Auth::guard('vendor-api')->user()->id; 
         $product = Product::create($requestArray);
-       
+        if($request->json != null){
         $this->addChoiceForProduct($request->json , $product->id);
-       
+        }
        
         return $this->APIResponse(null, null, 200);
     }
@@ -99,9 +99,12 @@ class ProductController extends Controller
                $data['items'][] = $tchoice;
            }
            $data['type'] =$choice->type; 
-            $choicesArray[] = $data ;
+        $choicesArray[] = $data ;
         }
-        $product['choices'] = $choicesArray ;
+        if( isset($choicesArray))
+            $product['choices'] = $choicesArray ;
+        else
+         $product['choices'] = array();
         if(isset($product)){
             return $this->APIResponse($product, null, 200);
         }

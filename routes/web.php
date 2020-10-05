@@ -44,5 +44,5 @@ Route::prefix('admin')->namespace('DashBoard')->group(function(){
 });
 
 Auth::routes();
-
+Route::get('/conditions' ,  'HomeController@conditions');
 Route::get('/home', 'HomeController@index')->name('home');

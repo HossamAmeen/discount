@@ -62,7 +62,8 @@ class ClientProductController extends Controller
             $choices = ProductChoice::where('product_id' , $id )->get()->groupBy('group_name');
             // $choicesArray[] = array();
             foreach($choices as $key=> $item){
-               $data['name'] = $key ; 
+               $data['name'] = $key ;
+               $data['type'] = " ";
                $data['items'] = array();
                foreach($item as $choice)
                {

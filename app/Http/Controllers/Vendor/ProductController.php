@@ -86,6 +86,9 @@ class ProductController extends Controller
     public function showProductDetails($id)
     {
         $product = Product::find($id);
+        if(!isset($product)){
+            return $this->APIResponse(null, "this product not found", 400);
+        }
         $product['choices'] = json_encode(ProductChoice::where('product_id' , $id )->get() );//->groupBy('group_name');
         $choices = ProductChoice::where('product_id' , $id )->get()->groupBy('group_name');
         foreach($choices as $key=> $item){
@@ -105,11 +108,12 @@ class ProductController extends Controller
             $product['choices'] = $choicesArray ;
         else
          $product['choices'] = array();
-        if(isset($product)){
+
+      
             return $this->APIResponse($product, null, 200);
-        }
+        
        
-        return $this->APIResponse(null, "this product not found", 400);
+
     }
     public function updateProduct($id ,ProductRequest $request )
     {

@@ -20,13 +20,13 @@ class ConfigrationController extends BackEndController
         $clients = \App\Models\Client::query();
         $orders  =\App\Models\Order::query();
         $products  =\App\Models\Product::query();
-        // $top_product = \App\Models\Order::select('product_id')
-        //         ->selectRaw('count(product_id) as qty')
-        //         ->groupBy('product_id')
-        //         ->orderBy('qty', 'DESC')
-        //         ->limit(1)
-        //         ->get();
-        // $top_product =\App\Models\Product::find($top_product[0]->product_id);
+        $top_product = \App\Models\OrderItem::select('product_id')
+                ->selectRaw('count(product_id) as qty')
+                ->groupBy('product_id')
+                ->orderBy('qty', 'DESC')
+                ->limit(1)
+                ->get();
+        $top_product =\App\Models\Product::find($top_product[0]->product_id);
         $configrationSite['vendors'] =$vendors->count() ;
         // $configrationSite['accepted_vendors'] =$vendors->where('status' , 'accept')->count() ;
         // $configrationSite['blocked_vendors'] =$vendors->where('status' , 'blocked')->count() ;
@@ -37,7 +37,8 @@ class ConfigrationController extends BackEndController
         $configrationSite['orders'] = $orders->count();
         $configrationSite['today_orders'] =  $orders->wheredate('created_at' , date('Y-m-d'))->count();
         $configrationSite['products'] = $products->count();
-        $configrationSite['top_product'] =' ' ; //$top_product->name. '('.$top_product->vendor->store_name.')';
+        // return $top_product;
+        $configrationSite['top_product'] =$top_product->name. '('.$top_product->vendor->store_name ?? " ".')';
 
         
 

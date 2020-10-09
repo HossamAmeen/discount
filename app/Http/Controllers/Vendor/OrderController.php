@@ -76,13 +76,15 @@ class OrderController extends Controller
     public function changeStatus($id)
     {
        
-        $orderItem = OrderItem::find($id);
-        if(isset($orderItem)){
+        // $orderItem = OrderItem::find($id);
+        $order = Order::find($id);
+        if(isset($order)){
             $status =  request('status') ; 
-            $orderItem->update(['status' => $status]);
-            $order=Order::find($orderItem->order_id);
             $order->update(['status' => $status]);
+            // $order=Order::find($orderItem->order_id);
+            // $order->update(['status' => $status]);
             // return $order ;
+            $orderItems = OrderItem::where('order_id' ,  $order->id)->update(['status' => $status]);
             return $this->APIResponse(null, null, 200);  
         }
         return $this->APIResponse(null, "this order not found", 400);  

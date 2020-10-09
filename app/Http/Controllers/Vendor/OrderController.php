@@ -58,9 +58,18 @@ class OrderController extends Controller
         $orders = Order::with(['itemsSent.choices','itemsSent.product', 'address','client'])
                             ->where('vendor_id' , Auth::guard('vendor-api')->user()->id )
                                               ->where('status' , '!=' , 'done')
-                                              ->where('status' , '!=' , 'accept from vendor')
+                                            //   ->where('status' , '!=' , 'accept from vendor')
                                               ->where('status' , '!=' , 'pending from client')
                                               ->get(['id','date' ,'time','price','status','client_address_id','client_id']);
+        $doneOrders =Order::with(['items.choices','items.product', 'address','client'])
+        ->where('status' ,'done')
+        ->where('vendor_id' , Auth::guard('vendor-api')->user()->id )
+        ->orderBy('id' , 'DESC')
+        ->take(20)
+        ->get(['id','date' ,'time','price','status','client_address_id','client_id']);
+        foreach($doneOrders as $doneOrder){
+            $orders[] = $doneOrder ;
+        }
         return $this->APIResponse($orders, null, 200); 
     }
     public function showDoneOrders()
@@ -69,7 +78,7 @@ class OrderController extends Controller
         ->where('status' ,'done')
         ->where('vendor_id' , Auth::guard('vendor-api')->user()->id )
         ->orderBy('id' , 'DESC')
-        ->take(10)
+        ->take(20)
         ->get();
         return $this->APIResponse($oders, null, 200);  
     }

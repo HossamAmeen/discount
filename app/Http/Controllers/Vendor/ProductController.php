@@ -169,7 +169,10 @@ class ProductController extends Controller
             {
                 if($itemKey == "name")
                 {
-                   
+                    if($item == ""){
+                        $groupName = '_'.rand(2 , 10).rand(0,20);
+                    }
+                    else
                     $groupName = $item ; 
                 }
                 else

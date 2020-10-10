@@ -61,7 +61,7 @@ class OrderController extends Controller
                                             //   ->where('status' , '!=' , 'accept from vendor')
                                               ->where('status' , '!=' , 'pending from client')
                                               ->get(['id','date' ,'time','price','status','client_address_id','client_id']);
-        $doneOrders =Order::with(['items.choices','items.product', 'address','client'])
+        $doneOrders =Order::with(['itemsSent.choices','itemsSent.product', 'address','client'])
         ->where('status' ,'done')
         ->where('vendor_id' , Auth::guard('vendor-api')->user()->id )
         ->orderBy('id' , 'DESC')
@@ -74,7 +74,7 @@ class OrderController extends Controller
     }
     public function showDoneOrders()
     {
-        $oders =Order::with(['items.choices','items.product', 'address','client'])
+        $oders =Order::with(['itemsSent.choices','itemsSent.product', 'address','client'])
         ->where('status' ,'done')
         ->where('vendor_id' , Auth::guard('vendor-api')->user()->id )
         ->orderBy('id' , 'DESC')

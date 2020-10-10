@@ -28,7 +28,9 @@ class Order extends Model
     // }
     public function itemsSent()
     {
-        return $this->hasMany(OrderItem::class , 'order_id')->select(['id','product_id' , 'discount_ratio' , 'price' ,'choice_price','over_quantity','quantity','order_id']);//->where('status', "!=", "pending from client");
+        return $this->hasMany(OrderItem::class , 'order_id')
+        ->select(['id','product_id' , 'discount_ratio' , 'price' ,'choice_price','over_quantity','quantity','order_id']);
+        
     }
     public function client(){
         return $this->belongsTo(Client::class)->select(['id','first_name','last_name', ]);

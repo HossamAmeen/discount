@@ -53,12 +53,14 @@ class ClientProductController extends Controller
     }
     public function showProduct($id)
     {
-        $product = Product::with('isFavourite')->find($id);
+        $product = Product::find($id);
         // return $product;
       
         if(isset($product)){
             $vendor = Vendor::find($product->vendor_id);
             $product['choices'] = json_encode(ProductChoice::where('product_id' , $id )->get() );//->groupBy('group_name');
+            $favouriteProduct = WishList::where('product_id' , $product->id)->where('client_id' , Auth::guard('client-api')->user()->id)->first();
+            $product['is_favourite'] =  $favouriteProduct != null ?1:0;
             $choices = ProductChoice::where('product_id' , $id )->get()->groupBy('group_name');
             // $choicesArray[] = array();
             foreach($choices as $key=> $item){

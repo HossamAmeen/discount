@@ -43,8 +43,10 @@ class ClientVenodrController extends Controller
         {
             foreach($item->products as $product)
             {
-                $product['client_price'] = $product->price - (  $vendor->client_ratio * $product->price / 100 ) ;
-                $product['client_vip_price'] = $product->price - (  $vendor->client_vip_ratio * $product->price / 100 ) ;
+                $discount =$product->discount_ratio !=0 ? $product->discount_ratio *  3 : (  $vendor->client_ratio * $product->price / 100 ) ; 
+                $VIPdiscount =$product->discount_ratio !=0 ? $product->discount_ratio* 2 / 3  : (  $vendor->client_vip_ratio * $product->price / 100 ) ;
+                $product['client_price'] = $product->price - $discount ;
+                $product['client_vip_price'] = $product->price - $VIPdiscount;
                 $favouriteProduct = WishList::where('product_id' , $product->id)->where('client_id' , Auth::guard('client-api')->user()->id)->first();
                 $product['is_favourite'] =  $favouriteProduct != null ?1:0;
             }
@@ -59,14 +61,18 @@ class ClientVenodrController extends Controller
     }
     public function showProducts($id)
     {
-        $products = Product::with('isFavourite')->where('vendor_id' , $id)->get(['id' , 'name','description','price','category_id','image']);
+        $products = Product::where('vendor_id' , $id)->get(['id' , 'name','description','price','category_id','image']);
         $data = array();
         $vendor = Vendor::select('first_name','last_name','client_ratio','client_vip_ratio','store_logo','rating')->find($id);
         foreach($products as $item)
         {
             $product = $item ;
-            $product['client_price'] = $item->price - (  $vendor->discount_ratio / 3 * $item->price / 100 ) ;
-            $product['client_vip_price'] = $item->price - (  ( $vendor->discount_ratio * 2 / 3 )* $item->price / 100 ) ;
+            $discount =$product->discount_ratio !=0 ? $product->discount_ratio *  3 : (  $vendor->client_ratio * $product->price / 100 ) ; 
+            $VIPdiscount =$product->discount_ratio !=0 ? $product->discount_ratio* 2 / 3  : (  $vendor->client_vip_ratio * $product->price / 100 ) ;
+            $product['client_price'] = $product->price - $discount ;
+            $product['client_vip_price'] = $product->price - $VIPdiscount;
+            $favouriteProduct = WishList::where('product_id' , $product->id)->where('client_id' , Auth::guard('client-api')->user()->id)->first();
+            $product['is_favourite'] =  $favouriteProduct != null ?1:0;
             $data[]=$product;
             
         }

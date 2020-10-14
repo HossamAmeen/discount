@@ -73,6 +73,7 @@ class BackEndController extends Controller
     {
         $this->model->FindOrFail($id)->delete();
         session()->flash('action', 'deleted successfully');
+        $this->deleteRelatedItems($id);
         return redirect()->back();
         return redirect()->route($this->getClassNameFromModel() . '.index');
     }
@@ -97,6 +98,11 @@ class BackEndController extends Controller
             'folderName',
             'routeName'
         ))->with($append);
+    }
+
+    public function deleteRelatedItems($rowId)
+    {
+        
     }
     protected function uploadImage($request , $height = 400 , $width = 400){
 

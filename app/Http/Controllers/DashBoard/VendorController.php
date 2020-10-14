@@ -98,4 +98,8 @@ class VendorController extends BackEndController
                      ->orWhere('phone' , 'LIKE', '%' . request('search') . '%');
         return $rows; 
     }
+    public function deleteRelatedItems($rowId)
+    {
+        $products = Product::where('vendor_id' , $rowId)->delete();
+    }
 }

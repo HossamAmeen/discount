@@ -43,8 +43,8 @@ class ClientVenodrController extends Controller
         {
             foreach($item->products as $product)
             {
-                $discount =$product->discount_ratio !=0 ? $product->discount_ratio *  3 : (  $vendor->client_ratio * $product->price / 100 ) ; 
-                $VIPdiscount =$product->discount_ratio !=0 ? $product->discount_ratio* 2 / 3  : (  $vendor->client_vip_ratio * $product->price / 100 ) ;
+                $discount =$product->discount_ratio !=0 ? $product->discount_ratio *  3 : (  $vendor->client_ratio ?? 0 * $product->price / 100 ) ; 
+                $VIPdiscount =$product->discount_ratio !=0 ? $product->discount_ratio* 2 / 3  : (  $vendor->client_vip_ratio ?? 0 * $product->price / 100 ) ;
                 $product['client_price'] = $product->price - $discount ;
                 $product['client_vip_price'] = $product->price - $VIPdiscount;
                 $favouriteProduct = WishList::where('product_id' , $product->id)->where('client_id' , Auth::guard('client-api')->user()->id)->first();
@@ -67,8 +67,8 @@ class ClientVenodrController extends Controller
         foreach($products as $item)
         {
             $product = $item ;
-            $discount =$product->discount_ratio !=0 ? $product->discount_ratio *  3 : (  $vendor->client_ratio * $product->price / 100 ) ; 
-            $VIPdiscount =$product->discount_ratio !=0 ? $product->discount_ratio* 2 / 3  : (  $vendor->client_vip_ratio * $product->price / 100 ) ;
+            $discount =$product->discount_ratio !=0 ? $product->discount_ratio *  3 : (  $vendor->client_ratio ?? 0 * $product->price / 100 ) ; 
+            $VIPdiscount =$product->discount_ratio !=0 ? $product->discount_ratio* 2 / 3  : (  $vendor->client_vip_ratio ?? 0 * $product->price / 100 ) ;
             $product['client_price'] = $product->price - $discount ;
             $product['client_vip_price'] = $product->price - $VIPdiscount;
             $favouriteProduct = WishList::where('product_id' , $product->id)->where('client_id' , Auth::guard('client-api')->user()->id)->first();

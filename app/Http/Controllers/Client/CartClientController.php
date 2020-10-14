@@ -27,9 +27,9 @@ class CartClientController extends Controller
         {
             return $this->APIResponse(null, 'this order item is founded', 400);
         }
-        $discountRatio = $product->discount_ratio != 0 ? $product->discount_ratio : ($is_client_vip == true ? $vendor->client_vip_ratio : $vendor->client_ratio );
+        $discountRatio = $product->discount_ratio != 0 ? $product->discount_ratio : ($is_client_vip == true ? ($vendor->client_vip_ratio ?? 0) : ($vendor->client_ratio ?? 0) );
         $discount =  $discountRatio * $product->price /100;
-        $vendorBenefit = $request->quantity * ( $product->discount_ratio != 0 ? $product->discount_ratio  : $vendor->discount_ratio * $product->price / 100 );
+        $vendorBenefit = $request->quantity * ( $product->discount_ratio != 0 ? $product->discount_ratio  : ($vendor->discount_ratio?? 0) * $product->price / 100 );
         
         $orderItem = OrderItem::create([
             'price'=> $product->price - $discount,
@@ -93,7 +93,7 @@ class CartClientController extends Controller
         ->where(['status'=>'pending from client'])
                 ->value(DB::raw("SUM(quantity * price + choice_price)"));
         // return $stats;
-        $data['total_cost'] = $total_cost ?? 0 ;
+        $data['total_cost'] =(double) $total_cost ?? 0 ;
         // $data['total_cost'] =$result;//  $orderItems->sum('price');
         return $this->APIResponse($data, null, 200); 
     }
@@ -132,7 +132,7 @@ class CartClientController extends Controller
                     'time'=>date("h:i"),
                     'price'=>0,
                     'delivery_cost'=>$vendor->delivery ?? 0,
-                    'discount_ratio'=>$vendor->discount_ratio,
+                    'discount_ratio'=>$vendor->discount_ratio??0,
                     'is_vip'=>Auth::guard('client-api')->user()->is_vip,
                     'total_discount'=>0,
                     'vendor_benefit'=>0,
@@ -190,13 +190,17 @@ class CartClientController extends Controller
         $data['favouriteAddress']= Auth::guard('client-api')->user()->favouriteAddress ;
         $vendors_id= OrderItem::where(['client_id' => Auth::guard('client-api')->user()->id , 'status'=>'pending from client' ])
         ->pluck('vendor_id');
-        $totalPrice = OrderItem::where(['client_id' => Auth::guard('client-api')->user()->id , 'status'=>'pending from client' ])
-                ->get()->sum('price');
+        // $totalPrice = OrderItem::where(['client_id' => Auth::guard('client-api')->user()->id , 'status'=>'pending from client' ])
+        //         ->get()->sum('price');
+        $totalPrice = OrderItem::where('client_id' , Auth::guard('client-api')->user()->id)
+                ->where(['status'=>'pending from client'])
+                ->value(DB::raw("SUM(quantity * price + choice_price)"));
+
         $totaldiscount = OrderItem::where(['client_id' => Auth::guard('client-api')->user()->id , 'status'=>'pending from client' ])
                 ->get()->sum('discount');
         $totalShipping = Vendor::whereIn('id' , $vendors_id->toArray())->get()->sum('delivery');
         $data['totalDiscount']=$totaldiscount;
-        $data['total']=  $totalPrice ;
+        $data['total']=  (double)$totalPrice ;
         $data['shipping']=$totalShipping ;
         return $this->APIResponse($data, null, 200);
     }

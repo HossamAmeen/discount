@@ -157,8 +157,7 @@ class ClientOrderController extends Controller
                 'price'=>  $vendor->delivery_cost ?? 0,
                 'delivery_cost' => $vendor->delivery_cost ?? 0,
                 'is_vip'=>$is_client_vip,
-                'discount_ratio'=>$is_client_vip == true ? $vendor->client_vip_ratio : $vendor->client_ratio ,
-                // 'total_discount'=>$is_client_vip == true ? $vendor->client_vip_ratio *$product->price /100  : $vendor->client_ratio *$product->price /100 ,
+                'discount_ratio'=>$is_client_vip == true ? ($vendor->client_vip_ratio ?? 0) : ($vendor->client_ratio ?? 0) ,
                 'vendor_id' =>$vendor->id,
                 'client_id'=>  $clientId 
             ]);
@@ -170,11 +169,11 @@ class ClientOrderController extends Controller
             return $this->APIResponse(null, 'this order item is founded', 400);
         }
         $orderItem = OrderItem::create([
-            'price'=> $is_client_vip == true ? $product->price - ($vendor->client_vip_ratio *$product->price /100 ) : $product->price -   ($vendor->client_ratio *$product->price /100 ),
+            'price'=> $is_client_vip == true ? $product->price - ($vendor->client_vip_ratio *$product->price /100 ) : $product->price -   ($vendor->client_ratio ?? 0 *$product->price /100 ),
             'choice_price'=>0,
-            'discount'=>$is_client_vip == true ? $vendor->client_vip_ratio *$product->price /100  : $vendor->client_ratio *$product->price /100 ,
-            'discount_ratio'=>$is_client_vip == true ? $vendor->client_vip_ratio : $vendor->client_ratio ,
-            'vendor_benefit'=>$request->quantity *( $product->price - ($vendor->discount_ratio * $product->price / 100  ) ) ,
+            'discount'=>$is_client_vip == true ? ($vendor->client_vip_ratio ?? 0 ) *$product->price /100  : ($vendor->client_ratio ?? 0) *$product->price /100 ,
+            'discount_ratio'=>$is_client_vip == true ? ($vendor->client_vip_ratio ?? 0 ) : ($vendor->client_ratio ?? 0) ,
+            'vendor_benefit'=>$request->quantity *( $product->price - ($vendor->discount_ratio??0 * $product->price / 100  ) ) ,
             'is_vip'=>$is_client_vip,
             'quantity'=>$request->quantity ,
             'over_quantity'=> $over_quantity,
@@ -183,20 +182,7 @@ class ClientOrderController extends Controller
 
         ]);
        
-        // $product->quantity = $product->quantity - $request->quantity;
-        // $product->save();
-        // $order = Order::create([
-        //     'price' =>  $is_client_vip == true ? $product->price - ($vendor->client_vip_ratio *$product->price /100 ) : $product->price -   ($vendor->client_ratio *$product->price /100 ),
-        //     'discount_ratio' =>  $is_client_vip == true ? $vendor->client_vip_ratio : $vendor->client_ratio ,
-        //     'discount' =>  $is_client_vip == true ? $vendor->client_vip_ratio *$product->price /100  : $vendor->client_ratio *$product->price /100 ,
-        //     'is_vip'=>$is_client_vip,
-        //     'quantity' =>$request->quantity ,
-        //     'product_id' => $request->product_id,
-        //     'client_id'=>  $clientId,
-        //     'cart_id'=>$cart->id,
-        //     'vendor_id'=>$vendor->id,
-        //     'vendor_benefit'=>$product->price - ($vendor->discount_ratio * $product->price / 100  )
-        // ]);
+    
 
         if($request->choices){
             $orderItem->choice_price = $this->addChoiceForOrder($request->choices , $orderItem->id);

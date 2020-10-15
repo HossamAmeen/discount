@@ -41,10 +41,15 @@ class ClientRequest extends FormRequest
         {
             $rules['first_name'][] = 'required';
             $rules['last_name'][] = 'required';
-            $rules['email'][] = 'required';
+            if($this->request->get("facebook_id") === null && $this->request->get("google_id") === null ){
+                $rules['password'][] = 'required';
+                $rules['email'][] = 'required';
+            }
             $rules['phone'][] = 'required';
-            $rules['password'][] = 'required';
             $rules['gender'][] = 'required';
+
+            
+           
         }
         // if(strpos($this->fullUrl(), "profile") !== false) { 
         //     $rules['first_name'][] = 'required';

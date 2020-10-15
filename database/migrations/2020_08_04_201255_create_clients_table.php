@@ -19,8 +19,8 @@ class CreateClientsTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('gender');
-            $table->string('email');
-            $table->string('password');
+            $table->string('email')->default(' ');
+            $table->string('password')->default(' ');
             $table->string('phone');
             $table->string('image')->nullable();
             $table->enum('status' , ['pending','accept' , 'blocked'])->default('pending')->nullable();

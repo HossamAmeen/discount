@@ -98,7 +98,7 @@ class ClientVenodrController extends Controller
        {
         $data = Vendor::accepted()->where('store_name' , 'LIKE', '%' . request('name') . '%' )
         // ->orWhere('last_name' , 'LIKE', '%' . request('name') . '%')
-       ->get(['store_name' , 'store_description','client_ratio','client_vip_ratio','store_logo','store_background_image','rating']);
+       ->get(['id','store_name' , 'store_description','client_ratio','client_vip_ratio','store_logo','store_background_image','rating']);
        }
         return $this->APIResponse($data, null, 200);   
     }

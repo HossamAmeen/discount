@@ -93,8 +93,8 @@ class VendorController extends Controller
     
         $vendor['monthOrders'] =  count($monthOrders);
         $vendor['monthEarning'] = $monthOrders->sum('vendor_benefit');
-        $vendor['appFree'] =  0;
-        $vendor['appFreeRatio'] =  0;
+        $vendor['appFree'] =  $vendor->app_gain;
+        $vendor['appFreeRatio'] =  $vendor->discount_ratio;
         return $this->APIResponse($vendor, null, 200);
     }
     

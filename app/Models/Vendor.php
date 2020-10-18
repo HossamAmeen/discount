@@ -17,7 +17,7 @@ class Vendor extends Authenticatable
         // 'client_ratio', 'client_vip_ratio',
         'store_description', 'store_logo', 'store_background_image',
         'company_registration_image', 'national_id_front_image', 'national_id_back_image',
-         'expiration_date','delivery','status','category_id', 'city_id', 'user_id'
+         'expiration_date','delivery','delivery_time','app_gain','status','category_id', 'city_id', 'user_id'
     ];
     protected $hidden = [
            'password', 'user_id' , "created_at" , 'updated_at' ,'deleted_at'

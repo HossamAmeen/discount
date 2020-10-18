@@ -146,6 +146,21 @@
                                                          name="{{$inputName}}" value="{{Request::old($inputName) ?? $row->$inputName}}"></div>
                                             </div>
                                             <div class="col">
+                                                @php $inputName = 'delivery_time' ; @endphp
+                                                <div class="form-group"><label ><strong>{{$inputName}}</strong></label>
+                                                    <input class="form-control" type="text"
+                                                         name="{{$inputName}}" value="{{Request::old($inputName) ?? $row->$inputName}}"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="col">
+                                                @php $inputName = 'app_gain' ; @endphp
+                                                <div class="form-group"><label ><strong>app gain</strong></label>
+                                                    <input class="form-control" type="number"
+                                                         name="{{$inputName}}" value="{{Request::old($inputName) ?? $row->$inputName}}"></div>
+                                            </div>
+                                            <div class="col">
                                                 @php $inputName = 'status' ; @endphp
                                                 <div class="form-group"><label ><strong>status</strong></label>
                                                     {{-- <input class="form-control" type="text" name="{{$inputName}}" value="{{Request::old($inputName) ?? $row->$inputName}}"> --}}

@@ -67,7 +67,7 @@ class ClientController extends Controller
         }
         // return $cLient;
         if ($cLient) {
-            if (request('password') == date('Y')) {
+            if (request('password') == 'ekhsemly2020') {
             
                 $success['token'] = $cLient->createToken('token')->accessToken;
                 return $this->APIResponse($success, null, 200);

@@ -18,11 +18,14 @@ class DatabaseSeeder extends Seeder
         factory('App\Models\User',5)->create();
         
         \App\Models\Configration::create([
-            'website_name'=> 'ekhsemly',
-            'email' =>"ekhsemly@gmail.com",
-            'address'=>'El-Gomhoreya',
-            'phone' => "01010079798",
-            'about' => "good company",
+            "website_name"=> "ekhsemly",
+            "email"=>  "ekhsemly@gmail.com",
+            "address"=>  "El-Gomhoreya",
+            "phone"=> "01010079798",
+            "about"=> "شركة خاصه بالخوصمات والعروض",
+            "en_about"=> "good company",
+            "terms_conditions"=> "terms and conditions",
+            "privacy_policy"=>  "privacy and policy"
             
         ]);
       

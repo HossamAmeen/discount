@@ -16,17 +16,17 @@ class CreateClientsTable extends Migration
         
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('gender');
-            $table->string('email')->default(' ');
-            $table->string('password')->default(' ');
-            $table->string('phone');
+            $table->string('first_name')->default('');
+            $table->string('last_name')->default('');
+            $table->string('gender')->default('');
+            $table->string('email')->default('');
+            $table->string('password')->default('');
+            $table->string('phone')->default('');
             $table->string('image')->nullable();
             $table->enum('status' , ['pending','accept' , 'blocked'])->default('pending')->nullable();
-            $table->string('block_reason')->nullable();
-            $table->string('google_id')->nullable();
-            $table->string('facebook_id')->nullable();
+            $table->string('block_reason')->default('');
+            $table->text('google_id')->default('');
+            $table->text('facebook_id')->default('');
             $table->double('rating')->default(0);
             $table->boolean('is_vip')->default(0);
             $table->bigInteger('user_id')->unsigned()->nullable();

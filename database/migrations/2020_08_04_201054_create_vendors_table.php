@@ -32,6 +32,8 @@ class CreateVendorsTable extends Migration
             $table->string('national_id_back_image')->nullable();
             $table->date('expiration_date')->nullable();
             $table->double('delivery')->default(0);
+            $table->double('delivery_time')->default(0);
+            $table->double('app_gain')->default(0);
             $table->enum('status' , ['pending','accept' , 'blocked'])->default('pending')->nullable();
             $table->string('block_reason')->nullable();
             $table->string('google_id')->nullable();

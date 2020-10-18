@@ -11,8 +11,8 @@ class ClientVenodrController extends Controller
     use APIResponseTrait;
     public function showVendors()
     {
-        $vendors = Vendor::accepted();//get(['id','first_name', 'last_name' ,'client_ratio', 'client_vip_ratio' ,  'store_description', 'store_logo' ]);
-        // $vendors = 
+        $vendors = Vendor::accepted();
+      
         if(request('city_id')){
             $vendors = Vendor::where('city_id' , request('city_id'));
                                                         
@@ -20,9 +20,9 @@ class ClientVenodrController extends Controller
         if(request('category_id')){
             $vendors = $vendors ->where('category_id' , request('category_id'));
         }
-        // if(request('city_id')){}
-       
-        $vendors = $vendors->get(['id','first_name', 'last_name' ,'store_name','client_ratio', 'client_vip_ratio' ,'rating', 'store_description', 'store_logo' , 'store_background_image' ]);
+        $vendors = $vendors->skip((request('pageNumber') ?? 0 ) * 40 )->take(40)->get(['id','first_name', 'last_name' ,'store_name','client_ratio', 'client_vip_ratio' ,'rating',
+         'store_description', 'store_logo' , 'store_background_image' ]);
+     
         return $this->APIResponse($vendors, null, 200);      
     }
 
@@ -61,7 +61,9 @@ class ClientVenodrController extends Controller
     }
     public function showProducts($id)
     {
-        $products = Product::where('vendor_id' , $id)->get(['id' , 'name','description','price','category_id','image']);
+        $products = Product::where('vendor_id' , $id)
+        ->skip((request('pageNumber') ?? 0 ) * 40 )->take(40)
+        ->get(['id' , 'name','description','price','category_id','image']);
         $data = array();
         $vendor = Vendor::select('first_name','last_name','client_ratio','client_vip_ratio','store_logo','rating')->find($id);
         foreach($products as $item)
@@ -89,10 +91,23 @@ class ClientVenodrController extends Controller
             if(!$vendor){
                 return $this->APIResponse(null, "this vendor is blocked", 400);   
             }
-            $data = Product::where('vendor_id' , request('vendorId'))
+            $products = Product::where('vendor_id' , request('vendorId'))
                              ->where('name' , 'LIKE', '%' . request('name') . '%' )
                              ->orWhere('description' , 'LIKE', '%' . request('name') . '%')
-                            ->get();
+                            ->get(['id' , 'name','description','price','category_id','image']);
+            $data = array();
+            foreach($products as $item)
+            {
+                $product = $item ;
+                $discount =$product->discount_ratio !=0 ? $product->discount_ratio *  3 : (  $vendor->client_ratio ?? 0 * $product->price / 100 ) ; 
+                $VIPdiscount =$product->discount_ratio !=0 ? $product->discount_ratio* 2 / 3  : (  $vendor->client_vip_ratio ?? 0 * $product->price / 100 ) ;
+                $product['client_price'] = $product->price - $discount ;
+                $product['client_vip_price'] = $product->price - $VIPdiscount;
+                $favouriteProduct = WishList::where('product_id' , $product->id)->where('client_id' , Auth::guard('client-api')->user()->id)->first();
+                $product['is_favourite'] =  $favouriteProduct != null ?1:0;
+                $data[]=$product;
+                
+            }
         }
        else
        {

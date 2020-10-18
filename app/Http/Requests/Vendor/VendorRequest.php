@@ -43,7 +43,8 @@ class VendorRequest extends FormRequest
             'national_id_front_photo' => [ 'image'],
             'national_id_back_image' => [ 'image'],
             'expiration_date' => [ 'date_format:Y-m-d'],
-            'delivery'=>[ 'numeric']
+            'delivery'=>[ 'numeric'],
+            'delivery_time'=>[ 'numeric'],
         ];
         // if ($this->isMethod('POST') )
         if(strpos($this->fullUrl(), "register") !== false)

@@ -111,9 +111,6 @@ class ProductController extends Controller
 
       
             return $this->APIResponse($product, null, 200);
-        
-       
-
     }
     public function updateProduct($id ,ProductRequest $request )
     {
@@ -188,6 +185,15 @@ class ProductController extends Controller
     {
         $products = Product::where('vendor_id' , Auth::guard('vendor-api')->user()->id)
                             ->get(['id' , 'name','description','price','category_id','image','discount_ratio']);
+        foreach($products as $product)
+            {
+                $discount =$product->discount_ratio !=0 ? $product->discount_ratio /3 : (  $vendor->client_ratio ?? 0 * $product->price / 100 ) ; 
+                $VIPdiscount =$product->discount_ratio !=0 ? $product->discount_ratio* 2 / 3  : (  $vendor->client_vip_ratio ?? 0 * $product->price / 100 ) ;
+                $product['client_price'] = $product->price - $discount ;
+                $product['client_vip_price'] = $product->price - $VIPdiscount;
+                $favouriteProduct = WishList::where('product_id' , $product->id)->where('client_id' , Auth::guard('client-api')->user()->id)->first();
+                $product['is_favourite'] =  $favouriteProduct != null ?1:0;
+            }
         return $this->APIResponse($products, null, 200);
     }
     public function showCategories()

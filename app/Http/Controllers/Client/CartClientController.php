@@ -27,8 +27,9 @@ class CartClientController extends Controller
         {
             return $this->APIResponse(null, 'this order item is founded', 400);
         }
-        $discountRatio = $product->discount_ratio != 0 ? $product->discount_ratio : ($is_client_vip == true ? ($vendor->client_vip_ratio ?? 0) : ($vendor->client_ratio ?? 0) );
+        $discountRatio = $product->discount_ratio != 0 ? ( $is_client_vip == true ? $product->discount_ratio * 2/ 3 : $product->discount_ratio /3 )  : ($is_client_vip == true ? ($vendor->client_vip_ratio ?? 0) : ($vendor->client_ratio ?? 0) );
         $discount =  $discountRatio * $product->price /100;
+        // return $product->price;
         $vendorBenefit = $request->quantity * ( $product->discount_ratio != 0 ? $product->discount_ratio  : ($vendor->discount_ratio?? 0) * $product->price / 100 );
         
         $orderItem = OrderItem::create([
@@ -198,7 +199,9 @@ class CartClientController extends Controller
 
         $totaldiscount = OrderItem::where(['client_id' => Auth::guard('client-api')->user()->id , 'status'=>'pending from client' ])
                 ->get()->sum('discount');
+
         $totalShipping = Vendor::whereIn('id' , $vendors_id->toArray())->get()->sum('delivery');
+
         $data['totalDiscount']=$totaldiscount;
         $data['total']=  (double)$totalPrice ;
         $data['shipping']=$totalShipping ;

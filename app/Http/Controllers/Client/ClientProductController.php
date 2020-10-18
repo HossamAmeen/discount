@@ -82,9 +82,8 @@ class ClientProductController extends Controller
                 $product['choices'] = $choicesArray ;
             else
                  $product['choices'] = array();
-            
-
-            $discount =$product->discount_ratio !=0 ? $product->discount_ratio *  3 : (  $vendor->client_ratio ?? 0 * $product->price / 100 ) ; 
+                        
+            $discount =$product->discount_ratio !=0 ? $product->discount_ratio / 3 : (  $vendor->client_ratio ?? 0 * $product->price / 100 ) ; 
             $VIPdiscount =$product->discount_ratio !=0 ? $product->discount_ratio* 2 / 3  : (  $vendor->client_vip_ratio ?? 0 * $product->price / 100 ) ;
             $product['client_price'] = $product->price - $discount ;
             $product['client_vip_price'] = $product->price - $VIPdiscount;

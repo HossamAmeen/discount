@@ -22,6 +22,7 @@
 
             <th>Email</th>
             <th>Phone</th>
+            <th>is_vip</th>
             <th>status</th>
             <th>block reason</th>
             <th>user</th>
@@ -36,17 +37,20 @@
 
             <td>{{$value->email}}</td>
             <td>{{$value->phone}}</td>
+            <td id="{{$value->id . 'is_vip'}}">{{$value->is_vip == 1 ? "true": "false"}}</td>
             <td id="{{$value->id . 'status'}}">{{$value->status}}</td>
             <td id="{{$value->id . 'blockReason'}}">{{$value->block_reason ?? "not found"}}</td>
             <td>{{$value->user->name??" not found"}}</td>
-            <td>
+            <td width="32%">
                 <form action="{{ route($routeName.'.destroy' ,$value ) }}" method="post">
                     {{ csrf_field() }}
                     {{ method_field('delete') }}
                     <a href="#" class="btn-sm btn-info" onclick="acceptClient( 'accept',{{$value->id}})"
-                        style="display:inline-block;"> accept</a>
+                        style="display:inline-block;" > accept</a>
                     <a href="#" class="btn-sm btn-danger" onclick="acceptClient( 'blocked',{{$value->id}})"
                         style="display:inline-block;"> block</a>
+                    <button class="btn-sm btn-info" onclick="changeToVip({{$value->is_vip ==1 ? 0: 1}} ,{{$value->id}})"
+                            style="display:inline-block;" type="button"> to_VIP</button>    
                     <a href="{{url('admin/orders/?client_id='.$value->id)}}" class="btn-sm btn-info" 
                             style="display:inline-block;"> orders</a>
                     <a href="{{url('admin/client-carts/'.$value->id)}}" class="btn-sm btn-danger" 
@@ -70,6 +74,7 @@
 
             <th>Email</th>
             <th>Phone</th>
+            <th>is_vip</th>
             <th>status</th>
             <th>block reason</th>
             <th>user</th>
@@ -125,6 +130,41 @@
                 }
             })
     }
-     
+    function changeToVip(is_vip , clientId) {
+        $.ajax({
+                url:"{{url('admin/change-client-status')}}"+'/'+is_vip+'/'+clientId,
+                type:"get",
+               
+                contentType: false,
+                processData: false,
+                success:function(dataBack)
+                {
+
+                    console.log("success");
+                    console.log(is_vip);
+                    console.log(document.getElementById(clientId+'is_vip').innerHTML);
+                    if(   document.getElementById(clientId+'is_vip').innerHTML == "true" )
+                        is_vip = false;
+                    else
+                        is_vip = true;
+                    document.getElementById(clientId+'is_vip').innerText= is_vip;
+                    
+                    // showSelectReasonExchange('reasonExchange',  document.getElementById("in_or_out")) ;
+                    
+                    // $(".cont-data").prepend(dataBack)
+                    
+
+                }, error: function (xhr, status, error)
+                {
+
+                    console.log("errror " + xhr.responseJSON.errors);
+                    $.each(xhr.responseJSON.errors,function(key,item)
+                    {
+
+                        // $("#error").html("<li class='alert alert-danger text-center p-1'>"+ item +" </li>");
+                    })
+                }
+            })
+    }
 </script>
 @endpush

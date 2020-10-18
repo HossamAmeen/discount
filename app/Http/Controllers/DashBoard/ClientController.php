@@ -26,6 +26,14 @@ class ClientController extends BackEndController
         $client->save();
         return json_encode(['status'=>'secuss']);
     }
+    public function changeStatusToVIP($is_vip , $clientID )
+    {
+        $client = Client::find($clientID);
+        $client->is_vip = $is_vip ; 
+        $client->save();
+        return json_encode(['status'=>'secuss']);
+    }
+    
     public function showWishlist($clientId)
     {
         

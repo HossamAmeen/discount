@@ -26,35 +26,25 @@ class ClientVenodrController extends Controller
         return $this->APIResponse($vendors, null, 200);      
     }
 
-    public function showOffers()
-    {
-        $offers = Offer::get('image');
-        return $this->APIResponse($offers, null, 200);      
-    }
+    
     
     public function showVendorsCategories($id)
     {
-        // $categories = ProductCategory::with(['products'])->where('vendor_id' , $id)->paginate(30);
+        
         $categories = ProductCategory::with(['products'])->where('vendor_id' , $id)->get();
-        // $products = Product::where('vendor_id' , $id)->get(['id' , 'name','description','price','category_id','image']);
         $data = array();
         $vendor = Vendor::select('first_name','last_name','client_ratio','client_vip_ratio','store_logo','rating')->find($id);
         foreach($categories as $item)
         {
             foreach($item->products as $product)
             {
-                $discount =$product->discount_ratio !=0 ? $product->discount_ratio *  3 : (  $vendor->client_ratio ?? 0 * $product->price / 100 ) ; 
+                $discount =$product->discount_ratio !=0 ? $product->discount_ratio /3 : (  $vendor->client_ratio ?? 0 * $product->price / 100 ) ; 
                 $VIPdiscount =$product->discount_ratio !=0 ? $product->discount_ratio* 2 / 3  : (  $vendor->client_vip_ratio ?? 0 * $product->price / 100 ) ;
                 $product['client_price'] = $product->price - $discount ;
                 $product['client_vip_price'] = $product->price - $VIPdiscount;
                 $favouriteProduct = WishList::where('product_id' , $product->id)->where('client_id' , Auth::guard('client-api')->user()->id)->first();
                 $product['is_favourite'] =  $favouriteProduct != null ?1:0;
             }
-            // $product[$item->name] = $item ;
-            // // $product[$item->name][] = $item->products ;
-           
-            // $data[]=$product;
-            // $product['client_price'] = 0;
             
         }
         return $this->APIResponse($categories, null, 200);    
@@ -63,14 +53,15 @@ class ClientVenodrController extends Controller
     {
         $products = Product::where('vendor_id' , $id)
         ->skip((request('pageNumber') ?? 0 ) * 40 )->take(40)
-        ->get(['id' , 'name','description','price','category_id','image']);
+        ->get(['id' , 'name','description','price','category_id','discount_ratio','image']);
         $data = array();
         $vendor = Vendor::select('first_name','last_name','client_ratio','client_vip_ratio','store_logo','rating')->find($id);
         foreach($products as $item)
         {
             $product = $item ;
-            $discount =$product->discount_ratio !=0 ? $product->discount_ratio *  3 : (  $vendor->client_ratio ?? 0 * $product->price / 100 ) ; 
+            $discount =$product->discount_ratio !=0 ? $product->discount_ratio /  3 : (  $vendor->client_ratio ?? 0 * $product->price / 100 ) ; 
             $VIPdiscount =$product->discount_ratio !=0 ? $product->discount_ratio* 2 / 3  : (  $vendor->client_vip_ratio ?? 0 * $product->price / 100 ) ;
+           
             $product['client_price'] = $product->price - $discount ;
             $product['client_vip_price'] = $product->price - $VIPdiscount;
             $favouriteProduct = WishList::where('product_id' , $product->id)->where('client_id' , Auth::guard('client-api')->user()->id)->first();
@@ -116,6 +107,12 @@ class ClientVenodrController extends Controller
        ->get(['id','store_name' , 'store_description','client_ratio','client_vip_ratio','store_logo','store_background_image','rating']);
        }
         return $this->APIResponse($data, null, 200);   
+    }
+
+    public function showOffers()
+    {
+        $offers = Offer::get('image');
+        return $this->APIResponse($offers, null, 200);      
     }
 
 }

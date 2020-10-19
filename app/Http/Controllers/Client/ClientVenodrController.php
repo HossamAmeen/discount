@@ -26,8 +26,6 @@ class ClientVenodrController extends Controller
         return $this->APIResponse($vendors, null, 200);      
     }
 
-    
-    
     public function showVendorsCategories($id)
     {
         
@@ -69,8 +67,7 @@ class ClientVenodrController extends Controller
             $data[]=$product;
             
         }
-        // $data[]=  $vendor ;
-        // $data['vendor'] =$vendor ; // Vendor::select('first_name','rating')->find($id);
+      
         return $this->APIResponse($data, null, 200);
     }
     public function searchOfVendors()
@@ -85,7 +82,7 @@ class ClientVenodrController extends Controller
             $products = Product::where('vendor_id' , request('vendorId'))
                              ->where('name' , 'LIKE', '%' . request('name') . '%' )
                              ->orWhere('description' , 'LIKE', '%' . request('name') . '%')
-                            ->get(['id' , 'name','description','price','category_id','image']);
+                             ->get(['id' , 'name','description','price','category_id','discount_ratio','image']);
             $data = array();
             foreach($products as $item)
             {

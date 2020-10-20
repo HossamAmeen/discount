@@ -123,14 +123,14 @@ class ClientController extends Controller
         $totalVipDiscount = Order::where(['client_id'=> Auth::guard('client-api')->user()->id ,'is_vip'=>1 ])->sum('total_discount');
         $totalFreeDiscount = Order::where(['client_id'=> Auth::guard('client-api')->user()->id ,'is_vip'=>0 ])->sum('total_discount');
 
-        $cLient['totalOrdersPrices'] = $orderPrices ;
-        $cLient['ordersVip'] = $orderPricesVip ;
-        $cLient['ordersFree'] = $orderPricesFree ;
+        $cLient['totalOrdersPrices'] = (double)$orderPrices ;
+        $cLient['ordersVip'] = (double)$orderPricesVip ;
+        $cLient['ordersFree'] = (double)$orderPricesFree ;
 
        
-        $cLient['totalDiscount'] = $totalDiscount ;
-        $cLient['totalVipDiscount'] = $totalVipDiscount ;
-        $cLient['totalFreeDiscount'] = $totalFreeDiscount ;
+        $cLient['totalDiscount'] = (double)$totalDiscount ;
+        $cLient['totalVipDiscount'] = (double)$totalVipDiscount ;
+        $cLient['totalFreeDiscount'] = (double)$totalFreeDiscount ;
 
         return $this->APIResponse($cLient, null, 200);
     }

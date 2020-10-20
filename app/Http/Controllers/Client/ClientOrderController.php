@@ -13,7 +13,7 @@ class ClientOrderController extends Controller
     {
         if(request('id') != null){
             $orders = Order::with(['itemsSent.product','address'])
-            ->select('id'  ,'date','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id','client_address_id')
+            ->select('id'  ,'date','time','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id','client_address_id')
             ->find(request('id') );
             
             return $this->APIResponse($orders, null, 200);
@@ -24,13 +24,13 @@ class ClientOrderController extends Controller
                             ->where('client_id' ,  Auth::guard('client-api')->user()->id)
                             ->where('status', '!=', 'pending from client')
                             ->where('status', '!=', 'done')
-                            ->get(['id'  ,'date','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id','client_address_id']);
+                            ->get(['id'  ,'date','time','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id','client_address_id']);
              $doneOrders = Order::with(['itemsSent.product','address'])
                             ->where('client_id' ,  Auth::guard('client-api')->user()->id)
                             ->where('status', '=', 'done')
                             ->orderBy('id' , 'DESC')
                             ->take(20)
-                            ->get(['id'  ,'date','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id','client_address_id']);
+                            ->get(['id'  ,'date','time','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id','client_address_id']);
         foreach($doneOrders as $doneOrder){
             $orders[] = $doneOrder ;
         }

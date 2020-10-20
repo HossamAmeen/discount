@@ -87,7 +87,7 @@ class ClientProductController extends Controller
             $VIPdiscount =$product->discount_ratio !=0 ? $product->discount_ratio* 2 / 3  : (  $vendor->client_vip_ratio ?? 0 * $product->price / 100 ) ;
             $product['client_price'] = $product->price - $discount ;
             $product['client_vip_price'] = $product->price - $VIPdiscount;
-       
+            $product['delivery_cost'] =  $vendor->delivery;
             return $this->APIResponse($product, null, 200);
         }
         else

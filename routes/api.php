@@ -77,9 +77,10 @@ Route::prefix('client')->namespace('Client')->group(function(){
             Route::get('show-cart' , 'CartClientController@showCart'); 
             Route::put('checkout-cart' , 'CartClientController@checkoutCart');  
             Route::get('check-processing-cart' , 'CartClientController@proccesingCart');  
-            Route::get('/show-orders/{orderId?}', 'ClientOrderController@showOrders'); ///// لسه  show with choices
+
+            Route::get('/show-orders/{orderId?}', 'ClientOrderController@showOrders');
             Route::post('add-order' , 'CartClientController@addOrder'); 
-            Route::put('/update-order/{orderId?}', 'ClientOrderController@updateOrder');    ////// لسه choice
+            Route::put('/update-order/{orderId?}', 'ClientOrderController@updateOrder');    
             Route::delete('delete-order/{orderId}' , 'ClientOrderController@deleteOrder'); 
             Route::delete('delete-order-item/{orderId}' , 'CartClientController@deleteOrderItem'); 
 

@@ -8,7 +8,7 @@ class Order extends Model
 {
      use SoftDeletes;
     //  protected $fillable = ['price','discount','discount_ratio','is_vip', 'status', 'quantity','vendor_benefit','vendor_id','product_id', 'client_id','cart_id'];
-     protected $fillable = ['date','time','price','delivery_cost','discount_ratio','is_vip','total_discount','vendor_benefit', 'status','client_address_id','vendor_id', 'client_id','cart_id'];
+     protected $fillable = ['date','time','price','delivery_cost','discount_ratio','is_vip','total_discount','vendor_benefit', 'status','refuse_reason','client_address_id','vendor_id', 'client_id','cart_id'];
      protected $hidden = [
         'user_id' , "created_at" , 'updated_at' ,'deleted_at'
     ];

@@ -48,9 +48,10 @@ class CartClientController extends Controller
         // return $orderItem;
         if($request->choices){
             $orderItem->choice_price = $this->addChoiceForOrder($request->choices , $orderItem->id);
+            $orderItem->choice_price = ($discountRatio *  $orderItem->choice_price )/100;
+           
             $orderItem->vendor_benefit += $orderItem->choice_price  ;
             $orderItem->save();
-           
         }
         return $this->APIResponse(null, null, 200);
     }
@@ -59,15 +60,25 @@ class CartClientController extends Controller
     {
        $choices = ProductChoice::whereIn('id' , $choices )->get();
        $totalCost = 0 ; 
+       $quantityCounter = 0;
+       if(request('quantityChoice')){
+           $quantity = request('quantityChoice');
+       }else
+       {
+           return 0;
+       }
        foreach($choices as $choice){
             OrderChoice::create([
                 'type'=>$choice->type,
                 'name'=>$choice->name,
                 'price'=>$choice->price,
+                'quantity'=>$quantity[$quantityCounter],
                 'group_name'=>$choice->group_name,
                 'order_item_id'=>$orderItemId
             ]);
-            $totalCost +=$choice->price;
+            
+            $totalCost += ($quantity[$quantityCounter] * $choice->price);
+            $quantityCounter++;
        }
        return $totalCost;
     }

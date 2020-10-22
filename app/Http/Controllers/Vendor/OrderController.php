@@ -60,13 +60,13 @@ class OrderController extends Controller
                                               ->where('status' , '!=' , 'done')
                                             //   ->where('status' , '!=' , 'accept from vendor')
                                               ->where('status' , '!=' , 'pending from client')
-                                              ->get(['id','date' ,'time','price','status','client_address_id','client_id']);
+                                              ->get(['id','date' ,'time','price','status','refuse_reason','client_address_id','client_id']);
         $doneOrders =Order::with(['itemsSent.choices','itemsSent.product', 'address','client'])
         ->where('status' ,'done')
         ->where('vendor_id' , Auth::guard('vendor-api')->user()->id )
         ->orderBy('id' , 'DESC')
         ->take(20)
-        ->get(['id','date' ,'time','price','status','client_address_id','client_id']);
+        ->get(['id','date' ,'time','price','status','refuse_reason','client_address_id','client_id']);
         foreach($doneOrders as $doneOrder){
             $orders[] = $doneOrder ;
         }
@@ -89,11 +89,13 @@ class OrderController extends Controller
         $order = Order::find($id);
         if(isset($order)){
             $status =  request('status') ; 
-            $order->update(['status' => $status]);
+            $refuseReason =  request('refuse_reason') ;
+            // return $refuseReason ;
+            $order->update(['status' => $status , 'refuse_reason'=>$refuseReason]);
             // $order=Order::find($orderItem->order_id);
             // $order->update(['status' => $status]);
             // return $order ;
-            $orderItems = OrderItem::where('order_id' ,  $order->id)->update(['status' => $status]);
+            $orderItems = OrderItem::where('order_id' ,  $order->id)->update(['status' => $status , 'refuse_reason'=>$refuseReason]);
             return $this->APIResponse(null, null, 200);  
         }
         return $this->APIResponse(null, "this order not found", 400);  

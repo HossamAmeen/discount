@@ -99,6 +99,7 @@ class ProductController extends Controller
                $tchoice['id']=$choice->id;
                $tchoice['name']=$choice->name;
                $tchoice['price']=$choice->price;
+               $tchoice['quantity']= $choice->quantity;
                $data['items'][] = $tchoice;
            }
            $data['type'] =$choice->type; 
@@ -156,6 +157,7 @@ class ProductController extends Controller
                     ProductChoice::create([
                         'name' => $itemt['name'] , 
                         'price' => $itemt['price'] , 
+                        
                         'type' => $type,
                         'group_name'=>$groupName,
                         'product_id'=>$productId

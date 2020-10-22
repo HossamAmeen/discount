@@ -19,7 +19,7 @@ class CreateProductChoicesTable extends Migration
             $table->string('group_name');
             $table->string('name');
             $table->double('price');
-
+           
             $table->bigInteger('product_id')->unsigned()->nullable();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('set null');
             $table->timestamps();

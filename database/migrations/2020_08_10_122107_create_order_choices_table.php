@@ -20,7 +20,7 @@ class CreateOrderChoicesTable extends Migration
             $table->string('name');
             $table->string('group_name');
             $table->double('price');
-
+            $table->integer('quantity')->default(1);
             $table->bigInteger('order_item_id')->unsigned()->nullable();
             $table->foreign('order_item_id')->references('id')->on('order_items')->onDelete('set null');
             $table->timestamps();

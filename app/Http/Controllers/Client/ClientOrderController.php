@@ -265,6 +265,7 @@ class ClientOrderController extends Controller
                 'type'=>$choice->type,
                 'name'=>$choice->name,
                 'price'=>$choice->price,
+                'quantity'=>$choice->quantity,
                 'group_name'=>$choice->group_name,
                 'order_item_id'=>$orderItemId
             ]);

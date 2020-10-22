@@ -58,7 +58,7 @@ class ClientProductController extends Controller
       
         if(isset($product)){
             $vendor = Vendor::find($product->vendor_id);
-            $product['choices'] = json_encode(ProductChoice::where('product_id' , $id )->get() );//->groupBy('group_name');
+            $product['choices'] = json_encode(ProductChoice::where('product_id' , $id )->get() );
             $favouriteProduct = WishList::where('product_id' , $product->id)->where('client_id' , Auth::guard('client-api')->user()->id)->first();
             $product['is_favourite'] =  $favouriteProduct != null ?1:0;
             $choices = ProductChoice::where('product_id' , $id )->get()->groupBy('group_name');
@@ -72,6 +72,7 @@ class ClientProductController extends Controller
                    $tchoice['id']=$choice->id;
                    $tchoice['name']=$choice->name;
                    $tchoice['price']=$choice->price;
+                   $tchoice['quantity']=$choice->quantity;
                    $data['type'] = $choice->type; 
                    $data['items'][] = $tchoice;
                }

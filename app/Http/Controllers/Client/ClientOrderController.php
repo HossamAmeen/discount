@@ -47,15 +47,9 @@ class ClientOrderController extends Controller
             return $this->APIResponse(null, "this order item not found", 400);
         }
 
-        // $order = Order::find($orderItem->order_id);
-
-        // if(! isset($order))
-        // {
-        //     return $this->APIResponse(null, "this order  not found", 400);
-        // }
         if($orderItem->client_id != Auth::guard('client-api')->user()->id)
            return $this->APIResponse(null, "this order not for this client", 400);
-       
+    
 
         if($request->quantity){
             $product = Product::find($orderItem->product_id);
@@ -70,7 +64,9 @@ class ClientOrderController extends Controller
         if(request('rating')){
             $orderItem->rating = ( $orderItem->rating + request('rating') ) / 2 ;
         }
-
+        if(request('status')){
+            $orderItem->status = request('status')  ;
+        }
         $orderItem->save();
         return $this->APIResponse(null, null, 200);
     }

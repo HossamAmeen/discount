@@ -49,6 +49,7 @@ Route::prefix('vendor')->namespace('Vendor')->group(function(){
                 Route::get('/show-orders', 'OrderController@showOrders');    
                 Route::get('/show-done-orders', 'OrderController@showDoneOrders');
                 Route::get('/change-status-order/{id}', 'OrderController@changeStatus');
+                Route::put('/change-status-order-item/{id}', 'OrderController@changeStatusOrderItem');
                 Route::put('/edit-order/{id}', 'OrderController@editOrder');
                 Route::get('/scan-qrcode/{order_id}', 'OrderController@scanQRCode');
             });

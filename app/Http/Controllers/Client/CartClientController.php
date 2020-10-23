@@ -53,6 +53,7 @@ class CartClientController extends Controller
             $orderItem->vendor_benefit += $orderItem->choice_price  ;
             $orderItem->save();
         }
+        
         return $this->APIResponse(null, null, 200);
     }
 
@@ -65,19 +66,19 @@ class CartClientController extends Controller
            $quantity = request('quantityChoice');
        }else
        {
-           return 0;
+            $quantity = null;
        }
        foreach($choices as $choice){
             OrderChoice::create([
                 'type'=>$choice->type,
                 'name'=>$choice->name,
                 'price'=>$choice->price,
-                'quantity'=>$quantity[$quantityCounter],
+                'quantity'=>$quantity[$quantityCounter]?? 1,
                 'group_name'=>$choice->group_name,
                 'order_item_id'=>$orderItemId
             ]);
             
-            $totalCost += ($quantity[$quantityCounter] * $choice->price);
+            $totalCost += ($quantity[$quantityCounter]??1 * $choice->price);
             $quantityCounter++;
        }
        return $totalCost;

@@ -68,7 +68,7 @@ class OrderController extends Controller
         ->take(20)
         ->get(['id','date' ,'time','price','status','refuse_reason','client_address_id','client_id']);
         foreach($doneOrders as $doneOrder){
-            $orders[] = $doneOrder ;
+            // $orders[] = $doneOrder ;
         }
         return $this->APIResponse($orders, null, 200); 
     }
@@ -84,21 +84,30 @@ class OrderController extends Controller
     }
     public function changeStatus($id)
     {
-       
-        // $orderItem = OrderItem::find($id);
         $order = Order::find($id);
         if(isset($order)){
             $status =  request('status') ; 
             $refuseReason =  request('refuse_reason') ;
-            // return $refuseReason ;
+           
             $order->update(['status' => $status , 'refuse_reason'=>$refuseReason]);
-            // $order=Order::find($orderItem->order_id);
-            // $order->update(['status' => $status]);
-            // return $order ;
+           
             $orderItems = OrderItem::where('order_id' ,  $order->id)->update(['status' => $status , 'refuse_reason'=>$refuseReason]);
             return $this->APIResponse(null, null, 200);  
         }
         return $this->APIResponse(null, "this order not found", 400);  
+    }
+  
+    public function changeStatusOrderItem($orderItemId)
+    {
+        $orderItem = OrderItem::find($orderItemId);
+        if(isset($orderItem)){
+            $status =  request('status') ; 
+            $refuseReason =  request('refuse_reason') ;
+            $orderItem->update(['status' => $status , 'refuse_reason'=>$refuseReason]);
+            $order = Order::find($orderItem->order_id)->update(['status' => $status , 'refuse_reason'=>$refuseReason]);
+            return $this->APIResponse(null, null, 200);  
+        }
+        return $this->APIResponse(null, "this order item not found", 400);  
     }
     public function editOrder($id)
     {

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Vendor;
 use App\Http\Controllers\APIResponseTrait;
-use App\Models\{Product,ProductCategory , ProductChoice , VendorCategory};
+use App\Models\{Product,ProductCategory , ProductChoice , VendorCategory,Vendor};
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Vendor\ProductRequest;
@@ -185,16 +185,20 @@ class ProductController extends Controller
     }
     public function showProducts()
     {
-        $products = Product::where('vendor_id' , Auth::guard('vendor-api')->user()->id)
+        $vendorId = Auth::guard('vendor-api')->user()->id ;
+        $products = Product::where('vendor_id' ,$vendorId)
                             ->get(['id' , 'name','description','price','category_id','image','discount_ratio']);
+        $vendor = Vendor::select('first_name','last_name','client_ratio','client_vip_ratio','store_logo','rating')->find($vendorId);
         foreach($products as $product)
             {
-                $discount =$product->discount_ratio !=0 ? $product->discount_ratio /3 : (  $vendor->client_ratio ?? 0 * $product->price / 100 ) ; 
-                $VIPdiscount =$product->discount_ratio !=0 ? $product->discount_ratio* 2 / 3  : (  $vendor->client_vip_ratio ?? 0 * $product->price / 100 ) ;
+               
+                $discount = $product->discount_ratio !=0 ? ($product->discount_ratio /3) * $product->price / 100  : ( ($vendor->client_ratio ?? 0 ) * $product->price / 100 ) ; 
+                $VIPdiscount =$product->discount_ratio !=0 ? ($product->discount_ratio* 2 / 3 )  * $product->price / 100 : ( ( $vendor->client_vip_ratio ?? 0) * $product->price / 100 ) ;
                 $product['client_price'] = $product->price - $discount ;
                 $product['client_vip_price'] = $product->price - $VIPdiscount;
-                $favouriteProduct = WishList::where('product_id' , $product->id)->where('client_id' , Auth::guard('client-api')->user()->id)->first();
-                $product['is_favourite'] =  $favouriteProduct != null ?1:0;
+                // $product['client_ratio'] = $vendor->client_ratio;
+                // $favouriteProduct = WishList::where('product_id' , $product->id)->where('client_id' , Auth::guard('client-api')->user()->id)->first();
+                // $product['is_favourite'] =  $favouriteProduct != null ?1:0;
             }
         return $this->APIResponse($products, null, 200);
     }

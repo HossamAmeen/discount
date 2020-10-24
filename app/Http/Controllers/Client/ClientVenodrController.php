@@ -20,7 +20,7 @@ class ClientVenodrController extends Controller
         if(request('category_id')){
             $vendors = $vendors ->where('category_id' , request('category_id'));
         }
-        $vendors = $vendors->skip((request('pageNumber') ?? 0 ) * 5 )->take(5)->get(['id','first_name', 'last_name' ,'store_name','client_ratio', 'client_vip_ratio' ,'rating',
+        $vendors = $vendors->skip((request('pageNumber') ?? 0 ) * 30 )->take(30)->get(['id','first_name', 'last_name' ,'store_name','client_ratio', 'client_vip_ratio' ,'rating',
          'store_description', 'store_logo' , 'store_background_image' ]);
      
         return $this->APIResponse($vendors, null, 200);      
@@ -50,7 +50,7 @@ class ClientVenodrController extends Controller
     public function showProducts($id)
     {
         $products = Product::where('vendor_id' , $id)
-        ->skip((request('pageNumber') ?? 0 ) * 5 )->take(5)
+        ->skip((request('pageNumber') ?? 0 ) * 30 )->take(30)
         ->get(['id' , 'name','description','price','category_id','discount_ratio','image']);
         $data = array();
         $vendor = Vendor::select('first_name','last_name','client_ratio','client_vip_ratio','store_logo','rating')->find($id);

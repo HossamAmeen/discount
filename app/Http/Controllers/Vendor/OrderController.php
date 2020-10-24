@@ -78,7 +78,7 @@ class OrderController extends Controller
         ->where('status' ,'done')
         ->where('vendor_id' , Auth::guard('vendor-api')->user()->id )
         ->orderBy('id' , 'DESC')
-        ->skip((request('pageNumber') ?? 0 ) * 5)->take(5)
+        ->skip((request('pageNumber') ?? 0 ) * 30)->take(30)
         ->get();
         return $this->APIResponse($oders, null, 200);  
     }

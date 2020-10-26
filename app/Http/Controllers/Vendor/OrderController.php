@@ -92,6 +92,16 @@ class OrderController extends Controller
             $order->update(['status' => $status , 'refuse_reason'=>$refuseReason]);
            
             $orderItems = OrderItem::where('order_id' ,  $order->id)->update(['status' => $status , 'refuse_reason'=>$refuseReason]);
+            if($status == "done"){
+                $vendor=Vendor::find($order->vendor_id);
+                $vendor->app_gain += $order->vendor_benefit;
+                $vendor->save();
+            }
+            elseif($status == "vendor accept returned product"){
+                $vendor=Vendor::find($order->vendor_id);
+                $vendor->app_gain -= $order->vendor_benefit;
+                $vendor->save();
+            }
             return $this->APIResponse(null, null, 200);  
         }
         return $this->APIResponse(null, "this order not found", 400);  

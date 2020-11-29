@@ -21,39 +21,39 @@ class VendorController extends Controller
         }
         $requestArray = $request->validated();
         $requestArray['password'] = bcrypt( $request->password);
+        $requestArray['status'] = 'accept';
         
         $this->uploadImages($request , $requestArray);
-       
+
         $vendor = Vendor::create($requestArray);
         $success['token'] = $vendor->createToken('token')->accessToken;
         return $this->APIResponse($success, null, 200);
     }
     public function login()
     {
-       
         $validator = Validator::make(request()->all(), [
             'user_name' => 'required|string',
             'password' => 'required|string',
         ]);
-            ; 
+            ;
         if ($validator->fails()) {
             return $this->APIResponse(null , $validator->messages() ,  422);
         }
-        
+
         $vendor = Vendor::where($this->checkField(), request('user_name'))->first();
 
         if ($vendor) {
             if (Hash::check(request('password'), $vendor->password)) {
-            
+
                 $success['token'] = $vendor->createToken('token')->accessToken;
                 return $this->APIResponse($success, null, 200);
             } else {
-                return $this->APIResponse(null, "Password mismatch", 422);  
+                return $this->APIResponse(null, "Password mismatch", 422);
             }
         } else {
             return $this->APIResponse(null, "User name does not exist", 422);
         }
-       
+
     }
     public function checkField()
     {
@@ -61,7 +61,7 @@ class VendorController extends Controller
 
         if (is_numeric( request('user_name'))) {
             $field = 'phone';
-        } 
+        }
         elseif (filter_var( request('user_name'), FILTER_VALIDATE_EMAIL)) {
             $field = 'email';
         }
@@ -69,12 +69,12 @@ class VendorController extends Controller
         {
             $field = 'user_name';
         }
-        return $field ; 
+        return $field ;
     }
     public function showProfile()
     {
         $vendor = Vendor::find(Auth::guard('vendor-api')->user()->id);
-        $monthEaarning = 0 ; 
+        $monthEaarning = 0 ;
         $orders = Order::where('vendor_id', Auth::guard('vendor-api')->user()->id)
                          ->where('status' , 'done');
 
@@ -90,24 +90,24 @@ class VendorController extends Controller
         // return $monthOrders;
         $vendor['total'] =  count($ordersTotal);
         $vendor['totalEarning'] = $ordersTotal->sum('vendor_benefit');
-    
+
         $vendor['monthOrders'] =  count($monthOrders);
         $vendor['monthEarning'] = $monthOrders->sum('vendor_benefit');
         $vendor['appFree'] =  $vendor->app_gain;
         $vendor['appFreeRatio'] =  $vendor->discount_ratio;
         return $this->APIResponse($vendor, null, 200);
     }
-    
+
     public function updateProfile(VendorRequest $request)
     {
-        
+
         if (isset($request->validator) && $request->validator->fails())
         {
             return $this->APIResponse(null , $request->validator->messages() ,  422);
         }
         $vendor = Vendor::find(Auth::guard('vendor-api')->user()->id);
         $requestArray = $request->validated();
-        
+
         $this->uploadImages($request , $requestArray);
     //    return "test";
         if(isset($request->password))
@@ -134,25 +134,25 @@ class VendorController extends Controller
         {
             // return "test1";
             File::makeDirectory($path, 0777, true, true);
-        }   
+        }
         copy (  public_path().'/avatar.png',  $path.'/avatar2.png' );
-        
+
          */
         $request->logo_image != null ? $requestArray['store_logo'] = uploadFile($request->logo_image , 'vendors') :  null;   ///// upload File helper function
         $request->background_image != null ?  $requestArray['store_background_image'] =  uploadFile($request->background_image , 'vendors') : null;
         $request->company_registration_photo != null ?   $requestArray['company_registration_image'] = uploadFile($request->company_registration_photo , 'vendors') : null;
         $request->national_id_front_photo != null ?  $requestArray['national_id_front_image'] =  uploadFile($request->national_id_front_photo , 'vendors') : null;
         $request->national_id_back_image != null ?  $requestArray['national_id_back_image'] =  uploadFile($request->national_id_back_image , 'vendors') : null;
-       
+
     }
     public function logout (Request $request) {
 
         $token = $request->user()->token();
         $token->revoke();
-    
+
         $response = 'You have been succesfully logged out!';
         return response($response, 200);
-    
+
     }
     public function rechargeBalance(Request $request)
     {

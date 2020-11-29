@@ -10,7 +10,7 @@ class Client extends Authenticatable
 {
     use HasApiTokens , Notifiable , SoftDeletes;
      protected $fillable = [
-        'first_name','last_name', 'gender', 'email', 'password', 'phone','google_id' , 'facebook_id', 'rating' ,'image','user_id'
+        'first_name','last_name', 'gender', 'email', 'password', 'status', 'phone','google_id' , 'facebook_id', 'rating' ,'image','user_id'
      ];
      protected $hidden = [
        'password', 'user_id' , "created_at" , 'updated_at' ,'deleted_at'
@@ -21,7 +21,7 @@ class Client extends Authenticatable
     }
     public function getImageAttribute()
     {
-        
+
         if($this->attributes['image'] != null  ){
             return ($this->attributes['image']);
         }

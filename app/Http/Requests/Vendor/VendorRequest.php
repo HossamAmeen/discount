@@ -14,7 +14,7 @@ class VendorRequest extends FormRequest
     public function authorize()
     {
        return true;
-       
+
     }
 
     /**
@@ -28,15 +28,15 @@ class VendorRequest extends FormRequest
         //  $this->request->get("id");
         $rules =  [
             'first_name' => ['string', 'max:100'],
-            'last_name' => ['string', 'max:100'], 
-            //'gender' => ['required','string', 'max:100'],   
+            'last_name' => ['string', 'max:100'],
+            //'gender' => ['required','string', 'max:100'],
             'email' => ['email' , Rule::unique('vendors')->ignore($id)->whereNull('deleted_at') ] ,
             'password' => ['string'],
             'phone' => ['numeric', 'digits_between:11,11' ,Rule::unique('vendors')->ignore($id)->whereNull('deleted_at')],
-            'store_name' => ['string', 'max:100'],   
-            'store_description' => ['string'],   
-            'category_id' => [ 'numeric'], 
-            'city_id' => ['numeric'], 
+            'store_name' => ['string', 'max:100'],
+            'store_description' => ['string'],
+            'category_id' => [ 'numeric'],
+            'city_id' => ['numeric'],
             'logo_image' => ['image'],
             'background_image' => [ 'image'],
             'company_registration_photo' => [ 'image'],
@@ -58,7 +58,7 @@ class VendorRequest extends FormRequest
             $rules['store_description'][] = 'required';
             $rules['category_id'][] = 'required';
         }
-        if(strpos($this->fullUrl(), "profile") !== false) { 
+        if(strpos($this->fullUrl(), "profile") !== false) {
             // $rules['first_name'][] = 'required';
             // $rules['last_name'][] = 'required';
             // $rules['email'][] = 'required';
@@ -71,5 +71,5 @@ class VendorRequest extends FormRequest
     {
         $this->validator = $validator;
     }
-    
+
 }

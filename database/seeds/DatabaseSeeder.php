@@ -11,12 +11,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-      
+
         $this->call([
             UserSeed::class,
         ]);
         factory('App\Models\User',5)->create();
-        
+
         \App\Models\Configration::create([
             "website_name"=> "ekhsemly",
             "email"=>  "ekhsemly@gmail.com",
@@ -26,9 +26,9 @@ class DatabaseSeeder extends Seeder
             "en_about"=> "good company",
             "terms_conditions"=> "terms and conditions",
             "privacy_policy"=>  "privacy and policy"
-            
+
         ]);
-      
+
         \App\Models\Category::create([
             'name'=> 'deals',
             'user_id'    =>1
@@ -97,12 +97,12 @@ class DatabaseSeeder extends Seeder
             'is_favourite' => 1 ,
             'client_id'  => 1
         ]);
-        
+
         \App\Models\ProductCategory::create([
             'name' => "sandwich",
             'vendor_id'=>1,
         ]);
-       
+
         \App\Models\Product::create([
             'name' => "big testy",
             'description'=> "A sweet and delicious sandwich",
@@ -117,7 +117,7 @@ class DatabaseSeeder extends Seeder
         factory('App\Models\ProductCategory',10)->create();
         factory('App\Models\VendorCategory',9)->create();
         factory('App\Models\Product',500)->create();
-      
+
         factory('App\Models\WishList',25)->create();
         factory('App\Models\Cart',5)->create();//
         factory('App\Models\Order',50)->create();
@@ -169,7 +169,7 @@ class DatabaseSeeder extends Seeder
     }
     public function OrderChoices()
     {
-        
+
         \App\Models\OrderChoice::create([
             'name' => "larage",
             'group_name' => "size",
@@ -202,7 +202,7 @@ class DatabaseSeeder extends Seeder
           //  'group_name'=>"place",
             'order_item_id'=>1
         ]);
-        
+
         \App\Models\OrderChoice::create([
             'name' => "out",
             'group_name' => "takeaway",

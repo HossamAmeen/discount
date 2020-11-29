@@ -13,7 +13,7 @@ class Vendor extends Authenticatable
     protected $fillable = [
         'first_name', 'last_name', 'email' ,'password' ,'phone',
         'store_name',
-        'discount_ratio', 
+        'discount_ratio', 'status',
         // 'client_ratio', 'client_vip_ratio',
         'store_description', 'store_logo', 'store_background_image',
         'company_registration_image', 'national_id_front_image', 'national_id_back_image',
@@ -46,7 +46,7 @@ class Vendor extends Authenticatable
     // }
     public function getStoreLogoAttribute()
     {
-        
+
         if($this->attributes['store_logo'] != null ){
             return asset($this->attributes['store_logo']);
         }
@@ -57,7 +57,7 @@ class Vendor extends Authenticatable
     }
     public function getStoreBackgroundImageAttribute()
     {
-        
+
         if($this->attributes['store_background_image'] != null ){
             return asset($this->attributes['store_background_image']);
         }
@@ -68,7 +68,7 @@ class Vendor extends Authenticatable
     }
     public function getCompanyRegistrationImageAttribute()
     {
-        
+
         if($this->attributes['company_registration_image'] != null ){
             return asset($this->attributes['company_registration_image']);
         }
@@ -79,7 +79,7 @@ class Vendor extends Authenticatable
     }
     public function getNationalIdFrontImageAttribute()
     {
-        
+
         if($this->attributes['national_id_front_image'] != null ){
             return asset($this->attributes['national_id_front_image']);
         }
@@ -90,7 +90,7 @@ class Vendor extends Authenticatable
     }
     public function getNationalIdBackImageAttribute()
     {
-        
+
         if($this->attributes['national_id_back_image'] != null ){
             return asset($this->attributes['national_id_back_image']);
         }
@@ -99,5 +99,5 @@ class Vendor extends Authenticatable
             return asset('assets/img/avatars/avatar-1.jpg');
         }
     }
-    
+
 }

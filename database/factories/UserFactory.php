@@ -20,10 +20,10 @@ use Illuminate\Support\Str;
 $factory->define(App\Models\User::class, function (Faker $faker) {
 
     return [
-     
+
 
         'user_name' => $faker->name.'_user',
-        'name' => $faker->name , 
+        'name' => $faker->name ,
         'password' => bcrypt('admin'),
         'phone' => $faker->e164PhoneNumber,
         'email' => $faker->email,
@@ -68,14 +68,14 @@ $factory->define(App\Models\Vendor::class, function (Faker $faker) {
         'first_name'=> $faker->name,
         'last_name'=> $faker->name,
         'email'=> $faker->email ,
-        'password'=>bcrypt('admins'), 
+        'password'=>bcrypt('admins'),
         'phone' => $faker->e164PhoneNumber,
         'store_name'=> $faker->name,
         'discount_ratio'=>rand(1,90),
         'client_ratio'=>rand(1,6),
         'client_vip_ratio'=>rand(1,9),
         'store_description'=> $faker->name,
-        'status' => $faker->randomElement($statusArray), 
+        'status' => $faker->randomElement($statusArray),
         'category_id'=>rand(1,6),
         'city_id'=>rand(1,2),
     ];
@@ -106,7 +106,7 @@ $factory->define(App\Models\Cart::class, function (Faker $faker) {
 });
 
 $factory->define(App\Models\Order::class, function (Faker $faker) {
-    $statues = ['pending from client','sending from client','edit from vendor','accept from client' ,'accept from vendor' 
+    $statues = ['pending from client','sending from client','edit from vendor','accept from client' ,'accept from vendor'
     , 'cancelled from vendor' ,'working' , 'delivering' , 'done'] ;
     return [
         'price'=>rand(20 , 300),
@@ -117,7 +117,7 @@ $factory->define(App\Models\Order::class, function (Faker $faker) {
         'date'=>date('Y-m-d'),
         'cart_id'=>rand(1 , 5),
         'time'=>date("h:i"),
-        
+
         // 'address'=>$faker->address(),
         // 'phone'=>"01010079798",
         // 'city'=>$faker->city(),
@@ -130,7 +130,7 @@ $factory->define(App\Models\Order::class, function (Faker $faker) {
 });
 
 $factory->define(App\Models\OrderItem::class, function (Faker $faker) {
-    $statues = ['pending from client','sending from client','edit from vendor','accept from client' ,'accept from vendor' 
+    $statues = ['pending from client','sending from client','edit from vendor','accept from client' ,'accept from vendor'
     , 'cancelled from vendor' ,'working' , 'delivering' , 'done'] ;
    return [
         'price'=>rand(20 , 300),

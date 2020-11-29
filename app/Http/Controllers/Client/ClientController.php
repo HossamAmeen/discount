@@ -14,15 +14,14 @@ class ClientController extends Controller
     use APIResponseTrait;
     public function register(ClientRequest $request)
     {
-        
-        
         if (isset($request->validator) && $request->validator->fails())
         {
             return $this->APIResponse(null , $request->validator->messages() ,  400);
         }
         $requestArray = $request->validated();
         $requestArray['password'] = bcrypt( $request->password);
-      
+        $requestArray['status'] = 'accept';
+
         $cLient = Client::create($requestArray);
         $success['token'] = $cLient->createToken('token')->accessToken;
         return $this->APIResponse($success, null, 200);
@@ -30,30 +29,29 @@ class ClientController extends Controller
 
     public function login()
     {
-       
         $validator = Validator::make(request()->all(), [
             'user_name' => 'required|string',
             'password' => 'required|string',
         ]);
-            ; 
+            ;
         if ($validator->fails()) {
             return $this->APIResponse(null , $validator->messages() ,  422);
         }
-        
+
         $cLient = Client::where($this->checkField(), request('user_name'))->first();
 
         if ($cLient) {
             if (Hash::check(request('password'), $cLient->password)) {
-            
+
                 $success['token'] = $cLient->createToken('token')->accessToken;
                 return $this->APIResponse($success, null, 200);
             } else {
-                return $this->APIResponse(null, "Password mismatch", 422);  
+                return $this->APIResponse(null, "Password mismatch", 422);
             }
         } else {
             return $this->APIResponse(null, "User name does not exist", 422);
         }
-       
+
     }
     public function loginSocial()
     {
@@ -68,13 +66,13 @@ class ClientController extends Controller
         // return $cLient;
         if ($cLient) {
             if (request('password') == 'ekhsemly2020') {
-            
+
                 $success['token'] = $cLient->createToken('token')->accessToken;
                 return $this->APIResponse($success, null, 200);
             } else {
-                return $this->APIResponse(null, "Password mismatch", 422);  
+                return $this->APIResponse(null, "Password mismatch", 422);
             }
-        } 
+        }
         else {
             return $this->APIResponse(null, "social id does not exist", 422);
         }
@@ -85,7 +83,7 @@ class ClientController extends Controller
 
         if (is_numeric( request('user_name'))) {
             $field = 'phone';
-        } 
+        }
         elseif (filter_var( request('user_name'), FILTER_VALIDATE_EMAIL)) {
             $field = 'email';
         }
@@ -93,21 +91,21 @@ class ClientController extends Controller
         {
             $field = 'user_name';
         }
-        return $field ; 
+        return $field ;
     }
 
     public function showProfile()
     {
         $cLient = Client::with('addresses')->where('id' , Auth::guard('client-api')->user()->id)
         ->get(['id','first_name','last_name', 'gender', 'email', 'rating','is_vip','image', 'phone'])->first();
-        $monthEaarning = 0 ; 
+        $monthEaarning = 0 ;
         // $orders = Order::select('orders.*')
         // ->join('products', 'products.id', '=', 'orders.product_id')
         // ->join('vendors', 'vendors.id', '=', 'products.client_id')
         // ->where('vendors.id', Auth::guard('client-api')->user()->id);
         // $ordersTotal = $orders->get();
         // $monthOrders =  $orders->whereYear('date' , date('Y'))->whereMonth('date' , date('m'))->get();
-    
+
         // $cLient['total'] =  count($ordersTotal);
         // $cLient['totalEarning'] = $ordersTotal->sum('price');
 
@@ -118,7 +116,7 @@ class ClientController extends Controller
         $orderPrices = Order::where('client_id', Auth::guard('client-api')->user()->id)->sum('price');
         $orderPricesVip = Order::where(['client_id'=> Auth::guard('client-api')->user()->id ,'is_vip'=>1 ])->sum('price');
         $orderPricesFree = Order::where(['client_id'=> Auth::guard('client-api')->user()->id ,'is_vip'=>0 ])->sum('price');
-        
+
         $totalDiscount = Order::where('client_id', Auth::guard('client-api')->user()->id)->sum('total_discount');
         $totalVipDiscount = Order::where(['client_id'=> Auth::guard('client-api')->user()->id ,'is_vip'=>1 ])->sum('total_discount');
         $totalFreeDiscount = Order::where(['client_id'=> Auth::guard('client-api')->user()->id ,'is_vip'=>0 ])->sum('total_discount');
@@ -127,7 +125,7 @@ class ClientController extends Controller
         $cLient['ordersVip'] = (double)$orderPricesVip ;
         $cLient['ordersFree'] = (double)$orderPricesFree ;
 
-       
+
         $cLient['totalDiscount'] = (double)$totalDiscount ;
         $cLient['totalVipDiscount'] = (double)$totalVipDiscount ;
         $cLient['totalFreeDiscount'] = (double)$totalFreeDiscount ;
@@ -137,35 +135,35 @@ class ClientController extends Controller
 
     public function updateProfile(ClientRequest $request)
     {
-        
+
         if (isset($request->validator) && $request->validator->fails())
         {
             return $this->APIResponse(null , $request->validator->messages() ,  422);
         }
-      
+
         $cLient = Client::find(Auth::guard('client-api')->user()->id);
         $requestArray = $request->validated();
-       
+
         if(isset($requestArray['image']) )
         {
             // return "Test";
             $fileName =uploadFile($request->image , 'clients');
-            // return $fileName; 
+            // return $fileName;
             $requestArray['image'] =  $fileName;
-           
+
         }
         // $this->uploadImages(request() , $requestArray);
-        
+
         if(isset($request->password))
         $requestArray['password'] = bcrypt($request->password);
         // return "Test";
         $cLient->update($requestArray);
-        
+
         return $this->APIResponse($cLient, null, 200);
     }
     public function updateImage(Request $request)
     {
-       
+
         if(isset($request->image) )
         {
             $client = Client::find(Auth::guard('client-api')->user()->id);
@@ -195,19 +193,19 @@ class ClientController extends Controller
     }
    public function updateAddress($id , Request $request)
    {
-       
+
     $address = ClientAddress::where(['id' => $id , 'client_id' =>Auth::guard('client-api')->user()->id ])->first();
     if($address){
         if($request->is_favourite){
             $addresses = ClientAddress::where('client_id' ,Auth::guard('client-api')->user()->id )->update(['is_favourite' => 0]);
         }
         $address->update($request->all());
-        
+
         return $this->APIResponse(null, null, 200);
     }
     else
     {
-      
+
         return $this->APIResponse(null, "address not found", 400);
     }
 

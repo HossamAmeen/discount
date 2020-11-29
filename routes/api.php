@@ -22,8 +22,8 @@ use Illuminate\Support\Facades\Route;
 //         Route::resource('filesrooms' , "FileRoomController");
 //         Route::post('upload-file', 'UploadFileController@uploadFile');
 //     });
-    
-   
+
+
 // });
 
         //////////////// vender ///////////////////
@@ -44,9 +44,9 @@ Route::prefix('vendor')->namespace('Vendor')->group(function(){
         Route::get('/show-products', 'ProductController@showProducts');
         Route::get('/show-product/{id}', 'ProductController@showProductDetails');
         Route::get('/show-categories', 'ProductController@showCategories');
-            ////////// orders //////////////// 
+            ////////// orders ////////////////
             Route::middleware('checkIsAccept:vendor-api')->group(function () {
-                Route::get('/show-orders', 'OrderController@showOrders');    
+                Route::get('/show-orders', 'OrderController@showOrders');
                 Route::get('/show-done-orders', 'OrderController@showDoneOrders');
                 Route::get('/change-status-order/{id}', 'OrderController@changeStatus');
                 Route::put('/change-status-order-item/{id}', 'OrderController@changeStatusOrderItem');
@@ -68,22 +68,22 @@ Route::prefix('client')->namespace('Client')->group(function(){
         Route::put('/update-address/{addressId}', 'ClientController@updateAddress');
         Route::put('/update-profile', 'ClientController@updateProfile');
         Route::post('/update-image', 'ClientController@updateImage');
-      
+
         Route::middleware('checkIsAccept:client-api')->group(function () {
             Route::get('show-wishlist' , 'ClientProductController@showWishList');
             Route::post('add-wishlist/{productId}' , 'ClientProductController@addWishList');
             Route::delete('delete-wishlist/{productId}' , 'ClientProductController@deleteWishlist');
             Route::get('detial-product/{productId}' , 'ClientProductController@showProduct');
-            
-            Route::get('show-cart' , 'CartClientController@showCart'); 
-            Route::put('checkout-cart' , 'CartClientController@checkoutCart');  
-            Route::get('check-processing-cart' , 'CartClientController@proccesingCart');  
+
+            Route::get('show-cart' , 'CartClientController@showCart');
+            Route::put('checkout-cart' , 'CartClientController@checkoutCart');
+            Route::get('check-processing-cart' , 'CartClientController@proccesingCart');
 
             Route::get('/show-orders/{orderId?}', 'ClientOrderController@showOrders');
-            Route::post('add-order' , 'CartClientController@addOrder'); 
-            Route::put('/update-order/{orderId?}', 'ClientOrderController@updateOrder');    
-            Route::delete('delete-order/{orderId}' , 'ClientOrderController@deleteOrder'); 
-            Route::delete('delete-order-item/{orderId}' , 'CartClientController@deleteOrderItem'); 
+            Route::post('add-order' , 'CartClientController@addOrder');
+            Route::put('/update-order/{orderId?}', 'ClientOrderController@updateOrder');
+            Route::delete('delete-order/{orderId}' , 'ClientOrderController@deleteOrder');
+            Route::delete('delete-order-item/{orderId}' , 'CartClientController@deleteOrderItem');
 
             Route::get('show-vendors' , 'ClientVenodrController@showVendors');
             Route::get('show-vendors-categories/{vendorId}' , 'ClientVenodrController@showVendorsCategories');
@@ -91,7 +91,7 @@ Route::prefix('client')->namespace('Client')->group(function(){
             Route::get('offers' , 'ClientVenodrController@showOffers');
             Route::get('search' , 'ClientVenodrController@searchOfVendors');
             Route::put('recharge-balance' , 'ClientController@rechargeBalance');
-        }); 
+        });
     });
 });
 Route::get('cities', 'HomeController@showCities');

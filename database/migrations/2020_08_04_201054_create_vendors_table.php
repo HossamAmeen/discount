@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateVendorsTable extends Migration
 {
-    
+
     /**
      * Run the migrations.
      *
@@ -14,7 +14,7 @@ class CreateVendorsTable extends Migration
      */
     public function up()
     {
-        
+
         Schema::create('vendors', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
@@ -42,7 +42,7 @@ class CreateVendorsTable extends Migration
             $table->double('discount_ratio')->default(0);
             $table->double('client_ratio')->default(0);
             $table->double('client_vip_ratio')->default(0);
-            
+
             $table->bigInteger('category_id')->unsigned()->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
             $table->bigInteger('city_id')->unsigned()->nullable();

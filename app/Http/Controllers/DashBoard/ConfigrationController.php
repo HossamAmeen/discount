@@ -39,8 +39,8 @@ class ConfigrationController extends BackEndController
         $configrationSite['products'] = $products->count();
         // return $top_product;
         $configrationSite['top_product'] =$top_product->name. '('. ( $top_product->vendor->store_name ??  " " ).')';
-       
-        
+
+
 
             // $top_product = \App\Models\Order::pluck('product_id')->toArray();
             // $occurrences = array_count_values($top_product);

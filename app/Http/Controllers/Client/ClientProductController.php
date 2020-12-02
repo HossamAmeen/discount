@@ -9,7 +9,7 @@ use Auth;
 class ClientProductController extends Controller
 {
     use APIResponseTrait;
-    
+
     public function addWishList($productId)
     {
         $wishlist = WishList::where(['client_id' =>Auth::guard('client-api')->user()->id,
@@ -26,17 +26,17 @@ class ClientProductController extends Controller
             ]);
             return $this->APIResponse(null, null, 200);
         }
-       
-       
+
+
     }
-    
+
     public function showWishList()
     {
         // return "tesT";
         $wishlist = Wishlist::with(['product' ,'product.vendorDiscount' ])->where('client_id' , Auth::guard('client-api')->user()->id)->get(['id','client_id' , 'product_id']);
         return $this->APIResponse($wishlist, null, 200);
     }
-    
+
     public function deleteWishlist($productId)
     {
         $wishlist = WishList::where(['client_id' =>Auth::guard('client-api')->user()->id,
@@ -55,7 +55,7 @@ class ClientProductController extends Controller
     {
         $product = Product::find($id);
         // return $product;
-      
+
         if(isset($product)){
             $vendor = Vendor::find($product->vendor_id);
             $product['choices'] = json_encode(ProductChoice::where('product_id' , $id )->get() );
@@ -73,19 +73,23 @@ class ClientProductController extends Controller
                    $tchoice['name']=$choice->name;
                    $tchoice['price']=$choice->price;
                    $tchoice['quantity']=$choice->quantity;
-                   $data['type'] = $choice->type; 
+                   $data['type'] = $choice->type;
                    $data['items'][] = $tchoice;
                }
-            //    $data['type'] = $choice->type; 
+            //    $data['type'] = $choice->type;
                $choicesArray[] = $data ;
             }
             if( isset($choicesArray))
                 $product['choices'] = $choicesArray ;
             else
                  $product['choices'] = array();
-                        
-            $discount =$product->discount_ratio !=0 ? $product->discount_ratio / 3 : (  $vendor->client_ratio ?? 0 * $product->price / 100 ) ; 
-            $VIPdiscount =$product->discount_ratio !=0 ? $product->discount_ratio* 2 / 3  : (  $vendor->client_vip_ratio ?? 0 * $product->price / 100 ) ;
+
+            // $discount =$product->discount_ratio !=0 ? $product->discount_ratio / 3 : (  $vendor->client_ratio ?? 0 * $product->price / 100 ) ;
+            // $VIPdiscount =$product->discount_ratio !=0 ? $product->discount_ratio* 2 / 3  : (  $vendor->client_vip_ratio ?? 0 * $product->price / 100 ) ;
+            $discount = $product->discount_ratio !=0 ?  (( $product->price *  $product->discount_ratio /3)/100) :
+                        (  $vendor->client_ratio * $product->price / 100 ) ;
+            $VIPdiscount = $product->discount_ratio !=0 ? (( $product->price *  $product->discount_ratio * 2/3)/100 )  :
+                        (  $vendor->client_vip_ratio * $product->price / 100 ) ;
             $product['client_price'] = $product->price - $discount ;
             $product['client_vip_price'] = $product->price - $VIPdiscount;
             $product['delivery_cost'] =  $vendor->delivery;
@@ -96,10 +100,10 @@ class ClientProductController extends Controller
             return $this->APIResponse(null, "this product not found", 400);
         }
     }
-    
-   
-    
-    
+
+
+
+
     public function updateOrder($id)
     {
         // $order = Order::find($id);

@@ -47,8 +47,6 @@ class ClientVenodrController extends Controller
                 // $VIPdiscount = $product->discount_ratio !=0 ? $product->discount_ratio* 2 / 3  :
                 //             (  $vendor->client_vip_ratio ?? 0 * $product->price / 100 ) ;
 
-                $product['discount'] = $discount ;
-                $product['VIPdiscount'] = $VIPdiscount;
                 $product['client_price'] = $product->price - $discount ;
                 $product['client_vip_price'] = $product->price - $VIPdiscount;
                 $favouriteProduct = WishList::where('product_id' , $product->id)->where('client_id' , Auth::guard('client-api')->user()->id)->first();

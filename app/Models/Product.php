@@ -7,14 +7,14 @@ use Auth;
 class Product extends Model
 {
      use SoftDeletes;
-     protected $fillable = ['name', 'description', 'price', 
+     protected $fillable = ['id', 'name', 'description', 'price',
      'quantity','discount_ratio','image', 'vendor_id', 'category_id'];
      protected $hidden = [
         'user_id' , "created_at" , 'updated_at' ,'deleted_at'
     ];
     public function getImageAttribute()
     {
-        
+
         if($this->attributes['image'] != null && !file_exists(asset($this->attributes['image'])) ){
             return asset($this->attributes['image']);
         }

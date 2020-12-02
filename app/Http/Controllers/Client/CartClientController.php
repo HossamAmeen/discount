@@ -12,15 +12,15 @@ class CartClientController extends Controller
     use APIResponseTrait;
     public function addOrder(Request $request)
     {
-       
-        $clientId = Auth::guard('client-api')->user()->id ; 
+
+        $clientId = Auth::guard('client-api')->user()->id ;
         $product= Product::find($request->product_id);
         if(!isset($product)){
             return $this->APIResponse(null, "this product not found", 400);
         }
         $over_quantity = $request->quantity > $product->quantity  ? $request->quantity - $product->quantity : 0 ;
         $vendor = Vendor::select('id','discount_ratio','client_ratio','client_vip_ratio' , 'delivery')->find($product->vendor_id);
-        $is_client_vip = Auth::guard('client-api')->user()->is_vip ; 
+        $is_client_vip = Auth::guard('client-api')->user()->is_vip ;
 
         $orderItem = OrderItem::where(['product_id'=> $request->product_id , 'client_id' =>  $clientId , 'status'=>'pending from client' ])->first();
         if(isset($orderItem))
@@ -31,7 +31,7 @@ class CartClientController extends Controller
         $discount =  $discountRatio * $product->price /100;
         // return $product->price;
         $vendorBenefit = $request->quantity * ( $product->discount_ratio != 0 ? $product->discount_ratio  : ($vendor->discount_ratio?? 0) * $product->price / 100 );
-        
+
         $orderItem = OrderItem::create([
             'price'=> $product->price - $discount,
             'choice_price'=>0,
@@ -49,18 +49,18 @@ class CartClientController extends Controller
         if($request->choices){
             $orderItem->choice_price = $this->addChoiceForOrder($request->choices , $orderItem->id);
             $orderItem->choice_price = ($discountRatio *  $orderItem->choice_price )/100;
-           
+
             $orderItem->vendor_benefit += $orderItem->choice_price  ;
             $orderItem->save();
         }
-        
+
         return $this->APIResponse(null, null, 200);
     }
 
     public function addChoiceForOrder($choices , $orderItemId)
     {
        $choices = ProductChoice::whereIn('id' , $choices )->get();
-       $totalCost = 0 ; 
+       $totalCost = 0 ;
        $quantityCounter = 0;
        if(request('quantityChoice')){
            $quantity = request('quantityChoice');
@@ -77,44 +77,44 @@ class CartClientController extends Controller
                 'group_name'=>$choice->group_name,
                 'order_item_id'=>$orderItemId
             ]);
-            
+
             $totalCost += ($quantity[$quantityCounter]??1 * $choice->price);
             $quantityCounter++;
        }
        return $totalCost;
     }
-    public function showCart() 
+    public function showCart()
     {
         $orderItems = OrderItem::with('product')->where('client_id' , Auth::guard('client-api')->user()->id)
         ->where(['status'=>'pending from client'])
         ->get(['id','product_id' ,'discount', 'discount_ratio' , 'price' ,'choice_price','over_quantity','quantity']);
-        $data['products'] = $orderItems ; 
-        // $data['total_cost'] =  $orderItems->sum(\DB::raw('price + choice_price')); //->sum(['price','choice_price']) ; 
-        // $sql = "SELECT SUM(quantity * price + choice_price) as total_cost FROM order_items 
+        $data['products'] = $orderItems ;
+        // $data['total_cost'] =  $orderItems->sum(\DB::raw('price + choice_price')); //->sum(['price','choice_price']) ;
+        // $sql = "SELECT SUM(quantity * price + choice_price) as total_cost FROM order_items
         // WHERE status = 'pending from client'
-        
+
         //  and  client_id = :ID";
 
         // $result = DB::select($sql,['ID'=>Auth::guard('client-api')->user()->id]);
         // // return $result[0]->total_cost;
         // if($result[0]->total_cost != null)
-        // $data['total_cost'] =$result[0]->total_cost ; 
+        // $data['total_cost'] =$result[0]->total_cost ;
         // else
-        // $data['total_cost'] = 0 ; 
+        // $data['total_cost'] = 0 ;
 
         $total_cost = OrderItem::where('client_id' , Auth::guard('client-api')->user()->id)
-        ->where(['status'=>'pending from client'])
-                ->value(DB::raw("SUM(quantity * price + choice_price)"));
+                        ->where(['status'=>'pending from client'])
+                        ->value(DB::raw("SUM(quantity * price + choice_price)"));
         // return $stats;
         $data['total_cost'] =(double) $total_cost ?? 0 ;
         // $data['total_cost'] =$result;//  $orderItems->sum('price');
-        return $this->APIResponse($data, null, 200); 
+        return $this->APIResponse($data, null, 200);
     }
 
     public function checkoutCart()
     {
             if(request('address_id') != null && request('address_id') != 'null'){
-                $addressId  =request('address_id') ;                
+                $addressId  =request('address_id') ;
             }
             else{
                 if( Auth::guard('client-api')->user()->favouriteAddress == null ) // ?? Auth::guard('client-api')->user()->addresses->id ;
@@ -124,10 +124,10 @@ class CartClientController extends Controller
                 else
                 {
                     $addressId  =  Auth::guard('client-api')->user()->favouriteAddress->id ;
-                   
+
                 }
             }
-             
+
                 $vendors_id= OrderItem::where(['client_id' => Auth::guard('client-api')->user()->id , 'status'=>'pending from client' ])
                                         ->pluck('vendor_id');
                 $orderItems = OrderItem::where(['client_id' => Auth::guard('client-api')->user()->id , 'status'=>'pending from client' ])
@@ -165,37 +165,37 @@ class CartClientController extends Controller
                             $orderItem->update([
                                 'status'   => 'sending from client',
                                 'order_id' => $order->id,
-                            ]); 
-                        
+                            ]);
+
                             $orderPrice += $orderItem->price * $orderItem->quantity + $orderItem->choice_price;
                             $orderTotaldiscount += $orderItem->discount;
 
                             $order->vendor_benefit +=   $orderItem->vendor_benefit ;
                        }
-                       
+
                    }
                    $order->price = $orderPrice +  $order->delivery_cost  ; //$order->itemsSent->sum('price') +  $order->delivery_cost;
                    $order->total_discount = $order->itemsSent->sum('discount');
                    $order->save();
                 }
                 // foreach($orderItems as $orderItem){
-                       
+
                 //     // if($orderItem->vendor_id ==  $order->vendor_id)
                 //     {
                 //      $orderItem->update([
                 //          'status'   => 'sending from client',
                 //         //  'order_id' => $order,
-                //      ]); 
+                //      ]);
                 //     //  $orderPrice += $orderItem->price;
                 //     //  $orderTotaldiscount += $orderItem->discount;
                 //     }
-                    
+
                 //  }
                if(count($orderItems) == 0){
                 return $this->APIResponse(null, "this cart is empty", 400);
                }
                 return $this->APIResponse(null, null, 200);
-            
+
     }
 
     public function proccesingCart()
@@ -221,7 +221,7 @@ class CartClientController extends Controller
     }
     public function deleteOrderItem($orderItemId)
     {
-        
+
         $orderItem =  OrderItem::find($orderItemId);
        if(isset($orderItem)){
         //    return $orderItem;

@@ -15,25 +15,26 @@ class VendorController extends BackEndController
     }
     public function update($id , UpdateVendorRequest $request){
 
-        
-       
+
+
         $row = $this->model->FindOrFail($id);
         $requestArray = $request->all();
         if(isset($requestArray['password']) && $requestArray['password'] != ""){
             $requestArray['password'] =  Hash::make($requestArray['password']);
         }else{
             unset($requestArray['password']);
-        }        
+        }
         $requestArray['user_id'] = Auth::user()->id;
         $row->update($requestArray);
 
         if($request->block_reason){
             $row->block_reason = $request->block_reason;
-           
+
         }
-        if($request->discount_ratio){
+        if(isset($request->discount_ratio)){
             $row->client_ratio = $request->discount_ratio / 3 ;
             $row->client_vip_ratio = $request->discount_ratio * 2/ 3;
+
         }
         $row->save();
         session()->flash('action', 'updated successfully');
@@ -96,7 +97,7 @@ class VendorController extends BackEndController
                      ->orWhere('store_name' , 'LIKE', '%' . request('search') . '%')
                      ->orWhere('email' , 'LIKE', '%' . request('search') . '%')
                      ->orWhere('phone' , 'LIKE', '%' . request('search') . '%');
-        return $rows; 
+        return $rows;
     }
     public function deleteRelatedItems($rowId)
     {

@@ -12,11 +12,11 @@ class ProductController extends Controller
     use APIResponseTrait;
     public function addProduct(ProductRequest $request)
     {
-        
+
         /**
-         * 
+         *
          * {
-                
+
                 "Groups" : [
                                 {
                                     "name":"size",
@@ -58,14 +58,14 @@ class ProductController extends Controller
             }
 
          */
-       
+
 
         if (isset($request->validator) && $request->validator->fails())
         {
-            
+
             return $this->APIResponse(null , $request->validator->messages() ,  400);
         }
-        $requestArray = $request->all() ; 
+        $requestArray = $request->all() ;
         if($request->category_name){
             $category = ProductCategory::create(['name' => $request->category_name , 'vendor_id'=>Auth::guard('vendor-api')->user()->id ]);
             $requestArray['category_id'] = $category->id;
@@ -74,15 +74,15 @@ class ProductController extends Controller
         else
         VendorCategory::create(['vendor_id'=>Auth::guard('vendor-api')->user()->id , 'category_id' => $request->category_id ]);
         $requestArray['image'] =  $request->image != null ? uploadFile($request->image , 'products') : null;
-        $requestArray['vendor_id'] = Auth::guard('vendor-api')->user()->id; 
+        $requestArray['vendor_id'] = Auth::guard('vendor-api')->user()->id;
         $product = Product::create($requestArray);
         if($request->json != null){
         $this->addChoiceForProduct($request->json , $product->id);
         }
-       
+
         return $this->APIResponse(null, null, 200);
     }
-    
+
     public function showProductDetails($id)
     {
         $product = Product::find($id);
@@ -92,7 +92,7 @@ class ProductController extends Controller
         $product['choices'] = json_encode(ProductChoice::where('product_id' , $id )->get() );//->groupBy('group_name');
         $choices = ProductChoice::where('product_id' , $id )->get()->groupBy('group_name');
         foreach($choices as $key=> $item){
-           $data['name'] = $key ; 
+           $data['name'] = $key ;
            $data['items'] = array();
            foreach($item as $choice)
            {
@@ -102,7 +102,7 @@ class ProductController extends Controller
                $tchoice['quantity']= $choice->quantity;
                $data['items'][] = $tchoice;
            }
-           $data['type'] =$choice->type; 
+           $data['type'] =$choice->type;
         $choicesArray[] = $data ;
         }
         if( isset($choicesArray))
@@ -110,54 +110,54 @@ class ProductController extends Controller
         else
          $product['choices'] = array();
 
-      
+
             return $this->APIResponse($product, null, 200);
     }
     public function updateProduct($id ,ProductRequest $request )
     {
         $product = Product::find($id);
         if(isset($product)){
-            $requestArray = $request->all() ; 
+            $requestArray = $request->all() ;
             $requestArray['image'] =  $request->image != null ? uploadFile($request->image , 'products') : null;
             // $requestArray['image'] =  $request->image != null ? uploadFile($request->image , 'products') : null;
             if($request->category_name){
                 $category = ProductCategory::create(['name' => $request->category_name]);
-                $requestArray['category_id'] = $category->id ; 
+                $requestArray['category_id'] = $category->id ;
             }
             $product->update($requestArray) ;
             if($request->json != null){
                 $product->choices()->delete();
                 $this->addChoiceForProduct($request->json , $product->id);
             }
-         
+
             // return $product->choices;
             return $this->APIResponse(null, null, 200);
         }
-       
+
         return $this->APIResponse(null, "this product not found", 400);
     }
     public function addChoiceForProduct($jsonReuest , $productId)
     {
 
-        $json = json_decode($jsonReuest , true) ; 
+        $json = json_decode($jsonReuest , true) ;
         // if(!is_array($json)){
         //     return ;
         // }
-        $choices = $json['Groups'] ; 
-       
-        $type;$groupName; 
+        $choices = $json['Groups'] ;
+
+        $type;$groupName;
         if(is_array($choices))
         foreach($choices as $key=> $choiceItems){
-           
+
             foreach($choiceItems as $itemKey =>$item)
             if(is_array($item))
             {
                 foreach($item as $itemKeyt =>$itemt){
-                  
+
                     ProductChoice::create([
-                        'name' => $itemt['name'] , 
-                        'price' => $itemt['price'] , 
-                        
+                        'name' => $itemt['name'] ,
+                        'price' => $itemt['price'] ,
+
                         'type' => $type,
                         'group_name'=>$groupName,
                         'product_id'=>$productId
@@ -172,14 +172,14 @@ class ProductController extends Controller
                         $groupName = '_'.rand(2 , 10).rand(0,20);
                     }
                     else
-                    $groupName = $item ; 
+                    $groupName = $item ;
                 }
                 else
                 {
-                    
-                    $type= $item ; 
-                    
-                }  
+
+                    $type= $item ;
+
+                }
             }
         }
     }
@@ -191,8 +191,8 @@ class ProductController extends Controller
         $vendor = Vendor::select('first_name','last_name','client_ratio','client_vip_ratio','store_logo','rating')->find($vendorId);
         foreach($products as $product)
             {
-               
-                $discount = $product->discount_ratio !=0 ? ($product->discount_ratio /3) * $product->price / 100  : ( ($vendor->client_ratio ?? 0 ) * $product->price / 100 ) ; 
+
+                $discount = $product->discount_ratio !=0 ? ($product->discount_ratio /3) * $product->price / 100  : ( ($vendor->client_ratio ?? 0 ) * $product->price / 100 ) ;
                 $VIPdiscount =$product->discount_ratio !=0 ? ($product->discount_ratio* 2 / 3 )  * $product->price / 100 : ( ( $vendor->client_vip_ratio ?? 0) * $product->price / 100 ) ;
                 $product['client_price'] = $product->price - $discount ;
                 $product['client_vip_price'] = $product->price - $VIPdiscount;
@@ -217,7 +217,7 @@ class ProductController extends Controller
     }
     public function showProductCategories()/// not work
     {
-        
+
         return $this->APIResponse(ProductCategory::where('vendor_id' , Auth::guard('vendor-api')->user()->id)->get('name'), null, 200);
     }
 }

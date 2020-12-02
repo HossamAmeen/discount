@@ -27,22 +27,22 @@
                                 <div class="card-header py-3">
                                     <p class="text-primary m-0 font-weight-bold">update vendor ({{$row->store_name}})</p>
                                     <a href="{{ url('admin/product-categories/'.$row->id) }}" class="btn-sm btn-info" style="display:inline-block;">
-                                        {{$categories_count}} categories of product     
+                                        {{$categories_count}} categories of product
                                      </a>
 
                                     <a href="{{ url('admin/products/'.$row->id) }}" class="btn-sm btn-info" style="display:inline-block;">
-                                       {{$products_count}} products     
+                                       {{$products_count}} products
                                     </a>
-                            
+
                                      <a href="{{url('admin/orders?vendor_id='.$row->id)}}" class="btn-sm btn-info"
                                         style="display:inline-block;">{{$orders_count}} orders</a>
 
                                      <a href="#" class="btn-sm btn-info" style="display:inline-block;">
-                                        {{$total_gain}} total benefits      
+                                        {{$total_gain}} total benefits
                                      </a>
 
                                      <a href="#" class="btn-sm btn-info" style="display:inline-block;">
-                                         {{$monthly_benefit }} monthly benefit     
+                                         {{$monthly_benefit }} monthly benefit
                                      </a>
                                 </div>
                                 <div class="card-body">
@@ -60,7 +60,7 @@
                                          autocomplete="off">
                                         @csrf
                                         @method('put')
-                                       
+
                                         <input type="hidden" name="id" value="{{$row->id}}" id="">
                                         <div class="form-row">
                                             <div class="col">
@@ -97,7 +97,7 @@
                                                 @php $inputName = 'password_confirmation' ; @endphp
                                                 <div class="form-group"><label ><strong>{{$inputName}}</strong></label>
                                                     <input class="form-control" type="password" id="password_confirmation"
-                                                    
+
                                                       ></div>
                                             </div>
                                         </div>
@@ -180,7 +180,7 @@
                                                     <input class="form-control" type="text"
                                                          name="{{$inputName}}" value="{{Request::old($inputName) ?? $row->$inputName}}"></div>
                                             </div>
-                                           
+
                                         </div>
                                         <div class="form-group"><button class="btn btn-primary btn-sm"
                                             type="submit" onclick="return Validate()">update </button></div>
@@ -206,21 +206,21 @@
                                                 <div class="form-group"><label ><strong>national id back image</strong></label>
                                                    </div>
                                                 <img src="{{$row->$inputName}}">
-                                              
+
 
                                             </div>
-                                            
+
                                         </div>
-                                        
-                                        
+
+
                                     </form>
                                 </div>
                             </div>
 
                         </div>
                     </div>
-                
-                  
+
+
 
                 </div>
             </div>
@@ -234,7 +234,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
         <script src="{{asset('assets/js/theme.js')}}"></script>
         <script type="text/javascript">
-            
+
             $(document).ready(function(){
                 $('#{{$routeName}}').addClass('active');
                 });

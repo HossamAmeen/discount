@@ -22,7 +22,7 @@ class VendorController extends Controller
         $requestArray = $request->validated();
         $requestArray['password'] = bcrypt( $request->password);
         $requestArray['status'] = 'accept';
-        
+
         $this->uploadImages($request , $requestArray);
 
         $vendor = Vendor::create($requestArray);

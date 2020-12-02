@@ -43,6 +43,6 @@ class ProductController extends BackEndController
         if( request('search') != null )
         $rows = $rows->where('name' , 'LIKE', '%' . request('search') . '%' )
                      ->orWhere('description' , 'LIKE', '%' . request('search') . '%' );
-        return $rows; 
+        return $rows;
     }
 }

@@ -233,7 +233,7 @@
                                 </div>
                             </div>
                         </div> --}}
-                       
+
                     </div>
                     <div class="row">
                         <div class="col">
@@ -280,44 +280,44 @@
                                             <div class="col">
                                                 <div class="form-group"><label
                                                         for="website_name"><strong>about us</strong></label>
-                                                    <textarea class="form-control" name="en_about">{{$configrationSite->en_about ?? ""}}</textarea>    
+                                                    <textarea class="form-control" name="en_about">{{$configrationSite->en_about ?? ""}}</textarea>
                                                 </div>
                                             </div>
-                                          
+
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
                                                 <div class="form-group"><label
                                                         for="website_name"><strong>about us (arabic) </strong></label>
-                                                    <textarea class="form-control" name="about">{{$configrationSite->about ?? ""}}</textarea>    
+                                                    <textarea class="form-control" name="about">{{$configrationSite->about ?? ""}}</textarea>
                                                 </div>
                                             </div>
-                                          
+
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
                                                 <div class="form-group"><label
                                                         for="website_name"><strong>terms and conditions</strong></label>
-                                                    <textarea class="form-control" name="terms_conditions">{{$configrationSite->terms_conditions ?? ""}}</textarea>    
+                                                    <textarea class="form-control" name="terms_conditions">{{$configrationSite->terms_conditions ?? ""}}</textarea>
                                                 </div>
                                             </div>
-                                          
+
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
                                                 <div class="form-group"><label
                                                         for="website_name"><strong>privacy and policy</strong></label>
-                                                    <textarea class="form-control" name="privacy_policy">{{$configrationSite->privacy_policy ?? ""}}</textarea>    
+                                                    <textarea class="form-control" name="privacy_policy">{{$configrationSite->privacy_policy ?? ""}}</textarea>
                                                 </div>
                                             </div>
-                                          
+
                                         </div>
                                         <div class="form-group"><button class="btn btn-primary btn-sm"
                                                 type="submit">Save Settings</button></div>
                                     </form>
                                 </div>
                             </div>
-                           
+
                         </div>
                     </div>
                     {{-- <div class="row">
@@ -539,7 +539,7 @@
     <script type="text/javascript">
         $('#dashboard').addClass('active');
             $(document).ready(function(){
-                    
+
                 });
     </script>
 </body>

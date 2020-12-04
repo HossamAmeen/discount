@@ -13,14 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-   
-   return redirect()->route('login');
-   
-});
 Route::prefix('admin')->namespace('DashBoard')->group(function(){
+    Route::get('/' , 'AuthAdminController@login');
     Route::middleware('auth')->group(function () {
-        Route::get('/' , 'ConfigrationController@index');
+        Route::get('home' , 'ConfigrationController@index');
         Route::put('update-website-configration/{id}' , 'ConfigrationController@update')->name('configration.update');
         Route::resource('users' , "UserController");
         Route::resource('cities' , "CityController");
@@ -41,9 +37,10 @@ Route::prefix('admin')->namespace('DashBoard')->group(function(){
         Route::get('complaints' , "ConfigrationController@showComlpaints")->name('complaints.index');
         Route::delete('complaints/{complaintId}' , "ConfigrationController@deleteComlpaint")->name('complaints.destroy');
         Route::resource('questions' , "QuestionController");
+        Route::post('logout' , 'AuthAdminController@logout');
     });
 });
 
 Auth::routes();
 Route::get('/conditions' ,  'HomeController@conditions');
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');

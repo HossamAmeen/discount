@@ -38,8 +38,10 @@ class ConfigrationController extends BackEndController
         $configrationSite['today_orders'] =  $orders->wheredate('created_at' , date('Y-m-d'))->count();
         $configrationSite['products'] = $products->count();
         // return $top_product;
-        $configrationSite['top_product'] =$top_product->name. '('. ( $top_product->vendor->store_name ??  " " ).')';
-
+        if(isset($top_product))
+            $configrationSite['top_product'] = $top_product->name. '('. ( $top_product->vendor->store_name ??  " " ).')';
+        else
+            $configrationSite['top_product'] = "";
 
 
             // $top_product = \App\Models\Order::pluck('product_id')->toArray();

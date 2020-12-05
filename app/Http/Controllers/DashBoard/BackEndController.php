@@ -35,12 +35,11 @@ class BackEndController extends Controller
 
         $pageTitle = "Control ".$moduleName;
         $pageDes = "Here you can add / edit / delete " .$moduleName;
-        // return $rows;
         // return Auth::user()->role;
-            
+
         return view('back-end.' . $routeName . '.index', compact(
             'rows',
-            
+
             'pageTitle',
             'moduleName',
             'pageDes',
@@ -102,7 +101,7 @@ class BackEndController extends Controller
 
     public function deleteRelatedItems($rowId)
     {
-        
+
     }
     protected function uploadImage($request , $height = 400 , $width = 400){
 

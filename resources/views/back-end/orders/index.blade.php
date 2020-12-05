@@ -57,8 +57,12 @@
     <tbody>
         @foreach($rows as $key => $value)
         <tr>
-            <td>{{$value->client->first_name ??" not found" . $value->client->last_name ??" not found" }}</td>
-            <td>{{$value->product->name}}</td>
+            @if(isset($value->client->first_name))
+                <td>{{$value->client->first_name}} @if(isset($value->client->last_name)){{$value->client->last_name}}
+                    @endif
+                </td>
+            @endif
+            {{-- <td>{{$value->product->name}}</td> --}}
             <td>{{$value->quantity}}</td>
             <td>{{$value->discount}}</td>
             <td>{{$value->price}}</td>
@@ -110,7 +114,7 @@
         $.ajax({
                 url:"{{url('admin/accept-client')}}"+'/'+status+'/'+clientId,
                 type:"get",
-               
+
                 contentType: false,
                 processData: false,
                 success:function(dataBack)
@@ -120,9 +124,9 @@
                     // document.getElementById("addForm").reset();
                     document.getElementById(clientId+'status').innerText=status;
                     // showSelectReasonExchange('reasonExchange',  document.getElementById("in_or_out")) ;
-                    
+
                     // $(".cont-data").prepend(dataBack)
-                    
+
 
                 }, error: function (xhr, status, error)
                 {
@@ -136,6 +140,6 @@
                 }
             })
     }
-     
+
 </script>
 @endpush

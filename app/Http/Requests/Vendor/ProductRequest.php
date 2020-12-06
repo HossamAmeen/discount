@@ -30,10 +30,10 @@ class ProductRequest extends FormRequest
         // 'name', 'description', 'price', 'quantity', 'vendor_id', 'category_id'
         return [
             'name' => ['required','string', 'max:100'],
-            'description' => ['required','string'],
+            'description' => ['string'],
             'price' => ['required' , 'numeric'],
             'quantity' => ['required', 'numeric'],
-            
+
             'category_id' => ['numeric'],
         ];
     }

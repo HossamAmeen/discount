@@ -9,14 +9,14 @@ use Auth;
 class ClientOrderController extends Controller
 {
     use APIResponseTrait;
-    public function showOrders($id = null) 
+    public function showOrders($id = null)
     {
-        
+
         if(request('id') != null){
             $orders = Order::with(['itemsSent.product','address'])
             ->select('id'  ,'date','time','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id','client_address_id')
             ->find(request('id') );
-            
+
             return $this->APIResponse($orders, null, 200);
         }
         else
@@ -32,18 +32,19 @@ class ClientOrderController extends Controller
                             ->orderBy('id' , 'DESC')
                             ->take(20)
                             ->get(['id'  ,'date','time','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id','client_address_id']);
-       
+
         foreach($doneOrders as $doneOrder){
             $orders[] = $doneOrder ;
         }
             return $this->APIResponse($orders, null, 200);
         }
-        
-    } 
+
+    }
 
     public function updateOrder($id , Request $request)
     {
         $orderItem = OrderItem::where(['id'=>$id] )->first();
+
         if(! isset($orderItem))
         {
             return $this->APIResponse(null, "this order item not found", 400);
@@ -51,14 +52,14 @@ class ClientOrderController extends Controller
 
         if($orderItem->client_id != Auth::guard('client-api')->user()->id)
            return $this->APIResponse(null, "this order not for this client", 400);
-    
+
 
         if($request->quantity){
             $product = Product::find($orderItem->product_id);
             if(!isset( $product)){
                 return $this->APIResponse(null, "this product not found", 400);
             }
-            
+
             $orderItem->over_quantity =$request->quantity > $product->quantity  ? $request->quantity - abs($product->quantity) : 0 ;
             $orderItem->quantity = $request->quantity;
         }
@@ -72,21 +73,21 @@ class ClientOrderController extends Controller
         $orderItem->save();
         return $this->APIResponse(null, null, 200);
     }
-    
+
     public function showCart()  ///// not work
     {
         $orders = Order::with(['items.choices' ,'items.product' ])->where('client_id' , Auth::guard('client-api')->user()->id)
                     ->where(['status'=>'pending from client'])
                     ->get(['id'  ,'date','total_discount','discount_ratio','delivery_cost', 'price' ,'status' ,'client_id']);
-        $data['orders'] =  $orders;    
-        $data['totalCost'] =  $orders->sum('price'); 
-       
+        $data['orders'] =  $orders;
+        $data['totalCost'] =  $orders->sum('price');
+
         // return $cart ;
         if($orders){
             // $order['totalCost'] = $order->sum('price');
-            return $this->APIResponse($data, null, 200); 
+            return $this->APIResponse($data, null, 200);
         }
-       
+
         else
         return $this->APIResponse(null, null, 200);
     }
@@ -98,7 +99,7 @@ class ClientOrderController extends Controller
 
         if($orders){
             if(request('address_id') != null && request('address_id') != 'null'){
-                $addressId  =request('address_id') ;                
+                $addressId  =request('address_id') ;
             }else{
                 if( Auth::guard('client-api')->user()->favouriteAddress == null ) // ?? Auth::guard('client-api')->user()->addresses->id ;
                 {
@@ -114,41 +115,41 @@ class ClientOrderController extends Controller
                     'client_address_id' => $addressId,
                     'date'              => date('Y-m-d'),
                 ]);
-                 
+
                 OrderItem::whereIn('order_id' , $orders->get('id')->toArray())->update([
                     'status'            => 'sending from client',
                 ]);
                 return $this->APIResponse(null, null, 200);
             }
-        }        
+        }
         else{
             return $this->APIResponse(null, "this cart not found", 400);
         }
 
     }
 
-   
+
     public function addOrder(Request $request) ///// not work
     {
-        $clientId = Auth::guard('client-api')->user()->id ; 
+        $clientId = Auth::guard('client-api')->user()->id ;
         $product= Product::find($request->product_id);
         if(!isset($product)){
             return $this->APIResponse(null, "this product not found", 400);
         }
-        
+
         // $cart = Cart::where(  'client_id' , '=' ,  $clientId )->where( 'is_done' , false)->first();
         // if(!isset($cart)){
         //     $cart = Cart::create(['client_id' =>  $clientId ,'total_cost'=>0 ]);
         // }
 
-       
+
         $over_quantity = $request->quantity > $product->quantity  ? $request->quantity - $product->quantity : 0 ;
 
         $vendor = Vendor::select('id','discount_ratio','client_ratio','client_vip_ratio' , 'delivery')->find($product->vendor_id);
-        $is_client_vip = Auth::guard('client-api')->user()->is_vip ; 
-        
+        $is_client_vip = Auth::guard('client-api')->user()->is_vip ;
+
         $order = Order::where(['client_id' =>  $clientId , 'vendor_id' => $vendor->id] )->where( 'status' , 'pending from client' )->first();
-                //// 
+                ////
         if(!isset($order)){
 
             $order = Order::create([
@@ -157,7 +158,7 @@ class ClientOrderController extends Controller
                 'is_vip'=>$is_client_vip,
                 'discount_ratio'=>$is_client_vip == true ? ($vendor->client_vip_ratio ?? 0) : ($vendor->client_ratio ?? 0) ,
                 'vendor_id' =>$vendor->id,
-                'client_id'=>  $clientId 
+                'client_id'=>  $clientId
             ]);
         }
         $orderItem = OrderItem::where(['product_id'=> $request->product_id , 'order_id' =>  $order->id , 'status'=>'pending from client' ])->first();
@@ -179,8 +180,8 @@ class ClientOrderController extends Controller
             'order_id' => $order->id
 
         ]);
-       
-    
+
+
 
         if($request->choices){
             $orderItem->choice_price = $this->addChoiceForOrder($request->choices , $orderItem->id);
@@ -195,16 +196,16 @@ class ClientOrderController extends Controller
         $order->save();
         // $cart->total_cost += $order->quantity * $order->price + $choicesCost ;
         // $cart->save();
-       
+
         return $this->APIResponse(null, null, 200);
     }
 
-   
+
     public function deleteOrderItem($orderItemId) //// not work
     {
         $orderItem =  OrderItem::find($orderItemId);
        if(isset($orderItem)){
-           
+
         //    if($orderItem->client_id != Auth::guard('client-api')->user()->id){
         //     return $this->APIResponse(null, "this order not for this client", 400);
         //    }
@@ -230,7 +231,7 @@ class ClientOrderController extends Controller
     {
        $order =  Order::find($orderId);
        if(isset($order)){
-           
+
            if($order->client_id != Auth::guard('client-api')->user()->id){
             return $this->APIResponse(null, "this order not for this client", 400);
            }
@@ -239,12 +240,12 @@ class ClientOrderController extends Controller
         //    $choicesCost =  OrderChoice::where('order_id' , $order->id)->get('id');
         //    $totalChoicesCost =  OrderChoice::where('order_item_id' , $order->id)->sum('price');
         //    return $choicesCost ;
-       
+
         //    $cart->total_cost -= $order->price * $order->quantity + $totalChoicesCost ;
             // OrderChoice::destroy($choicesCost->toArray());
         // return ;
         //    $choicesCost->delete();
-          
+
              $order->delete();
         //    $cart->save();
         return $this->APIResponse(null, null, 200);
@@ -257,7 +258,7 @@ class ClientOrderController extends Controller
     public function addChoiceForOrder($choices , $orderItemId) /////not work
     {
        $choices = ProductChoice::whereIn('id' , $choices )->get();
-       $totalCost = 0 ; 
+       $totalCost = 0 ;
        foreach($choices as $choice){
             OrderChoice::create([
                 'type'=>$choice->type,
@@ -274,22 +275,22 @@ class ClientOrderController extends Controller
     }
     public function addChoiceForOrders($jsonReuest , $productId) ///////////////////// not work
     {
-        $json = json_decode($jsonReuest , true) ; 
-       
-        $choices = $json['Groups'] ; 
+        $json = json_decode($jsonReuest , true) ;
+
+        $choices = $json['Groups'] ;
         $totalCost = 0 ;
-        $type;$groupName; 
+        $type;$groupName;
         if(is_array($choices))
         foreach($choices as $key=> $choiceItems){
-           
+
             foreach($choiceItems as $itemKey =>$item)
             if(is_array($item))
             {
                 foreach($item as $itemKeyt =>$itemt){
                     $totalCost += $itemt['price'] ;
                     OrderChoice::create([
-                        'name' => $itemt['name'] , 
-                        'price' => $itemt['price'] , 
+                        'name' => $itemt['name'] ,
+                        'price' => $itemt['price'] ,
                         'type' => $type,
                         'group_name'=>$groupName,
                         'order_id'=>$productId
@@ -300,24 +301,48 @@ class ClientOrderController extends Controller
             {
                 if($itemKey == "name")
                 {
-                   
-                    $groupName = $item ; 
+
+                    $groupName = $item ;
                 }
                 else
                 {
-                    
-                    $type= $item ; 
-                    
-                }  
+
+                    $type= $item ;
+
+                }
             }
         }
-        return $totalCost ; 
+        return $totalCost ;
     }
-    
+
+    public function changeStatus($id)
+    {
+        $order = Order::find($id);
+        if(isset($order)){
+            $status =  request('status') ;
+            $refuseReason =  request('refuse_reason') ;
+            $order->update(['status' => $status , 'refuse_reason'=>$refuseReason]);
+
+            $orderItems = OrderItem::where('order_id' ,  $order->id)->update(['status' => $status , 'refuse_reason'=>$refuseReason]);
+            if($status == "done"){
+                $vendor = Vendor::find($order->vendor_id);
+                $vendor->app_gain += $order->vendor_benefit;
+                $vendor->save();
+            }
+            elseif($status == "vendor accept returned product"){
+                $vendor=Vendor::find($order->vendor_id);
+                $vendor->app_gain -= $order->vendor_benefit;
+                $vendor->save();
+            }
+            return $this->APIResponse(null, null, 200);
+        }
+        return $this->APIResponse(null, "this order not found", 400);
+    }
+
      /**
-         * 
+         *
          * {
-                
+
                 "Groups" : [
                                 {
                                     "name":"size",

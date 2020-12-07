@@ -62,7 +62,6 @@ class ProductController extends Controller
 
         if (isset($request->validator) && $request->validator->fails())
         {
-
             return $this->APIResponse(null , $request->validator->messages() ,  400);
         }
         $requestArray = $request->all() ;
@@ -118,8 +117,7 @@ class ProductController extends Controller
         $product = Product::find($id);
         if(isset($product)){
             $requestArray = $request->all() ;
-            $requestArray['image'] =  $request->image != null ? uploadFile($request->image , 'products') : null;
-            // $requestArray['image'] =  $request->image != null ? uploadFile($request->image , 'products') : null;
+            $requestArray['image'] =  $request->image != null ? uploadFile($request->image , 'products') : $product->image;
             if($request->category_name){
                 $category = ProductCategory::create(['name' => $request->category_name]);
                 $requestArray['category_id'] = $category->id ;

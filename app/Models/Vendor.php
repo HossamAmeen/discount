@@ -10,7 +10,7 @@ class Vendor extends Authenticatable
 {
     use HasApiTokens , Notifiable , SoftDeletes;
 
-    protected $fillable = [
+    protected $fillable = ['id',
         'first_name', 'last_name', 'email' ,'password' ,'phone',
         'store_name',
         'discount_ratio', 'status',

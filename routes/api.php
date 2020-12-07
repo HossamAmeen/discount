@@ -45,7 +45,7 @@ Route::prefix('vendor')->namespace('Vendor')->group(function(){
         Route::get('/show-product/{id}', 'ProductController@showProductDetails');
         Route::get('/show-categories', 'ProductController@showCategories');
             ////////// orders ////////////////
-            Route::middleware('checkIsAccept:vendor-api')->group(function () {
+            Route::middleware(['checkIsAccept:vendor-api'])->group(function () {
                 Route::get('/show-orders', 'OrderController@showOrders');
                 Route::get('/show-done-orders', 'OrderController@showDoneOrders');
                 Route::get('/change-status-order/{id}', 'OrderController@changeStatus');
@@ -91,6 +91,8 @@ Route::prefix('client')->namespace('Client')->group(function(){
             Route::get('offers' , 'ClientVenodrController@showOffers');
             Route::get('search' , 'ClientVenodrController@searchOfVendors');
             Route::put('recharge-balance' , 'ClientController@rechargeBalance');
+
+            Route::get('/change-status-order/{id}', 'ClientOrderController@changeStatus');
         });
     });
 });

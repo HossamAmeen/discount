@@ -27,7 +27,7 @@ class OrderController extends Controller
         //                                 //  ->sortBy('cart_id')
         //                                  ;
                                         //  ->groupBy('cart_id')
-       
+
         //   $orders = Cart::with('orders')
         //                 ->select('carts.*')
         //                 ->join('orders', 'orders.cart_id', '=', 'carts.id')
@@ -48,7 +48,7 @@ class OrderController extends Controller
         //     }
         //     $carts[] = $cart ;
         //     $cart = array();
-        // }                                
+        // }
         // return $carts;
         // // return count($orders);
         // for($i=1 ; $i<=count($orders) ; $i++){
@@ -70,7 +70,7 @@ class OrderController extends Controller
         foreach($doneOrders as $doneOrder){
             // $orders[] = $doneOrder ;
         }
-        return $this->APIResponse($orders, null, 200); 
+        return $this->APIResponse($orders, null, 200);
     }
     public function showDoneOrders()
     {
@@ -80,20 +80,19 @@ class OrderController extends Controller
         ->orderBy('id' , 'DESC')
         ->skip((request('pageNumber') ?? 0 ) * 30)->take(30)
         ->get();
-        return $this->APIResponse($oders, null, 200);  
+        return $this->APIResponse($oders, null, 200);
     }
     public function changeStatus($id)
     {
         $order = Order::find($id);
         if(isset($order)){
-            $status =  request('status') ; 
+            $status =  request('status') ;
             $refuseReason =  request('refuse_reason') ;
-           
             $order->update(['status' => $status , 'refuse_reason'=>$refuseReason]);
-           
+
             $orderItems = OrderItem::where('order_id' ,  $order->id)->update(['status' => $status , 'refuse_reason'=>$refuseReason]);
             if($status == "done"){
-                $vendor=Vendor::find($order->vendor_id);
+                $vendor = Vendor::find($order->vendor_id);
                 $vendor->app_gain += $order->vendor_benefit;
                 $vendor->save();
             }
@@ -102,44 +101,44 @@ class OrderController extends Controller
                 $vendor->app_gain -= $order->vendor_benefit;
                 $vendor->save();
             }
-            return $this->APIResponse(null, null, 200);  
+            return $this->APIResponse(null, null, 200);
         }
-        return $this->APIResponse(null, "this order not found", 400);  
+        return $this->APIResponse(null, "this order not found", 400);
     }
-  
+
     public function changeStatusOrderItem($orderItemId)
     {
         $orderItem = OrderItem::find($orderItemId);
         if(isset($orderItem)){
-            $status =  request('status') ; 
+            $status =  request('status') ;
             $refuseReason =  request('refuse_reason') ;
             $orderItem->update(['status' => $status , 'refuse_reason'=>$refuseReason]);
             $order = Order::find($orderItem->order_id)->update(['status' => $status , 'refuse_reason'=>$refuseReason]);
-            return $this->APIResponse(null, null, 200);  
+            return $this->APIResponse(null, null, 200);
         }
-        return $this->APIResponse(null, "this order item not found", 400);  
+        return $this->APIResponse(null, "this order item not found", 400);
     }
     public function editOrder($id)
     {
         $order = Order::find($id);
         if(isset($order)){
-            $quantity =  request('quantity') ; 
+            $quantity =  request('quantity') ;
             $order->update(['quantity' => $quantity , 'status' => 'edit from vendor']);
-            return $this->APIResponse(null, null, 200);  
+            return $this->APIResponse(null, null, 200);
         }
-        return $this->APIResponse(null, "this order not found", 400);  
+        return $this->APIResponse(null, "this order not found", 400);
     }
     public function scanQRCode($orderId)
     {
         $order = Order::where('id' , $orderId)->where('client_id' , request('client_id'))->first();
         if(isset($order)){
             if($order->status == "done" ){
-                return $this->APIResponse(null, "the product has used", 400);  
+                return $this->APIResponse(null, "the product has used", 400);
             }
             $order->status = "done";
             $order->save();
-            return $this->APIResponse(null, null, 200);  
+            return $this->APIResponse(null, null, 200);
         }
-        return $this->APIResponse(null, "the client not with this product", 400);  
+        return $this->APIResponse(null, "the client not with this product", 400);
     }
 }

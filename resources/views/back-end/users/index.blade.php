@@ -10,7 +10,7 @@
 
 <a  href="{{ route($routeName.'.create') }}">
     <button class="alert-success">
-         <i class="fa fa-plus"></i> 
+         <i class="fa fa-plus"></i>
         </button>
 </a>
 @endsection
@@ -21,14 +21,14 @@
                 type="search" class="form-control form-control-sm"
                 aria-controls="dataTable" placeholder="Search" name="search" value="{{request('search')?? ''}}" required></label>
                 <button type="submit" rel="tooltip" title="" class="btn-sm btn-info" style="display:inline-block;">
-                    <i class="fas fa-search"></i>  
+                    <i class="fas fa-search"></i>
             </button>
     </div>
 </form>
 @endsection
 <table class="table dataTable my-0" id="dataTable">
     <thead>
-       
+
         <tr>
             {{-- <th>image</th> --}}
             <th>user name</th>
@@ -47,7 +47,7 @@
                         {{-- src="{{$value->image != null && $value->image !="" ? asset($value->image) : asset('assets/img/avatars/avatar1.jpeg')}}"> --}}
                         src="{{$value->image}}">
                         {{$value->user_name}}</td>
-             
+
                 <td>{{$value->name}}</td>
                 <td>{{$value->phone}}</td>
                 <td>{{$value->email}}</td>
@@ -58,20 +58,20 @@
                         {{ csrf_field() }}
                         {{ method_field('delete') }}
                         <a href="{{ route($routeName.'.edit' , $value) }}" class="btn-sm btn-info" style="display:inline-block;">
-                          <i class="far fa-edit f044"></i>      
+                          <i class="far fa-edit f044"></i>
                             </a>
-                           
+
                         <button type="submit" rel="tooltip" title="" class="btn-sm btn-danger"  onclick="check()" style="display:inline-block;">
-                              <i class="fas fa-trash-alt"></i>  
+                              <i class="fas fa-trash-alt"></i>
                        </button>
                     </form>
-                   
+
                 </td>
-                
+
             </tr>
         @endforeach
-        
-        
+
+
     </tbody>
     <tfoot>
         <tr>

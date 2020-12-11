@@ -1,4 +1,9 @@
 @extends('back-end.layout.app')
+@if (session()->get('action') )
+<div class="alert alert-success">
+    <strong>{{session()->get('action')}}</strong>
+</div>
+@endif
 @section('search')
 
 <form action="{{route($routeName.'.index')}}" >
@@ -6,7 +11,7 @@
                 type="search" class="form-control form-control-sm"
                 aria-controls="dataTable" placeholder="Search" name="search" value="{{request('search')?? ''}}" required></label>
                 <button type="submit" rel="tooltip" title="" class="btn-sm btn-info" style="display:inline-block;">
-                    <i class="fas fa-search"></i>  
+                    <i class="fas fa-search"></i>
             </button>
     </div>
 </form>
@@ -36,7 +41,7 @@
             <th>Name</th>
             <th>User</th>
             <th>action</th>
-           
+
         </tr>
     </thead>
     <tbody>
@@ -46,7 +51,18 @@
                     src="{{asset('assets/img/avatars/avatar1.jpeg')}}">{{$value->name }}</td>
             <td>{{$value->user->name??" not found"}}</td>
             <td>
-                @include('back-end.shared.buttons.delete')
+                <form action="{{ route($routeName.'.destroy' ,$value ) }}" method="post">
+                    {{ csrf_field() }}
+                    {{ method_field('delete') }}
+                    <a href="{{ route($routeName.'.edit' , $value) }}" class="btn-sm btn-info" style="display:inline-block;">
+                      <i class="far fa-edit f044"></i>
+                        </a>
+
+                    <button type="submit" rel="tooltip" title="" class="btn-sm btn-danger"  onclick="check()" style="display:inline-block;">
+                          <i class="fas fa-trash-alt"></i>
+                   </button>
+                </form>
+
 
             </td>
 
@@ -57,7 +73,7 @@
         <tr>
             <th>Name</th>
             <th>User</th>
-          
+
             <th>action</th>
         </tr>
     </tfoot>

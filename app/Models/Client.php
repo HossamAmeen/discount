@@ -45,4 +45,8 @@ class Client extends Authenticatable
     {
         return $query->where('approvement', 'accept');
     }
+    public function orderItem()
+    {
+        return $this->hasMany(OrderItem::class , 'client_id')->orderBy('id');
+    }
 }

@@ -46,10 +46,7 @@
             <th>Client Name</th>
             <th>Product</th>
             <th>Quantity</th>
-            <th>Discount</th>
             <th>Price</th>
-            <th>is vip</th>
-            <th>status</th>
             <th>date</th>
 
         </tr>
@@ -57,18 +54,21 @@
     <tbody>
         @foreach($rows as $key => $value)
         <tr>
-            @if(isset($value->client->first_name))
-                <td>{{$value->client->first_name}} @if(isset($value->client->last_name)){{$value->client->last_name}}
-                    @endif
+            @if(isset($value->client_id))
+                <td>{{(isset($value->client->first_name) ? $value->client->first_name : " لا يوجد")}}
+                    {{(isset($value->client->last_name) ? $value->client->last_name : "")}}
                 </td>
             @endif
-            {{-- <td>{{$value->product->name}}</td> --}}
+            @if(isset($value->product_id))
+                <td>{{(isset($value->product->name) ? $value->product->name : " لا يوجد")}}</td>
+            @endif
             <td>{{$value->quantity}}</td>
-            <td>{{$value->discount}}</td>
             <td>{{$value->price}}</td>
-            <td>{{$value->is_vip ? "vip" : "free"}}</td>
-            <td id="{{$value->id . 'status'}}">{{$value->status}}</td>
-            <td>{{$value->created_at}}</td>
+            @if(isset($value->order_id))
+                <td>{{(isset($value->order->date) ? $value->order->date : " لا يوجد")}}</td>
+            @endif
+
+
             {{-- <td>
                 <form action="{{ route($routeName.'.destroy' ,$value ) }}" method="post">
             {{ csrf_field() }}

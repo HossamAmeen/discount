@@ -15,9 +15,9 @@ class Order extends Model
    public function address()
    {
     return $this->belongsTo(ClientAddress::class , 'client_address_id')->select(['id','address','first_name','phone']);
-       
+
    }
-   
+
     public function items()
     {
         return $this->hasMany(OrderItem::class , 'order_id')->where('status', 'pending from client');
@@ -30,7 +30,7 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class , 'order_id')
         ->select(['id','product_id' , 'discount_ratio' , 'price' ,'choice_price','over_quantity','quantity','order_id']);
-        
+
     }
     public function client(){
         return $this->belongsTo(Client::class)->select(['id','first_name','last_name', ]);

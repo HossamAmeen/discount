@@ -4,10 +4,10 @@ namespace App\Http\Controllers\DashBoard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Order;
+use App\Models\OrderItem;
 class OrderController extends BackEndController
 {
-    public function __construct(Order $model)
+    public function __construct(OrderItem $model)
     {
         parent::__construct($model);
     }
@@ -16,9 +16,9 @@ class OrderController extends BackEndController
     {
         // return request('type');
         if(request('type') == 'clients')
-        $rows = Order::where('client_id' , $id)->paginate(15);
+        $rows = OrderItem::where('client_id' , $id)->paginate(15);
         else
-        $rows = Order::where('vendor_id' , $id)->paginate(15);
+        $rows = OrderItem::where('vendor_id' , $id)->paginate(15);
 
         $routeName = $this->getClassNameFromModel();
         return view('back-end/orders.index' , compact('rows' ,'routeName' ));

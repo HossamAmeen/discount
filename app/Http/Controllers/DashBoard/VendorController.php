@@ -14,9 +14,6 @@ class VendorController extends BackEndController
         parent::__construct($model);
     }
     public function update($id , UpdateVendorRequest $request){
-
-
-
         $row = $this->model->FindOrFail($id);
         $requestArray = $request->all();
         if(isset($requestArray['password']) && $requestArray['password'] != ""){
@@ -29,11 +26,6 @@ class VendorController extends BackEndController
 
         if($request->block_reason){
             $row->block_reason = $request->block_reason;
-
-        }
-        if(isset($request->discount_ratio)){
-            $row->client_ratio = $request->discount_ratio / 3 ;
-            $row->client_vip_ratio = $request->discount_ratio * 2/ 3;
 
         }
         $row->save();

@@ -130,12 +130,12 @@
                                             <div class="col">
                                                 @php $inputName = 'client_ratio' ; @endphp
                                                 <div class="form-group"><label ><strong>client ratio</strong></label><input class="form-control" type="text"
-                                                         name="{{$inputName}}" value="{{Request::old('client_ratio') ?? $row->$inputName}}" readonly></div>
+                                                         name="{{$inputName}}" value="{{Request::old('client_ratio') ?? $row->$inputName}}"></div>
                                             </div>
                                             <div class="col">
                                                 @php $inputName = 'client_vip_ratio' ; @endphp
                                                 <div class="form-group"><label ><strong>client vip ratio</strong></label><input class="form-control" type="text"
-                                                         name="{{$inputName}}"  value="{{Request::old($inputName) ?? $row->$inputName}}" readonly></div>
+                                                         name="{{$inputName}}"  value="{{Request::old($inputName) ?? $row->$inputName}}"></div>
                                             </div>
                                         </div>
                                         <div class="form-row">

@@ -48,7 +48,7 @@
             <th>Quantity</th>
             <th>Price</th>
             <th>date</th>
-
+            <th>status</th>
         </tr>
     </thead>
     <tbody>
@@ -67,7 +67,8 @@
             @if(isset($value->order_id))
                 <td>{{(isset($value->order->date) ? $value->order->date : " لا يوجد")}}</td>
             @endif
-
+            <td>{{$value->status}}</td>
+            
 
             {{-- <td>
                 <form action="{{ route($routeName.'.destroy' ,$value ) }}" method="post">
@@ -89,14 +90,14 @@
     </tbody>
     <tfoot>
         <tr>
+
             <th>Client Name</th>
             <th>Product</th>
             <th>Quantity</th>
-            <th>Discount</th>
             <th>Price</th>
-            <th>is vip</th>
-            <th>status</th>
             <th>date</th>
+            {{-- <th>Discount</th> --}}           
+            <th>status</th>
         </tr>
     </tfoot>
 </table>

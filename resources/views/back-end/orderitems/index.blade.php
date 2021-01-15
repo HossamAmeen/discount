@@ -49,6 +49,7 @@
             <th>Price</th>
             <th>date</th>
             <th>status</th>
+            <th>action</th>
         </tr>
     </thead>
     <tbody>
@@ -70,20 +71,18 @@
             <td>{{$value->status}}</td>
             
 
-            {{-- <td>
-                <form action="{{ route($routeName.'.destroy' ,$value ) }}" method="post">
+            <td>
+                <form action="{{ route('orders.destroy' ,$value ) }}" method="post">
             {{ csrf_field() }}
             {{ method_field('delete') }}
-            <a href="#" class="btn-sm btn-info" onclick="acceptClient( 'accept',{{$value->id}})"
-                style="display:inline-block;">
-                block</a>
+            
             <button type="submit" rel="tooltip" title="" class="btn-sm btn-danger" onclick="check()"
                 style="display:inline-block;">
                 <i class="fas fa-trash-alt"></i>
             </button>
             </form>
 
-            </td> --}}
+            </td>
 
         </tr>
         @endforeach
@@ -98,6 +97,7 @@
             <th>date</th>
             {{-- <th>Discount</th> --}}           
             <th>status</th>
+            <th>action</th>
         </tr>
     </tfoot>
 </table>
@@ -106,7 +106,7 @@
 @push('js')
 <script type="text/javascript">
     $(document).ready(function(){
-            $('#{{$routeName}}').addClass('active');
+            $('#orders').addClass('active');
         });
 </script>
 <script>

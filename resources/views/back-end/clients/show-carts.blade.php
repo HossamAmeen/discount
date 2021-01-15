@@ -11,8 +11,8 @@
             <th>date</th>
             <th>address</th>
             <th>status</th>
-            {{-- <th>user</th>
-            <th>action</th> --}}
+            {{-- <th>user</th> --}}
+            <th>action</th>
         </tr>
     </thead>
     <tbody>
@@ -26,27 +26,18 @@
             <td>{{$value->address->address??" not found"}}</td>
             <td>{{$value->is_done == 1 ? "done" : "not checkout"}}</td>
             {{-- <td>{{$value->user->name??" not found"}}</td> --}}
-            {{-- <td>
-                <form action="{{ route($routeName.'.destroy' ,$value ) }}" method="post">
+            <td>
+                <form action="{{ route('delete-cart-item' ,$value ) }}" method="post">
                     {{ csrf_field() }}
                     {{ method_field('delete') }}
-                    <a href="#" class="btn-sm btn-info" onclick="acceptClient( 'accept',{{$value->id}})"
-                        style="display:inline-block;"> accept</a>
-                    <a href="#" class="btn-sm btn-danger" onclick="acceptClient( 'blocked',{{$value->id}})"
-                        style="display:inline-block;"> block</a>
-                    <a href="{{url('admin/orders/'.$value->id.'?type=clients')}}" class="btn-sm btn-info" onclick="acceptClient( 'accept',{{$value->id}})"
-                            style="display:inline-block;"> orders</a>
-                    <a href="{{url('admin/client-carts/'.$value->id)}}" class="btn-sm btn-danger" 
-                        style="display:inline-block;"> <i class="fas fa-shopping-cart"></i></a>
-                        <a href="{{url('admin/client-wishlist/'.$value->id)}}" class="btn-sm btn-danger" 
-                            style="display:inline-block;"> <i class="fas fa-bookmark"></i></a>
+                   
                     <button type="submit" rel="tooltip" title="" class="btn-sm btn-danger" onclick="check()"
                         style="display:inline-block;">
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </form>
 
-            </td> --}}
+            </td>
 
         </tr>
         @endforeach
@@ -57,8 +48,8 @@
             <th>date</th>
             <th>address</th>
             <th>status</th>
-            {{-- <th>user</th>
-            <th>action</th> --}}
+            {{-- <th>user</th> --}}
+            <th>action</th>
         </tr>
     </tfoot>
 </table>

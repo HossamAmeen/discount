@@ -26,7 +26,9 @@ Route::prefix('admin')->namespace('DashBoard')->group(function(){
         Route::get('product-categories/{VendorId}' , 'VendorController@showCategoriesOfProducts');
         Route::resource('clients' , "ClientController");
         Route::get('client-carts/{VendorId}' , 'ClientController@showCarts');
+        Route::delete('delete-cart-item/{cartItemId}' , 'ClientController@deleteCartItem')->name('delete-cart-item');
         Route::get('client-wishlist/{VendorId}' , 'ClientController@showWishList');
+        Route::delete('delete-wishlist/{wishListItemId}' , 'ClientController@deleteWishListItem')->name('wishlist.delete');
         Route::get('accept-client/{status}/{clientId}/{blockReason}' , 'ClientController@changeStatus');
         Route::get('change-client-status/{is_vip}/{clientId}' , 'ClientController@changeStatusToVIP');
         Route::resource('categories' , "CategoryController");

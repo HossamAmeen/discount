@@ -48,6 +48,24 @@ class ClientController extends BackEndController
             'folderName',
         ));
     }
+    public function deleteWishListItem($wishListItemId)
+    {
+        $wishListItem= WishList::find($wishListItemId);
+        if(isset($wishListItem)){
+            $wishListItem->delete();
+        }
+        session()->flash('action', 'deleted successfully');
+        return redirect()->back();
+    }
+    public function deleteCartItem($cartItemId)
+    {
+        $cartItem= Cart::find($cartItemId);
+        if(isset($cartItem)){
+            $cartItem->delete();
+        }
+        session()->flash('action', 'deleted successfully');
+        return redirect()->back();
+    }
     public function showCarts($clientId)
     {
         $rows = Cart::where('client_id' , $clientId)->paginate(15);

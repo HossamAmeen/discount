@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Offer extends Model
 {
      use SoftDeletes;
-     protected $fillable = ['image'];
+     protected $fillable = ['user_id','image'];
      protected $hidden = [
          'user_id',"created_at" , 'updated_at'  ,'deleted_at'
     ];

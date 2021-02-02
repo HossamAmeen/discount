@@ -16,7 +16,11 @@
 </form>
 @endsection
 @section('content')
-
+@if (session()->get('action') )
+<div class="alert alert-success">
+    <strong>{{session()->get('action')}}</strong>
+</div>
+@endif
 
 <table class="table dataTable my-0" id="dataTable">
     <thead>

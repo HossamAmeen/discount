@@ -23,7 +23,8 @@ class CreateProductsTable extends Migration
             $table->double('discount_ratio')->default(0);
             $table->double('rating')->default(0)->nullable();
             $table->string('image')->nullable();
-
+            $table->string('image2')->nullable();
+            $table->string('image3')->nullable();
             $table->bigInteger('vendor_id')->unsigned()->nullable();
             $table->foreign('vendor_id')->references('id')->on('vendors')->onDelete('set null');
             $table->bigInteger('category_id')->unsigned()->nullable();

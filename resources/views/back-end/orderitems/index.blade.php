@@ -38,7 +38,11 @@
 </form>
 @endsection
 @section('content')
-
+@if (session()->get('action') )
+<div class="alert alert-success">
+    <strong>{{session()->get('action')}}</strong>
+</div>
+@endif
 <table class="table dataTable my-0" id="dataTable">
     <thead>
         {{-- 'price','discount','is_vip', 'status', 'quantity','product_id', 'client_id','cart_id' --}}

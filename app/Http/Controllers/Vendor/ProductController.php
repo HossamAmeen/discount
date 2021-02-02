@@ -73,6 +73,8 @@ class ProductController extends Controller
         else
         VendorCategory::create(['vendor_id'=>Auth::guard('vendor-api')->user()->id , 'category_id' => $request->category_id ]);
         $requestArray['image'] =  $request->image != null ? uploadFile($request->image , 'products') : null;
+        $requestArray['image2'] =  $request->image2 != null ? uploadFile($request->image2 , 'products') : null;
+        $requestArray['image3'] =  $request->image3 != null ? uploadFile($request->image3 , 'products') : null;
         $requestArray['vendor_id'] = Auth::guard('vendor-api')->user()->id;
         $product = Product::create($requestArray);
         if($request->json != null){
@@ -116,6 +118,9 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         if(isset($product)){
+            if($product->vendor_id !=  Auth::guard('vendor-api')->user()->id){
+                return $this->APIResponse(null, "this product not for this vendor", 400);
+            } 
             $requestArray = $request->all() ;
             $requestArray['image'] =  $request->image != null ? uploadFile($request->image , 'products') : $product->image;
             if($request->category_name){
@@ -185,6 +190,27 @@ class ProductController extends Controller
     {
         $vendorId = Auth::guard('vendor-api')->user()->id ;
         $products = Product::where('vendor_id' ,$vendorId)
+                            ->where('quantity','>',0)
+                            ->get(['id' , 'name','description','price','category_id','image','discount_ratio']);
+        $vendor = Vendor::select('first_name','last_name','client_ratio','client_vip_ratio','store_logo','rating')->find($vendorId);
+        foreach($products as $product)
+            {
+
+                $discount = $product->discount_ratio !=0 ? ($product->discount_ratio /3) * $product->price / 100  : ( ($vendor->client_ratio ?? 0 ) * $product->price / 100 ) ;
+                $VIPdiscount =$product->discount_ratio !=0 ? ($product->discount_ratio* 2 / 3 )  * $product->price / 100 : ( ( $vendor->client_vip_ratio ?? 0) * $product->price / 100 ) ;
+                $product['client_price'] = $product->price - $discount ;
+                $product['client_vip_price'] = $product->price - $VIPdiscount;
+                // $product['client_ratio'] = $vendor->client_ratio;
+                // $favouriteProduct = WishList::where('product_id' , $product->id)->where('client_id' , Auth::guard('client-api')->user()->id)->first();
+                // $product['is_favourite'] =  $favouriteProduct != null ?1:0;
+            }
+        return $this->APIResponse($products, null, 200);
+    }
+    public function showHiddenProducts()
+    {
+        $vendorId = Auth::guard('vendor-api')->user()->id ;
+        $products = Product::where('vendor_id' ,$vendorId)
+                            ->where('quantity',0)
                             ->get(['id' , 'name','description','price','category_id','image','discount_ratio']);
         $vendor = Vendor::select('first_name','last_name','client_ratio','client_vip_ratio','store_logo','rating')->find($vendorId);
         foreach($products as $product)
@@ -210,9 +236,34 @@ class ProductController extends Controller
         // // ->join('buildings', 'buildings.id', '=', 'blocks.building_id')
         // ->where('vendor_categories.vendor_id', Auth::guard('vendor-api')->user()->id)
         // ->get();
-        $categories = ProductCategory::with('products')->where('vendor_id' , Auth::guard('vendor-api')->user()->id)->get();
+        $categories = ProductCategory::with('products')->where('vendor_id' , Auth::guard('vendor-api')->user()->id)->where('is_hidden',0)
+                                    ->get();
         return $this->APIResponse($categories, null, 200);
     }
+    public function showHiddenProductCategories()
+    {
+        
+        $categories = ProductCategory::with('products')->where('vendor_id' , Auth::guard('vendor-api')->user()->id)->where('is_hidden',1)
+                                    ->get();
+        return $this->APIResponse($categories, null, 200);
+    }
+    public function changeCategoryStatus($categoryId)   
+    {
+        $category = ProductCategory::find($categoryId);
+        if(isset($category)){
+
+            $category->name = request('name');
+            $category->is_hidden = request('is_hidden');
+            
+            $category->save();
+        }
+        else
+        {
+            return $this->APIResponse(null, "this category not found", 400);
+        }
+        return $this->APIResponse(null, null, 200);
+    }
+    
     public function showProductCategories()/// not work
     {
 

@@ -34,6 +34,7 @@ Route::prefix('admin')->namespace('DashBoard')->group(function(){
         Route::resource('categories' , "CategoryController");
         Route::get('admin/categories-products/{VendorId}' , 'VendorController@showCategoriesOfProducts');
         Route::resource('products' , "ProductController");
+        Route::resource('categoriesProducts', 'CategoriesProductsController');
         Route::resource('orders' , "OrderController");
         Route::resource('offers' , "OfferController");
         Route::resource('cities' , "CityController");

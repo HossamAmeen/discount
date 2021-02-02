@@ -9,10 +9,11 @@ class ProductCategory extends Model
      use SoftDeletes;
      protected $fillable = ['name' , 'vendor_id'];
      protected $hidden = [
-        'user_id' , "created_at" , 'updated_at' ,'deleted_at'
+        'is_hidden','user_id' , "created_at" , 'updated_at' ,'deleted_at'
     ];
     function products()
     {
-        return $this->hasMany(Product::class , "category_id");
+        return $this->hasMany(Product::class , "category_id")->where('quantity' , '>' , 0);
     }
+
 }

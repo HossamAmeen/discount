@@ -6,14 +6,7 @@
     <strong>{{session()->get('action')}}</strong>
 </div>
 @endif
-@section('add-button')
 
-{{-- <a  href="{{ route($routeName.'.create') }}">
-    <button class="alert-success">
-         <i class="fa fa-plus"></i> 
-        </button>
-</a> --}}
-@endsection
 <table class="table dataTable my-0" id="dataTable">
     <thead>
        

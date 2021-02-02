@@ -13,8 +13,11 @@
 @endsection
 
 @section('content')
-
-
+@if (session()->get('action') )
+<div class="alert alert-success">
+    <strong>{{session()->get('action')}}</strong>
+</div>
+@endif
 <table class="table dataTable my-0" id="dataTable">
     <thead>
 
@@ -32,12 +35,16 @@
         @foreach($rows as $key => $value)
         <tr>
             <td><img class="rounded-circle mr-2" width="30" height="30"
-                    src="{{asset('assets/img/avatars/avatar1.jpeg')}}">{{$value->name}}</td>
+                src="{{$value->image ?? asset('assets/img/avatars/avatar-1.jpg')}}">{{$value->name}}</td>
 
             <td>{{$value->price}}</td>
             <td>{{$value->quantity}}</td>
             <td>{{$value->vendor->store_name ?? " note found"}}</td>
             <td>{{$value->category->name ?? " note found"}}</td>
+            <td><img class="rounded-circle mr-2" width="30" height="30"
+                src="{{$value->image2 ?? asset('assets/img/avatars/avatar-1.jpg')}}">
+                <img class="rounded-circle mr-2" width="30" height="30"
+                src="{{$value->image3 ?? asset('assets/img/avatars/avatar-1.jpg')}}"></td>
             <td>{{$value->user->name??" not found"}}</td>
             <td>
                 @include('back-end.shared.buttons.delete')

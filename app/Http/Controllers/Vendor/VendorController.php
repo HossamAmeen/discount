@@ -21,7 +21,7 @@ class VendorController extends Controller
         }
         $requestArray = $request->validated();
         $requestArray['password'] = bcrypt( $request->password);
-        $requestArray['status'] = 'accept';
+        $requestArray['status'] = 'pending';
 
         $this->uploadImages($request , $requestArray);
 
@@ -109,7 +109,7 @@ class VendorController extends Controller
         $requestArray = $request->validated();
 
         $this->uploadImages($request , $requestArray);
-    //    return "test";
+        //    return "test";
         if(isset($request->password))
         $requestArray['password'] = bcrypt($request->password);
         $vendor->update($requestArray);
@@ -157,7 +157,7 @@ class VendorController extends Controller
     public function rechargeBalance(Request $request)
     {
         $balance = ShippingCard::where('number' , $request->number)->first();
-     //    return $request->number;
+        //    return $request->number;
          if($balance){
              if($balance->is_used == true)
              {

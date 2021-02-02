@@ -28,10 +28,26 @@ class ClientVenodrController extends Controller
 
     public function showVendorsCategories($id)
     {
-
-        $categories = ProductCategory::with(['products'])->where('vendor_id' , $id)->get();
+        $vendor = Vendor::select('first_name','last_name','client_ratio','client_vip_ratio','store_logo','rating','status','block_reason')->find($id);
+        if(isset($vendor) )
+        {
+            if( $vendor->status == "pending"){
+            
+                    return $this->APIResponse(null, " This account has not been approved from admin", 401);
+            }
+            elseif($vendor->status == "blocked"){
+                return $this->APIResponse(null, "this accout not accept from admin because :" 
+                .$vendor->block_reason, 401);
+            }
+            
+        }
+        else{
+            return $this->APIResponse(null, " This account not found", 401);
+        }
+     
+        $categories = ProductCategory::with(['products'])->where('vendor_id' , $id)->where('is_hidden',0)->get();
         $data = array();
-        $vendor = Vendor::select('first_name','last_name','client_ratio','client_vip_ratio','store_logo','rating')->find($id);
+       
         foreach($categories as $item)
         {
             foreach($item->products as $product)
@@ -59,10 +75,26 @@ class ClientVenodrController extends Controller
     public function showProducts($id)
     {
         $products = Product::where('vendor_id' , $id)
+                            ->where('quantity',0)
                     ->skip((request('pageNumber') ?? 0 ) * 30 )->take(30)
                     ->get(['id' , 'name','description','price','category_id','discount_ratio','image']);
         $data = array();
         $vendor = Vendor::select('first_name','last_name','client_ratio','client_vip_ratio','store_logo','rating')->find($id);
+        if(isset($vendor) )
+        {
+            if( $vendor->status == "pending"){
+            
+                    return $this->APIResponse(null, " This account has not been approved from admin", 401);
+            }
+            elseif($vendor->status == "blocked"){
+                return $this->APIResponse(null, "this accout not accept from admin because :" 
+                .$vendor->block_reason, 401);
+            }
+            
+        }
+        else{
+            return $this->APIResponse(null, " This account not found", 401);
+        }
         foreach($products as $item)
         {
             $product = $item ;
@@ -90,6 +122,7 @@ class ClientVenodrController extends Controller
                 return $this->APIResponse(null, "this vendor is blocked", 400);
             }
             $products = Product::where('vendor_id' , request('vendorId'))
+                             ->where('quantity',0)
                              ->where('name' , 'LIKE', '%' . request('name') . '%' )
                              ->orWhere('description' , 'LIKE', '%' . request('name') . '%')
                              ->get(['id' , 'name','description','price','category_id','discount_ratio','image']);

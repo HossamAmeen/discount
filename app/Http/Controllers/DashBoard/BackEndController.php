@@ -11,12 +11,17 @@ class BackEndController extends Controller
 {
 
     protected $model;
-
-
-    public function __construct(Model $model)
+    protected $routeNameEdit;
+    protected $orderBy;
+    public function __construct(Model $model , $orderBy = "id")
     {
         $this->model = $model;
+        $this->orderBy = $orderBy ; 
+    }
 
+    public function getRouteName()
+    {
+        return   isset($this->routeNameEdit) ? $this->routeNameEdit :  $this->getClassNameFromModel();
     }
 
     public function index()
@@ -28,11 +33,11 @@ class BackEndController extends Controller
         if(!empty($with)){
             $rows = $rows->with($with);
         }
-        $rows = $rows->orderBy('id', 'DESC')->paginate(15);
+        $rows = $rows->orderBy($this->orderBy, 'DESC')->paginate(15);
         $moduleName = $this->pluralModelName();
         $sModuleName = $this->getModelName();
-        $routeName = $this->getClassNameFromModel();
-
+        // $routeName = $this->getClassNameFromModel();
+        $routeName = $this->getRouteName();
         $pageTitle = "Control ".$moduleName;
         $pageDes = "Here you can add / edit / delete " .$moduleName;
         // return Auth::user()->role;
@@ -54,7 +59,7 @@ class BackEndController extends Controller
         $pageTitle = "Create ". $moduleName;
         $pageDes = "Here you can create " .$moduleName;
         $folderName = $this->getClassNameFromModel();
-        $routeName = $folderName;
+        $routeName = $this->getRouteName();
         $append = $this->append();
 
         // return $append;
@@ -74,7 +79,7 @@ class BackEndController extends Controller
         session()->flash('action', 'deleted successfully');
         $this->deleteRelatedItems($id);
         return redirect()->back();
-        return redirect()->route($this->getClassNameFromModel() . '.index');
+        return redirect()->route( $this->getRouteName() . '.index');
     }
 
     public function edit($id)
@@ -85,11 +90,11 @@ class BackEndController extends Controller
         $pageTitle = "Edit " . $moduleName;
         $pageDes = "Here you can edit " .$moduleName;
         $folderName = $this->getClassNameFromModel();
-        $routeName = $folderName;
+        $routeName = $this->getRouteName();
         $append = $this->appendEdited($id);
         //  return $row->images;
 
-        return view('back-end.' . $folderName . '.edit', compact(
+        return view('back-end.' . $routeName . '.edit', compact(
             'row',
             'pageTitle',
             'moduleName',

@@ -36,14 +36,18 @@ Route::prefix('vendor')->namespace('Vendor')->group(function(){
         Route::post('/update-profile', 'VendorController@updateProfile');
         Route::post('/update-store', 'VendorController@updateProfile');
         Route::post('update-store-image', 'VendorController@updateProfile');
-        Route::get('product-categories', 'VendorController@showProductCategories');
+        // Route::get('product-categories', 'VendorController@showProductCategories');
         Route::put('recharge-balance' , 'VendorController@rechargeBalance');
             /////////// products ////////////
         Route::post('/add-product', 'ProductController@addProduct');
         Route::post('/update-product/{id}', 'ProductController@updateProduct');
         Route::get('/show-products', 'ProductController@showProducts');
+        Route::get('/show-hidden-products', 'ProductController@showHiddenProducts');
         Route::get('/show-product/{id}', 'ProductController@showProductDetails');
-        Route::get('/show-categories', 'ProductController@showCategories');
+        Route::get('/show-categories', 'ProductController@showCategories'); ////// show categories of product
+        Route::get('/show-hidden-product-categories', 'ProductController@showHiddenProductCategories');
+        Route::put('/update-product-category/{categoryId}', 'ProductController@changeCategoryStatus');
+        
             ////////// orders ////////////////
             Route::middleware(['checkIsAccept:vendor-api'])->group(function () {
                 Route::get('/show-orders', 'OrderController@showOrders');

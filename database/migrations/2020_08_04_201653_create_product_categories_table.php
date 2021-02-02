@@ -18,7 +18,7 @@ class CreateProductCategoriesTable extends Migration
             
             $table->id();
             $table->string('name');
-            
+            $table->boolean('is_hidden')->default(0);
             $table->bigInteger('vendor_id')->unsigned()->nullable();
             $table->foreign('vendor_id')->references('id')->on('vendors')->onDelete('set null');
             $table->bigInteger('user_id')->unsigned()->nullable();

@@ -139,6 +139,7 @@ class ProductController extends Controller
 
         return $this->APIResponse(null, "this product not found", 400);
     }
+
     public function addChoiceForProduct($jsonReuest , $productId)
     {
 
@@ -196,8 +197,12 @@ class ProductController extends Controller
         foreach($products as $product)
             {
 
-                $discount = $product->discount_ratio !=0 ? ($product->discount_ratio /3) * $product->price / 100  : ( ($vendor->client_ratio ?? 0 ) * $product->price / 100 ) ;
-                $VIPdiscount =$product->discount_ratio !=0 ? ($product->discount_ratio* 2 / 3 )  * $product->price / 100 : ( ( $vendor->client_vip_ratio ?? 0) * $product->price / 100 ) ;
+                // $discount = $product->discount_ratio !=0 ? ($product->discount_ratio /3) * $product->price / 100  : ( ($vendor->client_ratio ?? 0 ) * $product->price / 100 ) ;
+                // $VIPdiscount =$product->discount_ratio !=0 ? ($product->discount_ratio* 2 / 3 )  * $product->price / 100 : ( ( $vendor->client_vip_ratio ?? 0) * $product->price / 100 ) ;
+                // $product['client_price'] = $product->price - $discount ;
+                // $product['client_vip_price'] = $product->price - $VIPdiscount;
+                $discount = ($product->discount_ratio * $product->price * $vendor->client_ratio )/10000;
+                $VIPdiscount = ($product->discount_ratio * $product->price * $vendor->client_vip_ratio )/10000;
                 $product['client_price'] = $product->price - $discount ;
                 $product['client_vip_price'] = $product->price - $VIPdiscount;
                 // $product['client_ratio'] = $vendor->client_ratio;
@@ -216,8 +221,10 @@ class ProductController extends Controller
         foreach($products as $product)
             {
 
-                $discount = $product->discount_ratio !=0 ? ($product->discount_ratio /3) * $product->price / 100  : ( ($vendor->client_ratio ?? 0 ) * $product->price / 100 ) ;
-                $VIPdiscount =$product->discount_ratio !=0 ? ($product->discount_ratio* 2 / 3 )  * $product->price / 100 : ( ( $vendor->client_vip_ratio ?? 0) * $product->price / 100 ) ;
+                // $discount = $product->discount_ratio !=0 ? ($product->discount_ratio /3) * $product->price / 100  : ( ($vendor->client_ratio ?? 0 ) * $product->price / 100 ) ;
+                // $VIPdiscount =$product->discount_ratio !=0 ? ($product->discount_ratio* 2 / 3 )  * $product->price / 100 : ( ( $vendor->client_vip_ratio ?? 0) * $product->price / 100 ) ;
+                $discount = ($product->discount_ratio * $product->price * $vendor->client_ratio )/10000;
+                $VIPdiscount = ($product->discount_ratio * $product->price * $vendor->client_vip_ratio )/10000;
                 $product['client_price'] = $product->price - $discount ;
                 $product['client_vip_price'] = $product->price - $VIPdiscount;
                 // $product['client_ratio'] = $vendor->client_ratio;

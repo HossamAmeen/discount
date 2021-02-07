@@ -86,13 +86,17 @@ class ClientProductController extends Controller
 
             // $discount =$product->discount_ratio !=0 ? $product->discount_ratio / 3 : (  $vendor->client_ratio ?? 0 * $product->price / 100 ) ;
             // $VIPdiscount =$product->discount_ratio !=0 ? $product->discount_ratio* 2 / 3  : (  $vendor->client_vip_ratio ?? 0 * $product->price / 100 ) ;
-            $discount = $product->discount_ratio !=0 ?  (( $product->price *  $product->discount_ratio /3)/100) :
-                        (  $vendor->client_ratio * $product->price / 100 ) ;
-            $VIPdiscount = $product->discount_ratio !=0 ? (( $product->price *  $product->discount_ratio * 2/3)/100 )  :
-                        (  $vendor->client_vip_ratio * $product->price / 100 ) ;
-            $product['client_price'] = $product->price - $discount ;
-            $product['client_vip_price'] = $product->price - $VIPdiscount;
-            $product['delivery_cost'] =  $vendor->delivery;
+            // $discount = $product->discount_ratio !=0 ?  (( $product->price *  $product->discount_ratio /3)/100) :
+            //             (  $vendor->client_ratio * $product->price / 100 ) ;
+            // $VIPdiscount = $product->discount_ratio !=0 ? (( $product->price *  $product->discount_ratio * 2/3)/100 )  :
+            //             (  $vendor->client_vip_ratio * $product->price / 100 ) ;
+            // $product['client_price'] = $product->price - $discount ;
+            // $product['client_vip_price'] = $product->price - $VIPdiscount;
+            // $product['delivery_cost'] =  $vendor->delivery;
+            $discount = ($product->discount_ratio * $product->price * $vendor->client_ratio )/10000;
+                $VIPdiscount = ($product->discount_ratio * $product->price * $vendor->client_vip_ratio )/10000;
+                $product['client_price'] = $product->price - $discount ;
+                $product['client_vip_price'] = $product->price - $VIPdiscount;
             return $this->APIResponse($product, null, 200);
         }
         else

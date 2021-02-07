@@ -27,10 +27,13 @@ class CartClientController extends Controller
         {
             return $this->APIResponse(null, 'this order item is founded', 400);
         }
-        $discountRatio = $product->discount_ratio != 0 ? ( $is_client_vip == true ? $product->discount_ratio * 2/ 3 : $product->discount_ratio /3 )  : ($is_client_vip == true ? ($vendor->client_vip_ratio ?? 0) : ($vendor->client_ratio ?? 0) );
-        $discount =  $discountRatio * $product->price /100;
-        // return $product->price;
-        $vendorBenefit = $request->quantity * ( $product->discount_ratio != 0 ? $product->discount_ratio  : ($vendor->discount_ratio?? 0) * $product->price / 100 );
+
+
+        $discountRatio = $is_client_vip ? ($product->discount_ratio * $vendor->client_vip_ratio )/10000 : ($product->discount_ratio * $vendor->client_ratio )/10000  ;
+       
+        $discount =  $discountRatio * $product->price;
+
+        $vendorBenefit = $request->quantity * ($product->price - $discount );
 
         $orderItem = OrderItem::create([
             'price'=> $product->price - $discount,
@@ -48,7 +51,7 @@ class CartClientController extends Controller
         // return $orderItem;
         if($request->choices){
             $orderItem->choice_price = $this->addChoiceForOrder($request->choices , $orderItem->id);
-            $orderItem->choice_price = ($discountRatio *  $orderItem->choice_price )/100;
+            $orderItem->choice_price = ($discountRatio *  $orderItem->choice_price );
 
             $orderItem->vendor_benefit += $orderItem->choice_price  ;
             $orderItem->save();

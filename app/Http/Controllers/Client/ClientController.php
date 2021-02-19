@@ -20,7 +20,7 @@ class ClientController extends Controller
         }
         $requestArray = $request->validated();
         $requestArray['password'] = bcrypt( $request->password);
-        // $requestArray['status'] = 'pending';
+        $requestArray['status'] = 'accept';
 
         $cLient = Client::create($requestArray);
         $success['token'] = $cLient->createToken('token')->accessToken;

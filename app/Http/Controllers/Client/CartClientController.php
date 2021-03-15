@@ -90,7 +90,7 @@ class CartClientController extends Controller
     {
         $orderItems = OrderItem::with('product')->where('client_id' , Auth::guard('client-api')->user()->id)
         ->where(['status'=>'pending from client'])
-        ->get(['id','product_id' ,'discount', 'discount_ratio' , 'price' ,'choice_price','over_quantity','quantity']);
+        ->get(['id','product_id' ,'discount', 'discount_ratio' , 'price' ,'choice_price','over_quantity','quantity','vendor_id']);
         $data['products'] = $orderItems ;
         
 
